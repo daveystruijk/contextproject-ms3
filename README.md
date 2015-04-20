@@ -1,5 +1,11 @@
 # Contextproject Multimedia Services
 
+## Build Status
+#### Master:
+![Master](https://travis-ci.org/daveystruijk/contextproject-ms3.svg?branch=master)
+#### Develop:
+![Master](https://travis-ci.org/daveystruijk/contextproject-ms3.svg?branch=develop)
+
 ## Group Members (MS3)
 - R.S. Graafmans
 - Emiel Rietdijk
