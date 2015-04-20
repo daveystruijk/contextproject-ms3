@@ -20,7 +20,7 @@ Master must *always have a running version* and pass all tests. If something cri
 
 ## Integration
 ### Travis CI
-Maven tests (```mvn test```) are ran each time someone pushes to github, using [Travis CI](https://travis-ci.org/).
+Maven tests are ran each time someone pushes to github, using [Travis CI](https://travis-ci.org/). (configuration can be found in the *.travis.yml* file)
 
 ### Static Code Analysis
 You can run ```mvn site``` to create reports for:
@@ -31,3 +31,6 @@ You can run ```mvn site``` to create reports for:
 - PMD (verification of coding rules)
 
 Results can be found under *target/site/index.html* -> Project Reports.
+
+### Octopull
+The Travis configuration is compatible with [Octopull](http://www.rmhartog.me/octopull/), which will add all mentioned code style warnings to a pull request.
