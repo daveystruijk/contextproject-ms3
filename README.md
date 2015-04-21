@@ -6,6 +6,9 @@
 #### Develop:
 ![Master](https://travis-ci.org/daveystruijk/contextproject-ms3.svg?branch=develop)
 
+## Planning
+Development will be planned in sprints. [Issues, upcoming features, and the current sprint plan can be found on Trello](https://trello.com/b/zRkZ4BgD/contextproject).
+
 ## Group Members (MS3)
 - R.S. Graafmans
 - Emiel Rietdijk
@@ -25,6 +28,7 @@ Maven tests are ran each time someone pushes to github, using [Travis CI](https:
 ### Static Code Analysis
 You can run ```mvn site``` to create reports for:
 
+- Checkstyle (coding standards)
 - Cobertura (code coverage)
 - FindBugs (bug discovery)
 - CPD (duplicate code detection)
