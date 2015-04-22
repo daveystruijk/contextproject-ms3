@@ -11,7 +11,7 @@ public class App {
   
   public void codeStyleWarnings() {
     int y = 5; 
-    x = 4; // this is not how code should look like
+    y = 4; // this is not how code should look like
     
   int x = 12345;
   }
