@@ -17,6 +17,7 @@ public class Playlist extends ArrayList<Track> {
    * @param songs ArrayList with absolute path
    */
   public Playlist(ArrayList<String> songs) {
+    pl = new ArrayList<Track>();
     for (String song : songs) {
       Track tr = new Track(song);
       pl.add(tr);

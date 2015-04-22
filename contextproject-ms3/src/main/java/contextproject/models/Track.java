@@ -21,7 +21,7 @@ public class Track {
    *          Path of the mp3 file
    */
   public Track(String abPath) {
-
+    
     try {
       song = new Mp3File(abPath);
     } catch (UnsupportedTagException e) {
@@ -34,7 +34,6 @@ public class Track {
       System.out.println("There was a IO exception with file:" + abPath);
       e.printStackTrace();
     }
-    
     absolutepath = abPath;
     getInformation();
     
