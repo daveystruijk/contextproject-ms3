@@ -10,9 +10,9 @@ public class App {
   }
   
   public void codeStyleWarnings() {
-    int x = 5; 
-    x = 5; // this is not how code should look like
+    int y = 5; 
+    x = 4; // this is not how code should look like
     
-  int y = 12345;
+  int x = 12345;
   }
 }
