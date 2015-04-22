@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class FolderLoader implements PlaylistLoader {
 
   private File folder;
-  private static ArrayList<String> list;
+  private ArrayList<String> list;
 
   /**
    * Constructor.
@@ -24,18 +24,46 @@ public class FolderLoader implements PlaylistLoader {
   }
 
   /**
+   * Method to add all mp3 files from the folder and folders within this folder to the list.
+   * 
+   * @param directory
+   *          location of the folder.
+   */
+  public void addToList(File directory) {
+    File[] allfiles = directory.listFiles();
+
+    for (int i = 0; i < allfiles.length; i++) {
+      if (allfiles[i].length() >= 4 && allfiles[i].toString().endsWith(".mp3")) {
+        list.add(allfiles[i].toString());
+      } else if (allfiles[i].isDirectory()) {
+        FolderLoader loader = new FolderLoader(allfiles[i].toString());
+        File submap = new File(allfiles[i].toString());
+        loader.addToList(submap);
+        list.addAll(loader.getList());
+      }
+    }
+  }
+
+  /**
    * Method to get the list of mp3 files and returns the list.
    */
   public ArrayList<String> getList() {
-    File[] allfiles = folder.listFiles();
-
-    for (int i = 0; i < allfiles.length; i++) {
-      if (allfiles[i].length() > 4 && allfiles[i].toString().endsWith(".mp3")) {
-        list.add(i, allfiles[i].toString());
-      }
-    }
-
     return list;
+  }
+
+  /**
+   * Method to get all the music in the folder and the folders within this folder.
+   * 
+   * @return list with all mp3 music
+   */
+  public ArrayList<String> getAllMusic() {
+    this.addToList(folder);
+    return this.getList();
+  }
+
+  public static void main(String[] args) {
+    FolderLoader loader = new FolderLoader("c:/users/Emiel/test");
+    System.out.println(loader.getAllMusic().toString());
   }
 
 }
