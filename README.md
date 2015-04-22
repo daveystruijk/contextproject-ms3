@@ -9,6 +9,8 @@
 ## Planning
 Development will be planned in sprints. [Issues, upcoming features, and the current sprint plan can be found on Trello](https://trello.com/b/zRkZ4BgD/contextproject).
 
+**All non-technical deliverables can be found [here](https://drive.google.com/folderview?id=0Bz11IfzFqxcWflhYalNCZlJzM1g4WExrS3AyNVVvNGJfeDA4OW9NZ19jck50dmxXUm5USUk).**
+
 ## Group Members (MS3)
 - R.S. Graafmans
 - Emiel Rietdijk
