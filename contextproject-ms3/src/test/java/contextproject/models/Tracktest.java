@@ -18,11 +18,11 @@ public class Tracktest {
     Path resourcePath;
     try {
       resourcePath = Paths.get(resourceUrl.toURI());
-      Track tr = new Track(resourcePath.toString());
-      assertEquals(tr.getAlbum(), "Beeps of the year");
-      assertEquals(tr.getTitle(), "Beep");
-      assertEquals(tr.getArtist(), "Flix");
-      assertEquals(tr.getLength(), new Long(575));
+      Track track = new Track(resourcePath.toString());
+      assertEquals(track.getAlbum(), "Beeps of the year");
+      assertEquals(track.getTitle(), "Beep");
+      assertEquals(track.getArtist(), "Flix");
+      assertEquals(track.getLength(), new Long(575));
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");
       e.printStackTrace();

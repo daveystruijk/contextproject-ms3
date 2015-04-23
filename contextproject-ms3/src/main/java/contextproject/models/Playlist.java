@@ -16,8 +16,8 @@ public class Playlist extends ArrayList<Track> {
    */
   public Playlist(ArrayList<String> songs) {
     for (String song : songs) {
-      Track tr = new Track(song);
-      this.add(tr);
+      Track track = new Track(song);
+      this.add(track);
     }
   }
   

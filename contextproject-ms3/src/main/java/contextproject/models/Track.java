@@ -11,7 +11,7 @@ public class Track {
   private String title;
   private String artist;
   private String album;
-  private String absolutepath;
+  private String absolutePath;
   private long length;
 
   /**
@@ -21,7 +21,7 @@ public class Track {
    *          Path of the mp3 file
    */
   public Track(String abPath) {
-    
+
     try {
       song = new Mp3File(abPath);
     } catch (UnsupportedTagException e) {
@@ -34,26 +34,25 @@ public class Track {
       System.out.println("There was a IO exception with file:" + abPath);
       e.printStackTrace();
     }
-    absolutepath = abPath;
-    getInformation();
-    
+    absolutePath = abPath;
+    getMetadata();
+
   }
 
   /**
    * get information from Id3Tag.
    */
-  private void getInformation() {
+  private void getMetadata() {
     if (song.hasId3v2Tag()) {
       title = song.getId3v2Tag().getTitle();
       artist = song.getId3v2Tag().getArtist();
       album = song.getId3v2Tag().getAlbum();
-      length = song.getLengthInMilliseconds();
     } else {
       title = song.getId3v1Tag().getTitle();
       artist = song.getId3v1Tag().getArtist();
       album = song.getId3v1Tag().getAlbum();
-      length = song.getLengthInMilliseconds();
     }
+    length = song.getLengthInMilliseconds();
   }
 
   /**
@@ -82,14 +81,14 @@ public class Track {
   public String getAlbum() {
     return album;
   }
-  
+
   /**
    * String with  absolute path.
    * 
    * @return String
    */
   public String getPath() {
-    return absolutepath;
+    return absolutePath;
   }
 
   /**
