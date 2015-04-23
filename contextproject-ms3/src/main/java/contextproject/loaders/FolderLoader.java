@@ -30,20 +30,23 @@ public class FolderLoader implements PlaylistLoader {
    *          location of the folder.
    */
   public void addToList(File directory) {
-    File[] allfiles = directory.listFiles();
+    try {
+      File[] allfiles = directory.listFiles();
 
-    for (int i = 0; i < allfiles.length; i++) {
-      if (allfiles[i].length() >= 4 && allfiles[i].toString().endsWith(".mp3")) {
-        list.add(allfiles[i].toString());
-      } else if (allfiles[i].isDirectory()) {
-        FolderLoader loader = new FolderLoader(allfiles[i].toString());
-        File submap = new File(allfiles[i].toString());
-        loader.addToList(submap);
-        list.addAll(loader.getList());
+      for (int i = 0; i < allfiles.length; i++) {
+        if (allfiles[i].length() >= 4 && allfiles[i].toString().endsWith(".mp3")) {
+          list.add(allfiles[i].toString());
+        } else if (allfiles[i].isDirectory()) {
+          FolderLoader loader = new FolderLoader(allfiles[i].toString());
+          File submap = new File(allfiles[i].toString());
+          loader.addToList(submap);
+          list.addAll(loader.getList());
+        }
       }
+    } catch (NullPointerException e) {
+      System.out.println("No such directory");
     }
   }
-
   /**
    * Method to get the list of mp3 files and returns the list.
    */
@@ -57,7 +60,12 @@ public class FolderLoader implements PlaylistLoader {
    * @return list with all mp3 music
    */
   public ArrayList<String> getAllMusic() {
-    this.addToList(folder);
+    System.out.println(folder.toString());
+    try {
+      this.addToList(folder);
+    } catch (NullPointerException e) {
+      System.out.println("Exception");
+    }
     return this.getList();
   }
 

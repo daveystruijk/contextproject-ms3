@@ -28,6 +28,9 @@ public interface PlaylistLoader {
    * Method to get put all the music into the list.
    * 
    * @return list with all music files.
+   * 
+   * @throws Exception
+   *           exception if no such directory exist.
    */
   public ArrayList<String> getAllMusic();
 }
