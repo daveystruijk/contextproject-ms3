@@ -29,7 +29,7 @@ public class FolderLoader implements PlaylistLoader {
    * @param directory
    *          location of the folder.
    */
-  void addToList(File directory) {
+  private void addToList(File directory) {
     try {
       for (File file : directory.listFiles()) {
         if (file.length() >= 4 && file.toString().endsWith(".mp3")) {

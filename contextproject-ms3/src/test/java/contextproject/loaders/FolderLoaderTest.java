@@ -56,14 +56,6 @@ public class FolderLoaderTest {
   }
 
   @Test
-  public void noDirectoryTest() {
-    FolderLoader loader = new FolderLoader("noDirectory");
-    File file = new File("NoDirectory");
-    loader.addToList(file);
-    assertTrue(loader.getList().isEmpty());
-  }
-
-  @Test
   public void noDirectoryTest2() {
     FolderLoader loader = new FolderLoader("noDirectory");
     assertTrue(loader.load().isEmpty());
