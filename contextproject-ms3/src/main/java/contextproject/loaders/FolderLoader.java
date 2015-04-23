@@ -29,18 +29,13 @@ public class FolderLoader implements PlaylistLoader {
    * @param directory
    *          location of the folder.
    */
-  public void addToList(File directory) {
+  void addToList(File directory) {
     try {
-      File[] allfiles = directory.listFiles();
-
-      for (int i = 0; i < allfiles.length; i++) {
-        if (allfiles[i].length() >= 4 && allfiles[i].toString().endsWith(".mp3")) {
-          list.add(allfiles[i].toString());
-        } else if (allfiles[i].isDirectory()) {
-          FolderLoader loader = new FolderLoader(allfiles[i].toString());
-          File submap = new File(allfiles[i].toString());
-          loader.addToList(submap);
-          list.addAll(loader.getList());
+      for (File file : directory.listFiles()) {
+        if (file.length() >= 4 && file.toString().endsWith(".mp3")) {
+          list.add(file.toString());
+        } else if (file.isDirectory()) {
+          this.addToList(file);
         }
       }
     } catch (NullPointerException e) {
@@ -59,8 +54,7 @@ public class FolderLoader implements PlaylistLoader {
    * 
    * @return list with all mp3 music
    */
-  public ArrayList<String> getAllMusic() {
-    System.out.println(folder.toString());
+  public ArrayList<String> load() {
     try {
       this.addToList(folder);
     } catch (NullPointerException e) {

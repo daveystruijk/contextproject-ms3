@@ -19,7 +19,9 @@ public class FolderLoaderTest {
    */
   @Before
   public void initialize() {
-    directory = System.getProperty("user.dir").toString() + "\\src\\test\\resources\\loadTest";
+    directory = System.getProperty("user.dir").toString()
+        + File.separator + "src" + File.separator + "test" + File.separator 
+        + "resources" + File.separator + "loadTest";
     array = new ArrayList<String>();
   }
 
@@ -31,22 +33,26 @@ public class FolderLoaderTest {
 
   @Test
   public void addNothingTest() {
-    FolderLoader loader = new FolderLoader(directory + "\\EmptyDirectory");
-    assertTrue(loader.getAllMusic().isEmpty());
+    FolderLoader loader = new FolderLoader(directory + File.separator + "EmptyDirectory");
+    assertTrue(loader.load().isEmpty());
   }
 
   @Test
   public void addTextTest() {
-    FolderLoader loader = new FolderLoader(directory + "\\SubDirectory\\Beeps\\TextFile");
-    assertTrue(loader.getAllMusic().isEmpty());
+    FolderLoader loader = new FolderLoader(directory
+        + File.separator + "SubDirectory" + File.separator + "Beeps" + File.separator + "TextFile");
+    assertTrue(loader.load().isEmpty());
   }
 
   @Test
   public void addSubDirectoryTest() {
-    array.add(directory + "\\SubDirectory\\Beeps\\HighBeep\\HighBeep.mp3");
-    array.add(directory + "\\SubDirectory\\shortBeep.mp3");
-    FolderLoader loader = new FolderLoader(directory + "\\SubDirectory");
-    assertEquals(loader.getAllMusic().toString(), array.toString());
+    array
+        .add(directory
+            + File.separator + "SubDirectory" + File.separator + "Beeps" + File.separator
+            + "HighBeep" + File.separator + "HighBeep.mp3");
+    array.add(directory + File.separator + "SubDirectory" + File.separator + "shortBeep.mp3");
+    FolderLoader loader = new FolderLoader(directory + File.separator + "SubDirectory");
+    assertEquals(loader.load().toString(), array.toString());
   }
 
   @Test
@@ -60,17 +66,20 @@ public class FolderLoaderTest {
   @Test
   public void noDirectoryTest2() {
     FolderLoader loader = new FolderLoader("noDirectory");
-    assertTrue(loader.getAllMusic().isEmpty());
+    assertTrue(loader.load().isEmpty());
   }
 
   @Test
-  public void getAllMusicTest() {
-    array.add(directory + "\\buz.mp3");
-    array.add(directory + "\\buz2.mp3");
-    array.add(directory + "\\SubDirectory\\Beeps\\HighBeep\\HighBeep.mp3");
-    array.add(directory + "\\SubDirectory\\shortBeep.mp3");
+  public void loadTest() {
+    array.add(directory + File.separator + "buz.mp3");
+    array.add(directory + File.separator + "buz2.mp3");
+    array
+        .add(directory
+            + File.separator + "SubDirectory" + File.separator + "Beeps" + File.separator 
+            + "HighBeep" + File.separator + "HighBeep.mp3");
+    array.add(directory + File.separator + "SubDirectory" + File.separator + "shortBeep.mp3");
     FolderLoader loader = new FolderLoader(directory);
-    assertEquals(loader.getAllMusic().toString(), array.toString());
+    assertEquals(loader.load().toString(), array.toString());
   }
 
 }
