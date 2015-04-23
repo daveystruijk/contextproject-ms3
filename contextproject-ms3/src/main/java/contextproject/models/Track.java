@@ -4,7 +4,12 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
+import contextproject.App;
+
 import java.io.IOException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Track {
   private Mp3File song;
@@ -13,6 +18,7 @@ public class Track {
   private String album;
   private String absolutePath;
   private long length;
+  static Logger log = LogManager.getLogger(Track.class.getName());
 
   /**
    * constructor of a track.
@@ -21,22 +27,22 @@ public class Track {
    *          Path of the mp3 file
    */
   public Track(String abPath) {
-
+    log.trace("start constructor Track");
     try {
       song = new Mp3File(abPath);
     } catch (UnsupportedTagException e) {
-      System.out.println("There was a Unsupported tag exception with file:" + abPath);
+      log.error("There was a Unsupported tag exception with file:" + abPath);
       e.printStackTrace();
     } catch (InvalidDataException e) {
-      System.out.println("There was a Invalid data exception with file:" + abPath);
+      log.error("There was a Invalid data exception with file:" + abPath);
       e.printStackTrace();
     } catch (IOException e) {
-      System.out.println("There was a IO exception with file:" + abPath);
+      log.error("There was a IO exception with file:" + abPath);
       e.printStackTrace();
     }
     absolutePath = abPath;
     getMetadata();
-
+    log.trace("end constructor Track");
   }
 
   /**
