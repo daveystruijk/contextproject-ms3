@@ -61,9 +61,4 @@ public class FolderLoader implements PlaylistLoader {
     return this.getList();
   }
 
-  public static void main(String[] args) {
-    FolderLoader loader = new FolderLoader("c:/users/Emiel/test");
-    System.out.println(loader.getAllMusic().toString());
-  }
-
 }

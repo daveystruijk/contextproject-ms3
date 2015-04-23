@@ -1,5 +1,6 @@
 package contextproject.loaders;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -14,4 +15,19 @@ public interface PlaylistLoader {
    * @return a list.
    */
   public ArrayList<String> getList();
+
+  /**
+   * Method to add files to the list.
+   * 
+   * @param file
+   *          directory where the files are located.
+   */
+  public void addToList(File file);
+
+  /**
+   * Method to get put all the music into the list.
+   * 
+   * @return list with all music files.
+   */
+  public ArrayList<String> getAllMusic();
 }
