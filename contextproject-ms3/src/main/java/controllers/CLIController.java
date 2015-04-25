@@ -1,9 +1,9 @@
-package controller;
+package controllers;
 
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Clicontroller {
+public class CLIController {
 
   private String fileName;
   /**
@@ -23,7 +23,7 @@ public class Clicontroller {
       switch (input) {
         case 1 :
           try {
-            this.setFileName(sc.next());
+            this.setFileName(sc.nextLine());
           } catch (IOException e) {
             System.out.println(e.getMessage());
           }
@@ -45,7 +45,7 @@ public class Clicontroller {
   public String aboutDevs() {
     return "Hey, we are Davey, Felix, Emiel, Roy and Millen!\n"
         + "We are trying to create a cool product that could serve as the future of music\n"
-        + "Not to sound overly ambitious or something...\n" + "Remember stay hungry, stay foolish!";
+        + "Not to sound overly ambitious..\n" + "Remember stay hungry, stay foolish!";
   }
 
   /**
@@ -58,7 +58,7 @@ public class Clicontroller {
    */
   public void setFileName(String input) throws IOException {
 
-    if (fileName == null || fileName.equals("")) {
+    if (input == null || input.length() == 0) {
       throw new IOException("The name of the file is invalid!");
     } else {
       fileName = input;

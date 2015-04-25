@@ -1,6 +1,6 @@
 package contextproject;
 
-import controller.Clicontroller;
+import controllers.CLIController;
 
 /**
  * Hello world.
@@ -11,7 +11,7 @@ public class App {
    * Should start our application. No GUI for now just CLI.
    */
   public static void main(String[] args) {
-    Clicontroller control = new Clicontroller();
+    CLIController control = new CLIController();
     control.run(); 
   }
 }
