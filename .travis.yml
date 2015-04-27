@@ -1,5 +1,11 @@
 language: java
-before_install: cd contextproject-ms3
+before_install:
+  - cd contextproject-ms3
+  - git clone https://github.com/JorenSix/TarsosDSP
+  - cd TarsosDSP/build
+  - ant tarsos_dsp_library
+  - cd ../../
+  - mvn install:install-file -DgroupId=be.tarsosdsp -DartifactId=tarsosdsp -Dpackaging=jar -Dversion=2.2 -Dfile=TarsosDSP/build/TarsosDSP-2.2.jar -DgeneratePom=true
 notifications:
   webhooks:
     - http://octopull.rmhartog.me/api/travis/webhook
