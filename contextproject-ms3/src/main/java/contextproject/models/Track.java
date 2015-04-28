@@ -5,6 +5,7 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
 import contextproject.App;
+import contextproject.StackTrace;
 
 import java.io.IOException;
 
@@ -12,7 +13,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Track {
-  static Logger log = LogManager.getLogger(Track.class.getName());
+  static Logger elog = LogManager.getLogger("Error-log");
+  static Logger dlog = LogManager.getLogger("Debug-log");
 
   private Mp3File song;
   private String title;
@@ -28,20 +30,27 @@ public class Track {
    *          Path of the mp3 file
    */
   public Track(String abPath) {
+    elog.trace("start elog trace Track.Track");
+    dlog.trace("start blog trace Track.Track");
     try {
       song = new Mp3File(abPath);
     } catch (UnsupportedTagException e) {
-      log.error("There was a Unsupported tag exception with file:" + abPath);
-      e.printStackTrace();
+      elog.error("There was a Unsupported tag exception with file:" + abPath);
+      elog.info(StackTrace.stackTrace(e));
+     // e.printStackTrace();
     } catch (InvalidDataException e) {
-      log.error("There was a Invalid data exception with file:" + abPath);
-      e.printStackTrace();
+      elog.error("There was a Invalid data exception with file:" + abPath);
+      elog.info(StackTrace.stackTrace(e));
+    //  e.printStackTrace();
     } catch (IOException e) {
-      log.error("There was a IO exception with file:" + abPath);
-      e.printStackTrace();
+      elog.error("There was a IO exception with file:" + abPath);
+      elog.info(StackTrace.stackTrace(e));
+      //e.printStackTrace();
     }
     absolutePath = abPath;
     getMetadata();
+    elog.trace("ended elog trace Track.Track");
+    dlog.trace("ended dlog trace Track.Track");
   }
 
   /**

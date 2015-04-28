@@ -8,10 +8,19 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class App {
-  static Logger log = LogManager.getLogger(App.class.getName());
+  static Logger elog = LogManager.getLogger("Error-log");
+  static Logger dlog = LogManager.getLogger("Debug-log");
 
   public static void main(String[] args) {
     System.out.println("Hello World!");
     System.out.println("test test test");
+    elog.trace("elog trace");
+    dlog.trace("dlog trace");
+    try{
+      throw new NullPointerException();
+    }catch(NullPointerException e){
+      elog.error("error in paradise");
+      elog.info(StackTrace.stackTrace(e));
+    }
   }
 }
