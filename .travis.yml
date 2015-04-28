@@ -1,11 +1,10 @@
 language: java
 before_install:
   - cd contextproject-ms3
-  - git clone https://github.com/JorenSix/TarsosDSP
-  - cd TarsosDSP/build
-  - ant tarsos_dsp_library
-  - cd ../../
-  - mvn install:install-file -DgroupId=be.tarsosdsp -DartifactId=tarsosdsp -Dpackaging=jar -Dversion=2.2 -Dfile=TarsosDSP/build/TarsosDSP-2.2.jar -DgeneratePom=true
+  - wget http://0110.be/releases/TarsosDSP/TarsosDSP-2.2/TarsosDSP-2.2.jar
+  - mvn install:install-file -DgroupId=be.tarsos.dsp -DartifactId=TarsosDSP -Dpackaging=jar -Dversion=2.2 -Dfile=TarsosDSP-2.2.jar -DgeneratePom=true
+  - wget http://0110.be/releases/TarsosTranscoder/TarsosTranscoder-1.2.jar
+  - mvn install:install-file -DgroupId=be.tarsos.transcoder -DartifactId=TarsosTranscoder -Dpackaging=jar -Dversion=1.2 -Dfile=TarsosTranscoder-1.2.jar -DgeneratePom=true
 notifications:
   webhooks:
     - http://octopull.rmhartog.me/api/travis/webhook

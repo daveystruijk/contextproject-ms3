@@ -50,6 +50,12 @@
 			<artifactId>TarsosDSP</artifactId>
 			<version>2.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>be.tarsos.transcoder</groupId>
+			<artifactId>TarsosTranscoder</artifactId>
+			<version>1.2</version>
+		</dependency>
 	</dependencies>
 
 	<reporting>

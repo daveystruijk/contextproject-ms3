@@ -11,7 +11,6 @@ public class App {
   static Logger log = LogManager.getLogger(App.class.getName());
 
   public static void main(String[] args) {
-    System.out.println("Hello World!");
-    System.out.println("test test test");
+
   }
 }

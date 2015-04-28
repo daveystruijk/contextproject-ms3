@@ -25,15 +25,13 @@ Master must *always have a running version* and pass all tests. If something cri
 
 ## Dependencies
 ### TarsosDSP
-For audio processing, we use [TarsosDSP](https://github.com/JorenSix/TarsosDSP). Because it is not a maven project, you need to install it locally. Outside of this project, execute:
+For audio processing, we use [TarsosDSP](https://github.com/JorenSix/TarsosDSP) (and [TarsosTranscoder for mp3 decoding](https://github.com/JorenSix/TarsosTranscoder)). Because they are not maven projects, you need to download them manually to your local maven repository. To achieve this, run:
 ```
-git clone https://JorenSix@github.com/JorenSix/TarsosDSP.git
-cd TarsosDSP/build
-ant tarsos_dsp_library
-```
-If the last command fails because of some unmappable ASCII characters, run ```export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8``` and retry. This should result in a file called *TarsosDSP-2.2.jar*. Install this file into your local maven repository, by going to *contextproject-ms3/contextproject-ms3* and running:
-```
-mvn install:install-file -DgroupId=be.tarsos.dsp -DartifactId=TarsosDSP -Dpackaging=jar -Dversion=2.2 -Dfile=/path-to/TarsosDSP-2.2.jar -DgeneratePom=true
+cd contextproject-ms3
+wget http://0110.be/releases/TarsosDSP/TarsosDSP-2.2/TarsosDSP-2.2.jar
+mvn install:install-file -DgroupId=be.tarsos.dsp -DartifactId=TarsosDSP -Dpackaging=jar -Dversion=2.2 -Dfile=TarsosDSP-2.2.jar -DgeneratePom=true
+wget http://0110.be/releases/TarsosTranscoder/TarsosTranscoder-1.2.jar
+mvn install:install-file -DgroupId=be.tarsos.transcoder -DartifactId=TarsosTranscoder -Dpackaging=jar -Dversion=1.2 -Dfile=TarsosTranscoder-1.2.jar -DgeneratePom=true
 ```
 
 ## Integration
