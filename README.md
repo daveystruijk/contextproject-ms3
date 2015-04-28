@@ -33,13 +33,7 @@ ant tarsos_dsp_library
 ```
 If the last command fails because of some unmappable ASCII characters, run ```export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8``` and retry. This should result in a file called *TarsosDSP-2.2.jar*. Install this file into your local maven repository, by going to *contextproject-ms3/contextproject-ms3* and running:
 ```
-mvn install:install-file \\
-  -DgroupId=be.tarsosdsp \\
-  -DartifactId=tarsosdsp \\
-  -Dpackaging=jar \\
-  -Dversion=2.2 \\
-  -Dfile=path-to/TarsosDSP-2.2.jar \\
-  -DgeneratePom=true
+mvn install:install-file -DgroupId=be.tarsos.dsp -DartifactId=TarsosDSP -Dpackaging=jar -Dversion=2.2 -Dfile=/path-to/TarsosDSP-2.2.jar -DgeneratePom=true
 ```
 
 ## Integration
