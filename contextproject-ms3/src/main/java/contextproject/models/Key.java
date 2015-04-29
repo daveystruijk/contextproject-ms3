@@ -74,7 +74,7 @@ public class Key {
         break;
 
       case "Gb" :
-        keyNumberPart = 02;
+        keyNumberPart = 2;
         keyCharPart = "B";
         break;
 
@@ -170,7 +170,12 @@ public class Key {
    * @return String
    */
   public String getCamelotWheelKey() {
-    return keyNumberPart + keyCharPart;
+    if (keyNumberPart != 0) {
+      return keyNumberPart + keyCharPart;
+    } else {
+      return keyNumberPart + "";
+    }
+
   }
 
   /**
@@ -180,13 +185,15 @@ public class Key {
    */
   public ArrayList<String> getNeighborKeys() {
     ArrayList<String> neighbors = new ArrayList<String>();
-    
-    for (int i = keyNumberPart - 1; i <= keyNumberPart + 2; i++) {
-      if (i == keyNumberPart) {
-        neighbors.add(Math.round((i % 12.5)) + "A");
-        neighbors.add(Math.round((i % 12.5)) + "B");
-      } else {
-        neighbors.add(Math.round((i % 12.5)) + keyCharPart);
+
+    if (keyNumberPart != 0) {
+      for (int i = keyNumberPart - 1; i < keyNumberPart + 2; i++) {
+        if (i == keyNumberPart) {
+          neighbors.add(Math.round(((i + 12) % 12.1)) + "A");
+          neighbors.add(Math.round(((i + 12) % 12.1)) + "B");
+        } else {
+          neighbors.add(Math.round(((i + 12) % 12.1)) + keyCharPart);
+        }
       }
     }
     return neighbors;
