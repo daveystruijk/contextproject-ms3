@@ -1,7 +1,8 @@
 package contextproject;
 
 
-import controllers.CLIController;
+import contextproject.controllers.CLIController;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
