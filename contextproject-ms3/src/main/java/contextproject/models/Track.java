@@ -4,12 +4,10 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
-import contextproject.App;
-
-import java.io.IOException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 public class Track {
   static Logger log = LogManager.getLogger(Track.class.getName());
@@ -20,6 +18,7 @@ public class Track {
   private String album;
   private String absolutePath;
   private long length;
+  private int bpm;
 
   /**
    * constructor of a track.
@@ -52,6 +51,7 @@ public class Track {
       title = song.getId3v2Tag().getTitle();
       artist = song.getId3v2Tag().getArtist();
       album = song.getId3v2Tag().getAlbum();
+      bpm = song.getId3v2Tag().getBPM();
     } else {
       title = song.getId3v1Tag().getTitle();
       artist = song.getId3v1Tag().getArtist();
@@ -88,7 +88,7 @@ public class Track {
   }
 
   /**
-   * String with  absolute path.
+   * String with absolute path.
    * 
    * @return String
    */
@@ -103,6 +103,15 @@ public class Track {
    */
   public Long getLength() {
     return length;
+  }
+  
+  /**
+   * Beats per minute of the track.
+   * 
+   * @return int
+   */
+  public int getBpm() {
+    return bpm;
   }
 
 }
