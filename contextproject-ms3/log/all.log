@@ -1,0 +1,11 @@
+2015-31-30 11:31:59.551 [main] TRACE Error-log - elog trace
+2015-31-30 11:31:59.552 [main] TRACE Debug-log - dlog trace
+2015-31-30 11:31:59.553 [main] TRACE contextproject.App - checking the root logger
+2015-31-30 11:31:59.553 [main] ERROR Error-log - error in paradise
+2015-31-30 11:31:59.555 [main] TRACE Error-log - java.lang.NullPointerException
+	at contextproject.App.main(App.java:26)
+
+2015-31-30 11:31:59.555 [main] ERROR contextproject.App - error in paradise
+2015-31-30 11:31:59.555 [main] TRACE contextproject.App - java.lang.NullPointerException
+	at contextproject.App.main(App.java:26)
+
