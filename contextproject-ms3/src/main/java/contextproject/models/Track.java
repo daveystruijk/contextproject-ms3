@@ -4,7 +4,7 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
-import contextproject.StackTrace;
+import contextproject.helpers.StackTrace;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +55,13 @@ public class Track {
       artist = song.getId3v2Tag().getArtist();
       album = song.getId3v2Tag().getAlbum();
       bpm = song.getId3v2Tag().getBPM();
-      key = new Key(song);
+      try {
+        key = new Key(song.getId3v2Tag().getKey());
+      } catch (IllegalArgumentException e) {
+        log.warn("Could not find key information in: " + song.getFilename());
+      }
+    } else {
+      log.warn("Could not find Id3v2 information in: " + song.getFilename());
     }
     length = song.getLengthInMilliseconds();
   }

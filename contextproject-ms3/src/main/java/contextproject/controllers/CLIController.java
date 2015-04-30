@@ -1,5 +1,6 @@
 package contextproject.controllers;
 
+import contextproject.formats.M3UBuilder;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
 
@@ -18,21 +19,18 @@ public class CLIController {
    */
   public void run() {
     Scanner sc = new Scanner(System.in);
-    System.out.println("Welcome to our application!");
     while (true) {
-      System.out.println("Construct playlist! Enter foldername");
+      System.out.println("Construct optimal playlist! Enter directory:");
 
       try {
-        String fileName = sc.next();
+        String fileName = sc.nextLine();
         FolderLoader folderLoader = new FolderLoader(fileName);
-        Playlist result = new Playlist(folderLoader.load());
-        //TODO!
-        System.out.println("\\TODO!");
+        Playlist playlist = new Playlist(folderLoader.load());
+        M3UBuilder m3uBuilder = new M3UBuilder(playlist);
+        System.out.println(m3uBuilder.build());
       } catch (Exception e) {
         System.out.println(e.getMessage());
       }
-      sc.close();
-
     }
   }
 }
