@@ -3,7 +3,7 @@ package contextproject.models;
 import java.util.ArrayList;
 
 public class Playlist extends ArrayList<Track> {
-
+  
   /**
    * serialVersionUID.
    */

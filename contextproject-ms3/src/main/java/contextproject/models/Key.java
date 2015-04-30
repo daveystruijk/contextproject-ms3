@@ -4,7 +4,11 @@ import com.mpatric.mp3agic.Mp3File;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Key {
+  private static Logger log = LogManager.getLogger(Key.class.getName());
 
   private int keyNumberPart;
   private String keyCharPart;
@@ -22,6 +26,7 @@ public class Key {
       if(keyMusicNotation != null) {
         convertKey();
       }
+      log.info(song.getFilename() + " has no Id3v2Tag");
     }
   }
 
@@ -153,6 +158,7 @@ public class Key {
       default :
         keyNumberPart = 0;
         keyCharPart = null;
+        log.warn("Song has no key in ID3 information.");
         break;
     }
   }

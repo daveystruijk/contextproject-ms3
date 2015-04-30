@@ -19,6 +19,6 @@ public class App {
 
   public static void main(String[] args) {
     CLIController control = new CLIController();
-    control.run(); 
+    control.run();
   }
 }

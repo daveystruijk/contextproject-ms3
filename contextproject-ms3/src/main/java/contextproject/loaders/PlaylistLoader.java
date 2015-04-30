@@ -1,13 +1,11 @@
 package contextproject.loaders;
 
 import java.util.ArrayList;
-
 /**
  * Interface for the loaders to ensure it has the right functionality.
  *
  */
 public interface PlaylistLoader {
-
   /**
    * Main method to load all the names of the mp3 files.
    * 
