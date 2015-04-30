@@ -26,17 +26,18 @@ public class M3UExportTest {
         + "test" + File.separator + "resources" + File.separator + "beep.mp3";
     ArrayList<String> list = new ArrayList<String>();
     list.add(song);
+    list.add(song);
     pl = new Playlist(list);
     builder = new M3UBuilder(pl);
   }
 
   @Test
   public void buildTest() {
-    assertEquals(builder.build(), song + "\n");
+    assertEquals(builder.build(), song + "\n" + song + "\n");
   }
   
   @Test
   public void buildFailTest() {
-    assertFalse(builder.build().equals("Fail"));
+    assertFalse(builder.build().equals(song));
   }
 }
