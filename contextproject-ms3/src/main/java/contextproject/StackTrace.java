@@ -4,11 +4,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-/**
- * class for convering the stacktrace into a string.
- * @author Millen
- *
- */
 public class StackTrace {
   
   /**
