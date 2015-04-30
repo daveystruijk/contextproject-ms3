@@ -27,6 +27,7 @@ public class Key {
    */
   private void normalizeKey(String keyString) throws IllegalArgumentException,
       NumberFormatException {
+    this.musicalKeyString = keyString;
     switch (keyString) {
       case "A" :
         normalizedKeyNumber = 11;

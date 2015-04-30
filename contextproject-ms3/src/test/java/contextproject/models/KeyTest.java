@@ -37,5 +37,20 @@ public class KeyTest {
     assertEquals(key.getNeighborKeys().size(), 4);
     assertTrue(key.getNeighborKeys().contains("1B"));
   }
-
+  
+  /**
+   * test direct normalized key input.
+   */
+  @Test
+  public void keyNormalizedTest() {
+    Key key = new Key("11B");
+    assertEquals(key.getNormalizedKeyString(), "11B");
+    assertEquals(key.getNeighborKeys().size(), 4);
+    assertTrue(key.getNeighborKeys().contains("12B"));
+  }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void keyNormalizedInvalidTest() {
+    new Key("40B");
+  }
 }
