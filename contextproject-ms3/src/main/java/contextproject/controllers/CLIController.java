@@ -2,6 +2,7 @@ package contextproject.controllers;
 
 import java.util.Scanner;
 
+import contextproject.helpers.TrackCompatibility;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
@@ -26,10 +27,29 @@ public class CLIController {
       FolderLoader folderLoader = new FolderLoader(fileName);
       Playlist playlist = new Playlist(folderLoader.load());
       
-      for (Track track : playlist) {
-        System.out.println(track.getArtist() + " - " + track.getTitle() + " | "
-            + track.getKey().getNormalizedKeyString() + ", " + track.getBpm());
+      for (Track i : playlist) {
+        Track bestMatch = null;
+        float bestScore = 0.0f;
+        for (int j = 0; j < playlist.size(); j++) {
+          if (i != playlist.get(j)) {
+            float score = TrackCompatibility.getScore(i, playlist.get(j));
+            if (score > bestScore) {
+              bestScore = score;
+              bestMatch = playlist.get(j);
+            }
+          }
+        }
+        System.out.println();
+        printTrack(i);
+        printTrack(bestMatch);
+        System.out.println(bestScore);
+        System.out.println();
       }
     }
+  }
+  
+  public void printTrack(Track track) {
+    System.out.println(track.getArtist() + " - " + track.getTitle() + " | "
+        + track.getKey().getNormalizedKeyString() + ", " + track.getBpm());
   }
 }
