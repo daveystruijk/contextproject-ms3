@@ -4,6 +4,8 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
+import contextproject.StackTrace;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,13 +33,13 @@ public class Track {
       song = new Mp3File(abPath);
     } catch (UnsupportedTagException e) {
       log.error("There was a Unsupported tag exception with file:" + abPath);
-      e.printStackTrace();
+      log.trace(StackTrace.stackTrace(e));
     } catch (InvalidDataException e) {
       log.error("There was a Invalid data exception with file:" + abPath);
-      e.printStackTrace();
+      log.trace(StackTrace.stackTrace(e));
     } catch (IOException e) {
       log.error("There was a IO exception with file:" + abPath);
-      e.printStackTrace();
+      log.trace(StackTrace.stackTrace(e));
     }
     absolutePath = abPath;
     getMetadata();

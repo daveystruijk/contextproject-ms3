@@ -4,12 +4,23 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * class for convering the stacktrace into a string.
+ * @author Millen
+ *
+ */
 public class StackTrace {
-  static public String stackTrace(Exception e){
-  Writer writer = new StringWriter();
-  PrintWriter printWriter = new PrintWriter(writer);
-  e.printStackTrace(printWriter);
-  String s = writer.toString();
-  return s;
+  
+  /**
+   * method for turning the stacktrace into a string.
+   * @param ex the exception which stacktrace will be converted.
+   * @return the string of the stacktrace.
+   */
+  public static String stackTrace(Exception ex) {
+    Writer writer = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(writer);
+    ex.printStackTrace(printWriter);
+    String str = writer.toString();
+    return str;
   }
 }

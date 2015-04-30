@@ -2,10 +2,13 @@ package contextproject.models;
 
 import com.mpatric.mp3agic.Mp3File;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 
 public class Key {
-
+  static Logger log = LogManager.getLogger(Key.class.getName());
   private int keyNumberPart;
   private String keyCharPart;
   private String keyMusicNotiation;
@@ -20,6 +23,8 @@ public class Key {
     if (song.hasId3v2Tag()) {
       keyMusicNotiation = song.getId3v2Tag().getKey();
       convertKey();
+    } else {
+      log.info(song.getFilename() + " has no Id3v2Tag");
     }
   }
 
@@ -151,6 +156,7 @@ public class Key {
       default :
         keyNumberPart = 0;
         keyCharPart = null;
+        log.warn("Song has no key in ID3 information.");
         break;
     }
   }

@@ -4,13 +4,13 @@
     <Console name="Console" target="SYSTEM_OUT">
       <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
     </Console>
-    <File name="ErrorFile" fileName="target/Error.log" append = "false">
+    <File name="ErrorFile" fileName="Log/Error.log" append = "false">
         <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
     </File>  
-    <File name="DebugFile" fileName="target/Debug.log" append = "false">
+    <File name="DebugFile" fileName="Log/Debug.log" append = "false">
         <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
     </File>  
-     <File name="File" fileName="target/all.log" append = "false">
+     <File name="File" fileName="Log/all.log" append = "false">
         <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
     </File> 
   </Appenders>

@@ -10,17 +10,21 @@ import org.apache.logging.log4j.Logger;
 public class App {
   static Logger elog = LogManager.getLogger("Error-log");
   static Logger dlog = LogManager.getLogger("Debug-log");
-
+  
+  /**
+   * test method for log4j.
+   * @param args args.
+   */
   public static void main(String[] args) {
     System.out.println("Hello World!");
     System.out.println("test test test");
     elog.trace("elog trace");
     dlog.trace("dlog trace");
-    try{
+    try {
       throw new NullPointerException();
-    }catch(NullPointerException e){
+    } catch (NullPointerException e) {
       elog.error("error in paradise");
-      elog.info(StackTrace.stackTrace(e));
+      elog.trace(StackTrace.stackTrace(e));
     }
   }
 }

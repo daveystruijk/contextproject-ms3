@@ -1,5 +1,10 @@
 package contextproject.loaders;
 
+import contextproject.StackTrace;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -8,7 +13,7 @@ import java.util.ArrayList;
  *
  */
 public class FolderLoader implements PlaylistLoader {
-
+  static Logger log = LogManager.getLogger(FolderLoader.class.getName());
   private File folder;
   private ArrayList<String> list;
 
@@ -39,7 +44,8 @@ public class FolderLoader implements PlaylistLoader {
         }
       }
     } catch (NullPointerException e) {
-      System.out.println("No such directory");
+      log.error("No such directory");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
   /**
@@ -58,7 +64,8 @@ public class FolderLoader implements PlaylistLoader {
     try {
       this.addToList(folder);
     } catch (NullPointerException e) {
-      System.out.println("Exception");
+      log.error("Exception");
+      log.trace(StackTrace.stackTrace(e));
     }
     return this.getList();
   }
