@@ -48,3 +48,6 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+Log/
+log4j2.out.xml
