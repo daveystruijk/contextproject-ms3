@@ -4,17 +4,13 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
-import contextproject.App;
-import contextproject.StackTrace;
-
-import java.io.IOException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+
 public class Track {
-  static Logger elog = LogManager.getLogger("Error-log");
-  static Logger dlog = LogManager.getLogger("Debug-log");
+  static Logger log = LogManager.getLogger(Track.class.getName());
 
   private Mp3File song;
   private String title;
@@ -22,6 +18,7 @@ public class Track {
   private String album;
   private String absolutePath;
   private long length;
+  private int bpm;
 
   /**
    * constructor of a track.
@@ -30,27 +27,20 @@ public class Track {
    *          Path of the mp3 file
    */
   public Track(String abPath) {
-    elog.trace("start elog trace Track.Track");
-    dlog.trace("start blog trace Track.Track");
     try {
       song = new Mp3File(abPath);
     } catch (UnsupportedTagException e) {
-      elog.error("There was a Unsupported tag exception with file:" + abPath);
-      elog.info(StackTrace.stackTrace(e));
-     // e.printStackTrace();
+      log.error("There was a Unsupported tag exception with file:" + abPath);
+      e.printStackTrace();
     } catch (InvalidDataException e) {
-      elog.error("There was a Invalid data exception with file:" + abPath);
-      elog.info(StackTrace.stackTrace(e));
-    //  e.printStackTrace();
+      log.error("There was a Invalid data exception with file:" + abPath);
+      e.printStackTrace();
     } catch (IOException e) {
-      elog.error("There was a IO exception with file:" + abPath);
-      elog.info(StackTrace.stackTrace(e));
-      //e.printStackTrace();
+      log.error("There was a IO exception with file:" + abPath);
+      e.printStackTrace();
     }
     absolutePath = abPath;
     getMetadata();
-    elog.trace("ended elog trace Track.Track");
-    dlog.trace("ended dlog trace Track.Track");
   }
 
   /**
@@ -61,6 +51,7 @@ public class Track {
       title = song.getId3v2Tag().getTitle();
       artist = song.getId3v2Tag().getArtist();
       album = song.getId3v2Tag().getAlbum();
+      bpm = song.getId3v2Tag().getBPM();
     } else {
       title = song.getId3v1Tag().getTitle();
       artist = song.getId3v1Tag().getArtist();
@@ -97,7 +88,7 @@ public class Track {
   }
 
   /**
-   * String with  absolute path.
+   * String with absolute path.
    * 
    * @return String
    */
@@ -112,6 +103,15 @@ public class Track {
    */
   public Long getLength() {
     return length;
+  }
+  
+  /**
+   * Beats per minute of the track.
+   * 
+   * @return int
+   */
+  public int getBpm() {
+    return bpm;
   }
 
 }

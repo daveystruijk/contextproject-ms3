@@ -52,7 +52,7 @@ public class FolderLoaderTest {
             + "HighBeep" + File.separator + "HighBeep.mp3");
     array.add(directory + File.separator + "SubDirectory" + File.separator + "shortBeep.mp3");
     FolderLoader loader = new FolderLoader(directory + File.separator + "SubDirectory");
-    assertEquals(loader.load().toString(), array.toString());
+    assertTrue(loader.load().containsAll(array) && array.containsAll(loader.load()));
   }
 
   @Test
@@ -71,7 +71,7 @@ public class FolderLoaderTest {
             + "HighBeep" + File.separator + "HighBeep.mp3");
     array.add(directory + File.separator + "SubDirectory" + File.separator + "shortBeep.mp3");
     FolderLoader loader = new FolderLoader(directory);
-    assertEquals(loader.load().toString(), array.toString());
+    assertTrue(loader.load().containsAll(array) && array.containsAll(loader.load()));
   }
 
 }
