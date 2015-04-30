@@ -19,6 +19,7 @@ public class Track {
   private String absolutePath;
   private long length;
   private int bpm;
+  private Key key;
 
   /**
    * constructor of a track.
@@ -52,10 +53,7 @@ public class Track {
       artist = song.getId3v2Tag().getArtist();
       album = song.getId3v2Tag().getAlbum();
       bpm = song.getId3v2Tag().getBPM();
-    } else {
-      title = song.getId3v1Tag().getTitle();
-      artist = song.getId3v1Tag().getArtist();
-      album = song.getId3v1Tag().getAlbum();
+      key = new Key(song);
     }
     length = song.getLengthInMilliseconds();
   }
@@ -104,7 +102,7 @@ public class Track {
   public Long getLength() {
     return length;
   }
-  
+
   /**
    * Beats per minute of the track.
    * 
