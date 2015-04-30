@@ -8,7 +8,7 @@ public class Key {
 
   private int keyNumberPart;
   private String keyCharPart;
-  private String keyMusicNotiation;
+  private String keyMusicNotation;
 
   /**
    * Get the key of a song from the meta data.
@@ -18,8 +18,10 @@ public class Key {
    */
   public Key(Mp3File song) {
     if (song.hasId3v2Tag()) {
-      keyMusicNotiation = song.getId3v2Tag().getKey();
-      convertKey();
+      keyMusicNotation = song.getId3v2Tag().getKey();
+      if(keyMusicNotation != null) {
+        convertKey();
+      }
     }
   }
 
@@ -27,7 +29,7 @@ public class Key {
    * Convert a key in common form to the camelot wheel form.
    */
   private void convertKey() {
-    switch (keyMusicNotiation) {
+    switch (keyMusicNotation) {
       case "A" :
         keyNumberPart = 11;
         keyCharPart = "B";
@@ -161,7 +163,7 @@ public class Key {
    * @return String
    */
   public String getMusicKey() {
-    return keyMusicNotiation;
+    return keyMusicNotation;
   }
 
   /**
