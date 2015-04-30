@@ -49,5 +49,5 @@ local.properties
 # TeXlipse plugin
 .texlipse
 
-Log/
+log/
 log4j2.out.xml
