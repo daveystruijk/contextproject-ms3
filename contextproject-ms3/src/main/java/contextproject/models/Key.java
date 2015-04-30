@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 
 public class Key {
-  static Logger log = LogManager.getLogger(Key.class.getName());
+  private static Logger log = LogManager.getLogger(Key.class.getName());
   private int keyNumberPart;
   private String keyCharPart;
   private String keyMusicNotiation;

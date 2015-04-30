@@ -15,7 +15,6 @@ public class StackTrace {
     Writer writer = new StringWriter();
     PrintWriter printWriter = new PrintWriter(writer);
     ex.printStackTrace(printWriter);
-    String str = writer.toString();
-    return str;
+    return writer.toString();
   }
 }

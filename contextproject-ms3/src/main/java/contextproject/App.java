@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 public class App {
 //  static Logger elog = LogManager.getLogger("Error-log");
 //  static Logger dlog = LogManager.getLogger("Debug-log");
-  static Logger log = LogManager.getLogger(App.class.getName());
+  private static Logger log = LogManager.getLogger(App.class.getName());
   
   /**
    * test method for log4j2.

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  */
 public class FolderLoader implements PlaylistLoader {
-  static Logger log = LogManager.getLogger(FolderLoader.class.getName());
+  private static Logger log = LogManager.getLogger(FolderLoader.class.getName());
   private File folder;
   private ArrayList<String> list;
 

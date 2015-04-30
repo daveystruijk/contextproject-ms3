@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
 public class Track {
-  static Logger log = LogManager.getLogger(Track.class.getName());
+  private static Logger log = LogManager.getLogger(Track.class.getName());
 
   private Mp3File song;
   private String title;
