@@ -23,7 +23,7 @@ public class Key {
   public Key(Mp3File song) {
     if (song.hasId3v2Tag()) {
       keyMusicNotation = song.getId3v2Tag().getKey();
-      if(keyMusicNotation != null) {
+      if (keyMusicNotation != null) {
         convertKey();
       }
       log.info(song.getFilename() + " has no Id3v2Tag");

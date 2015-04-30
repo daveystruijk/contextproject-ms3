@@ -104,6 +104,7 @@ public class Track {
   public Long getLength() {
     return length;
   }
+  
   /**
    * Beats per minute of the track.
    * 
@@ -113,4 +114,13 @@ public class Track {
     return bpm;
   }
 
+  /**
+   * Track key object.
+   * 
+   * @return Key
+   */
+  public Key getKey() {
+    return key;
+    
+  }
 }
