@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.ArrayList;
 
-public class M3UExportTest {
+public class M3UBuilderTest {
 
   private Playlist pl;
   private String song;
