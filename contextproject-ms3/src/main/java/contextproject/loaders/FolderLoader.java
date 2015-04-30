@@ -1,6 +1,6 @@
 package contextproject.loaders;
 
-import contextproject.StackTrace;
+import contextproject.helpers.StackTrace;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,6 +35,7 @@ public class FolderLoader implements PlaylistLoader {
    *          location of the folder.
    */
   private void addToList(File directory) {
+    log.info("Scanning " + directory);
     try {
       for (File file : directory.listFiles()) {
         if (file.length() >= 4 && file.toString().endsWith(".mp3")) {

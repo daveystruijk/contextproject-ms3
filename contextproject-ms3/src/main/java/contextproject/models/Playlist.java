@@ -20,5 +20,4 @@ public class Playlist extends ArrayList<Track> {
       this.add(track);
     }
   }
-  
 }

@@ -1,9 +1,10 @@
 package contextproject.controllers;
 
+import java.util.Scanner;
+
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
-
-import java.util.Scanner;
+import contextproject.models.Track;
 
 /**
  * Controls CLI for time being.
@@ -18,21 +19,17 @@ public class CLIController {
    */
   public void run() {
     Scanner sc = new Scanner(System.in);
-    System.out.println("Welcome to our application!");
     while (true) {
-      System.out.println("Construct playlist! Enter foldername");
+      System.out.println("Construct optimal playlist! Enter directory:");
 
-      try {
-        String fileName = sc.next();
-        FolderLoader folderLoader = new FolderLoader(fileName);
-        Playlist result = new Playlist(folderLoader.load());
-        //TODO!
-        System.out.println("\\TODO!");
-      } catch (Exception e) {
-        System.out.println(e.getMessage());
+      String fileName = sc.nextLine();
+      FolderLoader folderLoader = new FolderLoader(fileName);
+      Playlist playlist = new Playlist(folderLoader.load());
+      
+      for (Track track : playlist) {
+        System.out.println(track.getArtist() + " - " + track.getTitle() + " | "
+            + track.getKey().getNormalizedKeyString() + ", " + track.getBpm());
       }
-      sc.close();
-
     }
   }
 }

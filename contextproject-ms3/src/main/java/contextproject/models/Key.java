@@ -1,166 +1,181 @@
 package contextproject.models;
 
-import com.mpatric.mp3agic.Mp3File;
-
 import java.util.ArrayList;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Key {
-  private static Logger log = LogManager.getLogger(Key.class.getName());
-
-  private int keyNumberPart;
-  private String keyCharPart;
-  private String keyMusicNotation;
+  private int normalizedKeyNumber;
+  private String normalizedKeyFlag;
+  private String musicalKeyString;
 
   /**
    * Get the key of a song from the meta data.
    * 
-   * @param song
-   *          song to get key from
+   * @param keyString String key from ID3 information
    */
-  public Key(Mp3File song) {
-    if (song.hasId3v2Tag()) {
-      keyMusicNotation = song.getId3v2Tag().getKey();
-      if(keyMusicNotation != null) {
-        convertKey();
-      }
-      log.info(song.getFilename() + " has no Id3v2Tag");
+  public Key(String keyString) throws IllegalArgumentException {
+    if (keyString != null) {
+      normalizeKey(keyString);
+    } else {
+      throw new IllegalArgumentException("Key should not be null");
     }
   }
 
   /**
    * Convert a key in common form to the camelot wheel form.
    */
-  private void convertKey() {
-    switch (keyMusicNotation) {
+  private void normalizeKey(String keyString) throws IllegalArgumentException,
+      NumberFormatException {
+    this.musicalKeyString = keyString;
+    switch (keyString) {
       case "A" :
-        keyNumberPart = 11;
-        keyCharPart = "B";
+        normalizedKeyNumber = 11;
+        normalizedKeyFlag = "B";
         break;
 
       case "Bb" :
-        keyNumberPart = 6;
-        keyCharPart = "B";
+        normalizedKeyNumber = 6;
+        normalizedKeyFlag = "B";
         break;
 
       case "B" :
-        keyNumberPart = 1;
-        keyCharPart = "B";
+        normalizedKeyNumber = 1;
+        normalizedKeyFlag = "B";
         break;
 
       case "C" :
-        keyNumberPart = 8;
-        keyCharPart = "B";
+        normalizedKeyNumber = 8;
+        normalizedKeyFlag = "B";
         break;
 
       case "Dd" :
-        keyNumberPart = 3;
-        keyCharPart = "B";
+        normalizedKeyNumber = 3;
+        normalizedKeyFlag = "B";
         break;
 
       case "D" :
-        keyNumberPart = 10;
-        keyCharPart = "B";
+        normalizedKeyNumber = 10;
+        normalizedKeyFlag = "B";
         break;
 
       case "Eb" :
-        keyNumberPart = 5;
-        keyCharPart = "B";
+        normalizedKeyNumber = 5;
+        normalizedKeyFlag = "B";
         break;
 
       case "E" :
-        keyNumberPart = 12;
-        keyCharPart = "B";
+        normalizedKeyNumber = 12;
+        normalizedKeyFlag = "B";
         break;
 
       case "F" :
-        keyNumberPart = 7;
-        keyCharPart = "B";
+        normalizedKeyNumber = 7;
+        normalizedKeyFlag = "B";
         break;
 
       case "Gb" :
-        keyNumberPart = 2;
-        keyCharPart = "B";
+        normalizedKeyNumber = 2;
+        normalizedKeyFlag = "B";
         break;
 
       case "G" :
-        keyNumberPart = 9;
-        keyCharPart = "B";
+        normalizedKeyNumber = 9;
+        normalizedKeyFlag = "B";
         break;
 
       case "Ab" :
-        keyNumberPart = 4;
-        keyCharPart = "B";
+        normalizedKeyNumber = 4;
+        normalizedKeyFlag = "B";
         break;
 
       case "Am" :
-        keyNumberPart = 8;
-        keyCharPart = "A";
+        normalizedKeyNumber = 8;
+        normalizedKeyFlag = "A";
         break;
 
       case "Bbm" :
-        keyNumberPart = 3;
-        keyCharPart = "A";
+        normalizedKeyNumber = 3;
+        normalizedKeyFlag = "A";
         break;
 
       case "Bm" :
-        keyNumberPart = 10;
-        keyCharPart = "A";
+        normalizedKeyNumber = 10;
+        normalizedKeyFlag = "A";
         break;
 
       case "Cm" :
-        keyNumberPart = 5;
-        keyCharPart = "A";
+        normalizedKeyNumber = 5;
+        normalizedKeyFlag = "A";
         break;
 
       case "Dbm" :
-        keyNumberPart = 12;
-        keyCharPart = "A";
+        normalizedKeyNumber = 12;
+        normalizedKeyFlag = "A";
         break;
 
       case "Dm" :
-        keyNumberPart = 7;
-        keyCharPart = "A";
+        normalizedKeyNumber = 7;
+        normalizedKeyFlag = "A";
         break;
 
       case "Ebm" :
-        keyNumberPart = 2;
-        keyCharPart = "A";
+        normalizedKeyNumber = 2;
+        normalizedKeyFlag = "A";
         break;
 
       case "Em" :
-        keyNumberPart = 9;
-        keyCharPart = "A";
+        normalizedKeyNumber = 9;
+        normalizedKeyFlag = "A";
         break;
 
       case "Fm" :
-        keyNumberPart = 4;
-        keyCharPart = "A";
+        normalizedKeyNumber = 4;
+        normalizedKeyFlag = "A";
         break;
 
       case "Gbm" :
-        keyNumberPart = 11;
-        keyCharPart = "A";
+        normalizedKeyNumber = 11;
+        normalizedKeyFlag = "A";
         break;
 
       case "Gm" :
-        keyNumberPart = 6;
-        keyCharPart = "A";
+        normalizedKeyNumber = 6;
+        normalizedKeyFlag = "A";
         break;
 
       case "Abm" :
-        keyNumberPart = 1;
-        keyCharPart = "A";
+        normalizedKeyNumber = 1;
+        normalizedKeyFlag = "A";
         break;
 
       default :
-        keyNumberPart = 0;
-        keyCharPart = null;
-        log.warn("Song has no key in ID3 information.");
-        break;
+        boolean foundNormalizedKey = parseNormalizedString(keyString);
+        if (!foundNormalizedKey) {
+          throw new IllegalArgumentException("Key cannot be detected");
+        }
     }
+  }
+  
+  /**
+   * Try to parse the key string if it is normalized already.
+   * @param keyString The given key as text
+   * @return Boolean whether the parsing succeeded or not
+   * @throws NumberFormatException When matching fails
+   */
+  private boolean parseNormalizedString(String keyString) throws NumberFormatException {
+    Pattern pattern = Pattern.compile("([0-9]{1,2})([AB])");
+    Matcher matcher = pattern.matcher(keyString);
+    if (matcher.matches()) {
+      int number = Integer.parseInt(matcher.group(1));
+      String flag = matcher.group(2);
+      if (number > 0 && number < 13 && (flag.equals("A") || flag.equals("B"))) {
+        this.normalizedKeyNumber = number;
+        this.normalizedKeyFlag = flag;
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -168,8 +183,8 @@ public class Key {
    * 
    * @return String
    */
-  public String getMusicKey() {
-    return keyMusicNotation;
+  public String getMusicalKeyString() {
+    return musicalKeyString;
   }
 
   /**
@@ -177,11 +192,11 @@ public class Key {
    * 
    * @return String
    */
-  public String getCamelotWheelKey() {
-    if (keyNumberPart != 0) {
-      return keyNumberPart + keyCharPart;
+  public String getNormalizedKeyString() {
+    if (normalizedKeyNumber != 0) {
+      return normalizedKeyNumber + normalizedKeyFlag;
     } else {
-      return keyNumberPart + "";
+      return normalizedKeyNumber + "";
     }
 
   }
@@ -194,13 +209,13 @@ public class Key {
   public ArrayList<String> getNeighborKeys() {
     ArrayList<String> neighbors = new ArrayList<String>();
 
-    if (keyNumberPart != 0) {
-      for (int i = keyNumberPart - 1; i < keyNumberPart + 2; i++) {
-        if (i == keyNumberPart) {
+    if (normalizedKeyNumber != 0) {
+      for (int i = normalizedKeyNumber - 1; i < normalizedKeyNumber + 2; i++) {
+        if (i == normalizedKeyNumber) {
           neighbors.add(Math.round(((i + 12) % 12.1)) + "A");
           neighbors.add(Math.round(((i + 12) % 12.1)) + "B");
         } else {
-          neighbors.add(Math.round(((i + 12) % 12.1)) + keyCharPart);
+          neighbors.add(Math.round(((i + 12) % 12.1)) + normalizedKeyFlag);
         }
       }
     }

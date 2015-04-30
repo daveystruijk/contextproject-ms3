@@ -10,7 +10,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Tracktest {
+public class TrackTest {
 
   @Test
   public void trackConstructorTest() {
