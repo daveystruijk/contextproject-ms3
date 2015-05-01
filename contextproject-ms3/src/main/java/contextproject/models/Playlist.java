@@ -9,6 +9,12 @@ public class Playlist extends ArrayList<Track> {
    */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Construct an empty playlist.
+   */
+  public Playlist() {
+    
+  }
   
   /**
    * Generate an ArrayList with tracks.

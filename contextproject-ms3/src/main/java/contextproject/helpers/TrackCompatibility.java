@@ -13,8 +13,8 @@ import contextproject.models.Track;
  *    - Energy level</p>
  */
 public class TrackCompatibility {
-  public static final float BPM_LINEAR_FACTOR = 0.2f; // per 1 bpm difference
-  public static final float KEY_SCORE_INCOMPATIBLE = 0.5f;
+  public static final float BPM_LINEAR_FACTOR = 0.01f; // * difference^2
+  public static final float KEY_SCORE_INCOMPATIBLE = 0.7f;
   public static final float KEY_SCORE_COMPATIBLE = 1.0f;
   
   /**
@@ -27,9 +27,8 @@ public class TrackCompatibility {
     float score = (
           getBpmScore(track1.getBpm(), track2.getBpm())
           +
-          getKeyScore(track2.getKey(), track2.getKey())
-          / 2
-        );
+          getKeyScore(track1.getKey(), track2.getKey())
+        ) / 2.0f;
     return Math.max(0.0f, score);
   }
   
@@ -41,7 +40,7 @@ public class TrackCompatibility {
    */
   public static float getBpmScore(float bpm1, float bpm2) {
     float difference = Math.abs(bpm1 - bpm2);
-    return 1.0f - (BPM_LINEAR_FACTOR * difference);
+    return (float) (1.0f - (BPM_LINEAR_FACTOR * Math.pow(difference, 2)));
   }
   
   /**
@@ -51,7 +50,7 @@ public class TrackCompatibility {
    * @return float A score, ranging [0..1]
    */
   public static float getKeyScore(Key key1, Key key2) {
-    boolean matchingKeys = key1.getNeighborKeys().contains(key2);
+    boolean matchingKeys = key1.getNeighborKeys().contains(key2.getNormalizedKeyString());
     if (matchingKeys) {
       return KEY_SCORE_COMPATIBLE;
     } else {
