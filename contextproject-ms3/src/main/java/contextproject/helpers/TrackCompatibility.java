@@ -38,8 +38,8 @@ public class TrackCompatibility {
    * @param e The second value
    * @return float A score, ranging [0..1]
    */
-  public static double getBpmScore(double d, double e) {
-    double difference = Math.abs(d - e);
+  public static double getBpmScore(double bpm1, double bpm2) {
+    double difference = Math.abs(bpm1 - bpm2);
     return (1.0f - (BPM_LINEAR_FACTOR * Math.pow(difference, 2)));
   }
   

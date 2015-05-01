@@ -2,8 +2,6 @@ package contextproject.models;
 
 public class BeatGrid {
 
-  private long length;
-  private float bpm;
   private long firstBeat;
   private float timePerBeat;
   private int maxBeat;
@@ -21,11 +19,9 @@ public class BeatGrid {
    *          Long
    */
   public BeatGrid(Long length, float bpm, long firstBeat) {
-    this.length = length;
-    this.bpm = bpm;
     this.firstBeat = firstBeat;
-    this.timePerBeat = (60000 / this.bpm);
-    this.maxBeat = (int) ((this.length - this.firstBeat) / this.timePerBeat) + 1;
+    this.timePerBeat = (60000 / bpm);
+    this.maxBeat = (int) ((length - this.firstBeat) / this.timePerBeat) + 1;
     this.intro = new BeatRange(1, 32);
     this.outro = new BeatRange(maxBeat - 32, 32);
   }
