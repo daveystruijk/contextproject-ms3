@@ -5,7 +5,7 @@ public class BeatGrid {
   private long length;
   private float bpm;
   private long firstBeat;
-  private long timePerBeat;
+  private float timePerBeat;
   private int maxBeat;
   private BeatRange intro;
   private BeatRange outro;
@@ -24,8 +24,8 @@ public class BeatGrid {
     this.length = length;
     this.bpm = bpm;
     this.firstBeat = firstBeat;
-    this.timePerBeat = (long) (60000 / this.bpm);
-    this.maxBeat = (int) ((this.length - this.firstBeat) / this.timePerBeat);
+    this.timePerBeat = (60000 / this.bpm);
+    this.maxBeat = (int) ((this.length - this.firstBeat) / this.timePerBeat) + 1;
     this.intro = new BeatRange(1, 32);
     this.outro = new BeatRange(maxBeat - 32, 32);
   }
@@ -39,9 +39,9 @@ public class BeatGrid {
    */
   public long getBeatTime(int beat) {
     if (beat <= maxBeat) {
-      return timePerBeat * beat;
+      return (long) (firstBeat + (timePerBeat * (beat - 1)));
     } else {
-      return 0;
+      return -1;
     }
   }
 
@@ -56,6 +56,7 @@ public class BeatGrid {
 
   /**
    * Getter for beat range outro.
+   * 
    * @return BeatRange
    */
   public BeatRange getOutro() {

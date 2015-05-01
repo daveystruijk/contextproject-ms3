@@ -16,4 +16,15 @@ public class BeatRange {
     this.start = start;
     this.length = length;
   }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other instanceof BeatRange) {
+      BeatRange other2 = (BeatRange) other;
+      if (this.start == other2.start && this.length == other2.length) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
