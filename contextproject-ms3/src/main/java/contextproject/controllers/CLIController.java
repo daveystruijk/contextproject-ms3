@@ -83,7 +83,7 @@ public class CLIController {
       e.printStackTrace();
     }
     
-    System.out.println("Exported to playlists" + fullPath);
+    System.out.println("Exported to " + fullPath);
   }
   
   public void printTrack(Track track) {
