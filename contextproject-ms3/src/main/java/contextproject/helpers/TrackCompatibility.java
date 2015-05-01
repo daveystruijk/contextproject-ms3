@@ -23,8 +23,8 @@ public class TrackCompatibility {
    * @param track2 The second track
    * @return float THe compatibility score
    */
-  public static float getScore(Track track1, Track track2) {
-    float score = (
+  public static double getScore(Track track1, Track track2) {
+    double score = (
           getBpmScore(track1.getBpm(), track2.getBpm())
           +
           getKeyScore(track1.getKey(), track2.getKey())
@@ -34,13 +34,13 @@ public class TrackCompatibility {
   
   /**
    * Calculates the compatibility of two bpm values.
-   * @param bpm1 The first value
-   * @param bpm2 The second value
+   * @param d The first value
+   * @param e The second value
    * @return float A score, ranging [0..1]
    */
-  public static float getBpmScore(float bpm1, float bpm2) {
-    float difference = Math.abs(bpm1 - bpm2);
-    return (float) (1.0f - (BPM_LINEAR_FACTOR * Math.pow(difference, 2)));
+  public static double getBpmScore(double d, double e) {
+    double difference = Math.abs(d - e);
+    return (1.0f - (BPM_LINEAR_FACTOR * Math.pow(difference, 2)));
   }
   
   /**

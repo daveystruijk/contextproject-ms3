@@ -20,7 +20,7 @@ public class Track {
   private String album;
   private String absolutePath;
   private long length;
-  private int bpm;
+  private double bpm;
   private Key key;
 
   /**
@@ -116,7 +116,7 @@ public class Track {
    * 
    * @return int
    */
-  public int getBpm() {
+  public double getBpm() {
     return bpm;
   }
 
