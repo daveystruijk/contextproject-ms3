@@ -42,10 +42,10 @@ public class CLIController {
     while (currentTrack != null) {
       addedTracks.add(currentTrack);
       Track bestMatch = null;
-      float bestScore = 0.0f;
+      double bestScore = 0.0f;
       for (int j = 0; j < playlist.size(); j++) {
         if (currentTrack != playlist.get(j)) {
-          float score = TrackCompatibility.getScore(currentTrack, playlist.get(j));
+          double score = TrackCompatibility.getScore(currentTrack, playlist.get(j));
           if (score > bestScore && !addedTracks.contains(playlist.get(j))) {
             bestScore = score;
             bestMatch = playlist.get(j);
