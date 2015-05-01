@@ -1,12 +1,24 @@
 package contextproject;
 
+
+import contextproject.controllers.CLIController;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Hello world.
  *
  */
 public class App {
+  /**
+   * Should start our application. No GUI for now just CLI.
+   */
+
+  static Logger log = LogManager.getLogger(App.class.getName());
+
   public static void main(String[] args) {
-    System.out.println("Hello World!");
-    System.out.println("test test test");
+    CLIController control = new CLIController();
+    control.run();
   }
 }
