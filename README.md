@@ -23,6 +23,10 @@ Branching will be done somewhat like: [A successful Git branching model](http://
 
 Master must *always have a running version* and pass all tests. If something critical needs to be fixed immediately, we create a **hotfix branch** and make a pull request into master. Feature branches are prefixed "feature-", and hotfix branches are prefixed "hotfix-".
 
+## Dependencies
+### JavaFX
+It helps to have JavaFX integrated into Eclipse itself, by going to ```Help -> Install New Software``` with URL: ```http://download.eclipse.org/efxclipse/updates-released/1.2.0/site```
+
 ## Integration
 ### Travis CI
 Maven tests are ran each time someone pushes to github, using [Travis CI](https://travis-ci.org/). (configuration can be found in the *.travis.yml* file)
