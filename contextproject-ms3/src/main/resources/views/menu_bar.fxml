@@ -5,3 +5,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.GridPane?>
+
+
+<MenuBar fx:controller="contextproject.controllers.MenuBarController"
+	xmlns:fx="http://javafx.com/fxml" fx:id="menuBar">
+	<Menu fx:id="menu" text="File">
+		<MenuItem fx:id="menuItem">
+
+		</MenuItem>
+	</Menu>
+	<stylesheets>
+		<URL value="@../stylesheets/menu_bar.css"/>
+	</stylesheets>
+</MenuBar>
