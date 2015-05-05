@@ -6,36 +6,24 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.GridPane?>
 
-
-<GridPane fx:controller="contextproject.controllers.WindowController" 
-    xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-    <stylesheets>
-    	<URL value= "@../stylesheets/window.css" />
-    </stylesheets>
-<padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
-    <HBox spacing="10" alignment="bottom_right" 
-        GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <Button text="Sign In"     
-        onAction="#handleSubmitButtonAction"/>
-    </HBox>
-
-    <Text fx:id="actiontarget"
-       GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+<BorderPane fx:controller="contextproject.controllers.WindowController" 
+    xmlns:fx="http://javafx.com/fxml">
+    <stylesheets><URL value= "@../stylesheets/window.css" /></stylesheets>
+         
+    <top>
+        <!-- TODO: Player controls -->
+    </top>
+    <left>
+        <!-- TODO: Playlists browser -->
+    </left>
+    <center>
+        <fx:include fx:id="library" source="library.fxml"/>
+    </center>
+    <right>
        
-    <Text  id = "wtext" 
-     	text="Welcome" 
-        GridPane.columnIndex="0" GridPane.rowIndex="0"
-        GridPane.columnSpan="2"/>
+    </right>
+    <bottom>
+        <!-- TODO: Status stuff / bottom bar -->
+    </bottom>
  
-    <Label text="User Name:"
-        GridPane.columnIndex="0" GridPane.rowIndex="1"/>
- 
-    <TextField 
-        GridPane.columnIndex="1" GridPane.rowIndex="1"/>
- 
-    <Label text="Password:"
-        GridPane.columnIndex="0" GridPane.rowIndex="2"/>
- 
-    <PasswordField fx:id="passwordField" 
-        GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-</GridPane>
+</BorderPane>

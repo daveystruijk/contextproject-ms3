@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import contextproject.controllers.CLIController;
+import contextproject.controllers.WindowController;
 
 /**
  * Hello world.
@@ -30,11 +31,15 @@ public class App extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
-    Parent root = FXMLLoader.load(getClass().getResource("/views/window.fxml"));
-    Scene scene = new Scene(root, 300, 275);
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
+    Parent root = loader.load();
+    WindowController controller = (WindowController) loader.getController();
+    controller.doSomething();
+    Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Window");
     stage.setScene(scene);
     stage.show();
+    
   }
 
 }

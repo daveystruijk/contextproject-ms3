@@ -1,4 +1,3 @@
-#wtext {
-	color : red;
-	text-size : 40px;
+#box:hover {
+	-fx-background-color:red;
 }
