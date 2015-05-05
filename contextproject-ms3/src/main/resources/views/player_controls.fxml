@@ -6,9 +6,9 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.GridPane?>
 
-<ListView fx:controller="contextproject.controllers.LibraryController"
-	xmlns:fx="http://javafx.com/fxml" fx:id="listView">
+<Button fx:controller="contextproject.controllers.PlayerControlsController"
+	xmlns:fx="http://javafx.com/fxml" fx:id="playButton">
 	<stylesheets>
-		<URL value="@../stylesheets/library.css" />
+		<URL value="@..stylesheets/player_controls.css">
 	</stylesheets>
-</ListView>
+</Button>

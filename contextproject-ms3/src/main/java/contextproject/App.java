@@ -1,16 +1,17 @@
 package contextproject;
 
+
+import contextproject.controllers.CLIController;
+import contextproject.controllers.WindowController;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import contextproject.controllers.CLIController;
-import contextproject.controllers.WindowController;
 
 /**
  * Hello world.
@@ -18,7 +19,9 @@ import contextproject.controllers.WindowController;
  */
 public class App extends Application {
   static Logger log = LogManager.getLogger(App.class.getName());
-
+/**
+ * This will start our app with a graphical user interface.
+ */
   public static void main(String[] args) {
     boolean gui = true;
     if (gui == true) {

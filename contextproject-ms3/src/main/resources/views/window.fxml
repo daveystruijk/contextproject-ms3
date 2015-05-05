@@ -12,6 +12,7 @@
          
     <top>
         <!-- TODO: Player controls -->
+        <fx:include fx:id = "playerControls" source="player_controls.fxml"/>
     </top>
     <left>
         <!-- TODO: Playlists browser -->
