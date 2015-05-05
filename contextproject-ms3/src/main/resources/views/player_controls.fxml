@@ -9,6 +9,6 @@
 <Button fx:controller="contextproject.controllers.PlayerControlsController"
 	xmlns:fx="http://javafx.com/fxml" fx:id="playButton">
 	<stylesheets>
-		<URL value="@..stylesheets/player_controls.css">
+		<URL value="@../stylesheets/player_controls.css"/>
 	</stylesheets>
 </Button>
