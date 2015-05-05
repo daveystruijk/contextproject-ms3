@@ -16,7 +16,7 @@
 			<!--Mark-up for the menu bar. -->
 			<fx:include fx:id="menuBar" source="menu_bar.fxml"
 				GridPane.rowIndex="0" />
-			<!-- Player controls: Play/pauze -->
+			<!-- Player controls: Play/pause -->
 			<fx:include fx:id="playerControls" source="player_controls.fxml"
 				GridPane.rowIndex="1" />
 		</GridPane>

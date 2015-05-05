@@ -1,9 +1,10 @@
 #playButton {
-  -fx-min-width: 50px;
-  -fx-min-height: 50px;
+  -fx-min-width: 50.0px;
+  -fx-min-height: 50.0px;
   -fx-background-color: transparent;
 	-fx-background-image: url('../images/controls_play.png');
-	-fx-padding: 10 10;
+	-fx-padding: 10.0 10.0;
+		
 }
 
 #playButton:hover {

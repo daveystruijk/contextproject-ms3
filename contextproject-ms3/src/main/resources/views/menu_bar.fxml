@@ -8,13 +8,14 @@
 
 
 <MenuBar fx:controller="contextproject.controllers.MenuBarController"
-	xmlns:fx="http://javafx.com/fxml" fx:id="menuBar">
+	xmlns:fx="http://javafx.com/fxml" fx:id="menuBar" prefWidth="1200">
 	<Menu fx:id="menu" text="File">
-		<MenuItem fx:id="menuItem">
-
+		<MenuItem fx:id="menuItem" text="Open">
 		</MenuItem>
 	</Menu>
+	<Menu fx:id="menu2" text="Export">
+	</Menu>
 	<stylesheets>
-		<URL value="@../stylesheets/menu_bar.css"/>
+		<URL value="@../stylesheets/menu_bar.css" />
 	</stylesheets>
 </MenuBar>
