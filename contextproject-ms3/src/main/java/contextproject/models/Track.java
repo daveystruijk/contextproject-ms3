@@ -21,7 +21,7 @@ public class Track {
   private String album;
   private String absolutePath;
   private long length;
-  private float bpm;
+  private double bpm;
   private Key key;
   private BeatGrid beatGrid;
 
@@ -51,17 +51,56 @@ public class Track {
     this.title = info.get("title");
     this.artist = info.get("artist");
     this.album = info.get("album");
-    this.length = Long.parseLong(info.get("length"));
-    this.bpm = Float.parseFloat(info.get("bpm"));
+
+    try {
+      this.length = Long.parseLong(info.get("length"));
+    } catch (NumberFormatException e) {
+      this.length = song.getLengthInMilliseconds();
+    }
+
+    try {
+      this.bpm = Double.parseDouble((info.get("bpm")));
+    } catch (NullPointerException | NumberFormatException f) {
+      this.bpm = 0.0;
+    }
+
     if (info.get("key") != null) {
       this.key = new Key(info.get("key"));
     }
+
     getMetadata();
-    this.beatGrid = new BeatGrid(this.length, this.bpm, Long.parseLong(info.get("firstBeat")),
-        Integer.parseInt(info.get("startBeatIntro")),
-        Integer.parseInt(info.get("introBeatLength")),
-        Integer.parseInt(info.get("startBeatOutro")), 
-        Integer.parseInt(info.get("outroBeatLength")));
+
+    int startBeatIntro;
+    int introBeatLength;
+    int startBeatOurto;
+    int outroBeatLength;
+    long firstBeat;
+
+    try {
+      startBeatIntro = Integer.parseInt(info.get("startBeatIntro"));
+      introBeatLength = Integer.parseInt(info.get("introBeatLength"));
+    } catch (NumberFormatException e) {
+      startBeatIntro = 0;
+      introBeatLength = 0;
+    }
+
+    try {
+      startBeatOurto = Integer.parseInt(info.get("startBeatOutro"));
+      outroBeatLength = Integer.parseInt(info.get("outroBeatLength"));
+    } catch (NumberFormatException e) {
+      startBeatOurto = 0;
+      outroBeatLength = 0;
+    }
+
+    try {
+      firstBeat = Long.parseLong(info.get("firstBeat"));
+    } catch (NumberFormatException e) {
+      firstBeat = 0;
+    }
+
+    this.beatGrid = new BeatGrid(this.length, this.bpm, firstBeat, startBeatIntro, introBeatLength,
+        startBeatOurto, outroBeatLength);
+
   }
 
   /**
@@ -88,9 +127,6 @@ public class Track {
       }
     } else {
       log.warn("Could not find Id3v2 information in: " + song.getFilename());
-    }
-    if (length == 0) {
-      length = song.getLengthInMilliseconds();
     }
   }
 

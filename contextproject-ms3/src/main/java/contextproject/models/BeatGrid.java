@@ -3,7 +3,7 @@ package contextproject.models;
 public class BeatGrid {
 
   private long firstBeat;
-  private float timePerBeat;
+  private double timePerBeat;
   private int maxBeat;
   private BeatRange intro;
   private BeatRange outro;
@@ -18,7 +18,7 @@ public class BeatGrid {
    * @param firstBeat
    *          Long
    */
-  public BeatGrid(Long length, float bpm, long firstBeat, int startBeatIntro, int introBeatLength,
+  public BeatGrid(Long length, double bpm, long firstBeat, int startBeatIntro, int introBeatLength,
       int startBeatOutro, int outroBeatLength) {
     this.firstBeat = firstBeat;
     this.timePerBeat = (60000 / bpm);
