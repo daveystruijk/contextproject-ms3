@@ -33,7 +33,7 @@ public class CLIController {
     String fileName = sc.nextLine();
     sc.close();
     FolderLoader folderLoader = new FolderLoader(fileName);
-    Playlist playlist = new Playlist(folderLoader.load());
+    Playlist playlist = folderLoader.load();
     ArrayList<Track> addedTracks = new ArrayList<Track>();
     Playlist mixablePlaylist = new Playlist();
     

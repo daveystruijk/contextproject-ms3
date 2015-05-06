@@ -1,6 +1,8 @@
 package contextproject.loaders;
 
 import contextproject.helpers.StackTrace;
+import contextproject.models.Playlist;
+import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,19 +58,21 @@ public class FolderLoader implements PlaylistLoader {
     return list;
   }
 
-  /**
-   * Method to get all the music in the folder and the folders within this folder.
-   * 
-   * @return list with all mp3 music
-   */
-  public ArrayList<String> load() {
+  @Override
+  public Playlist load() {
     try {
       this.addToList(folder);
     } catch (NullPointerException e) {
       log.error("Exception");
       log.trace(StackTrace.stackTrace(e));
     }
-    return this.getList();
+    ArrayList<String> array = this.getList();
+    Playlist pl = new Playlist();
+    for (String s : array) {
+      // pl.add(new Track(s), new Hashtable());
+      pl.add(new Track(s));
+    }
+    return pl;
   }
 
 }
