@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Hashtable;
 
 public class Track {
   private static Logger log = LogManager.getLogger(Track.class.getName());
@@ -20,8 +21,9 @@ public class Track {
   private String album;
   private String absolutePath;
   private long length;
-  private double bpm;
+  private float bpm;
   private Key key;
+  private BeatGrid beatGrid;
 
   /**
    * constructor of a track.
@@ -29,7 +31,10 @@ public class Track {
    * @param abPath
    *          Path of the mp3 file
    */
-  public Track(String abPath) {
+  public Track(String abPath, Hashtable<String, String> info) {
+
+    // String title, String artist, String album, long length, double bpm, String key, long
+    // firstBeat, int beatIntroStart, int beatsIntroLength, int beatOutroStart, int beatsOutroLength
     try {
       song = new Mp3File(abPath);
     } catch (UnsupportedTagException e) {
@@ -42,8 +47,21 @@ public class Track {
       log.error("There was a IO exception with file:" + abPath);
       log.trace(StackTrace.stackTrace(e));
     }
-    absolutePath = abPath;
+    this.absolutePath = abPath;
+    this.title = info.get("title");
+    this.artist = info.get("artist");
+    this.album = info.get("album");
+    this.length = Long.parseLong(info.get("length"));
+    this.bpm = Float.parseFloat(info.get("bpm"));
+    if (info.get("key") != null) {
+      this.key = new Key(info.get("key"));
+    }
     getMetadata();
+    this.beatGrid = new BeatGrid(this.length, this.bpm, Long.parseLong(info.get("firstBeat")),
+        Integer.parseInt(info.get("startBeatIntro")),
+        Integer.parseInt(info.get("introBeatLength")),
+        Integer.parseInt(info.get("startBeatOutro")), 
+        Integer.parseInt(info.get("outroBeatLength")));
   }
 
   /**
@@ -51,10 +69,18 @@ public class Track {
    */
   private void getMetadata() {
     if (song.hasId3v2Tag()) {
-      title = song.getId3v2Tag().getTitle();
-      artist = song.getId3v2Tag().getArtist();
-      album = song.getId3v2Tag().getAlbum();
-      bpm = song.getId3v2Tag().getBPM();
+      if (title == null) {
+        title = song.getId3v2Tag().getTitle();
+      }
+      if (artist == null) {
+        artist = song.getId3v2Tag().getArtist();
+      }
+      if (album == null) {
+        album = song.getId3v2Tag().getAlbum();
+      }
+      if (bpm == 0) {
+        bpm = song.getId3v2Tag().getBPM();
+      }
       try {
         key = new Key(song.getId3v2Tag().getKey());
       } catch (IllegalArgumentException e) {
@@ -63,7 +89,9 @@ public class Track {
     } else {
       log.warn("Could not find Id3v2 information in: " + song.getFilename());
     }
-    length = song.getLengthInMilliseconds();
+    if (length == 0) {
+      length = song.getLengthInMilliseconds();
+    }
   }
 
   /**
@@ -110,7 +138,7 @@ public class Track {
   public Long getLength() {
     return length;
   }
-  
+
   /**
    * Beats per minute of the track.
    * 
@@ -127,6 +155,15 @@ public class Track {
    */
   public Key getKey() {
     return key;
-    
+
+  }
+
+  /**
+   * BeatGrid object.
+   * 
+   * @return BeatGrida
+   */
+  public BeatGrid getBeatGrid() {
+    return beatGrid;
   }
 }
