@@ -4,10 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 
 public class PlayerControlsController {
   @FXML
   private Button playButton;
+  @FXML
+  private Slider slider;
 
   /**
    * Toggles the button.

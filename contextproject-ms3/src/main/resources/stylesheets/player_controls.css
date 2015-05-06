@@ -19,6 +19,7 @@
 }
 #pauseButton:hover {
 	-fx-background-image: url('../images/controls_pause_hover.png'); 
-	   
+}
+#vLabel {
 	
 }

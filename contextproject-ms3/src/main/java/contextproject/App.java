@@ -39,7 +39,7 @@ public class App extends Application {
     WindowController controller = (WindowController) loader.getController();
     controller.doSomething();
     Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Window");
+    stage.setTitle("Cool demo!");
     stage.setScene(scene);
     stage.show();
 
