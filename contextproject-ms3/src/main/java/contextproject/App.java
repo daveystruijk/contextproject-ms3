@@ -1,7 +1,7 @@
 package contextproject;
 
-
 import contextproject.controllers.CLIController;
+import contextproject.controllers.PlayerControlsController;
 import contextproject.controllers.WindowController;
 
 import org.apache.logging.log4j.LogManager;
@@ -19,9 +19,9 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
   static Logger log = LogManager.getLogger(App.class.getName());
-/**
- * This will start our app with a graphical user interface.
- */
+  /**
+   * This will start our app with a graphical user interface.
+   */
   public static void main(String[] args) {
     boolean gui = true;
     if (gui == true) {
@@ -42,7 +42,7 @@ public class App extends Application {
     stage.setTitle("Window");
     stage.setScene(scene);
     stage.show();
-    
+
   }
 
 }

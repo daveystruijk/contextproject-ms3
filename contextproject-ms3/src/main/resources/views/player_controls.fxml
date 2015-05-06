@@ -6,9 +6,12 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.GridPane?>
 
-<Button fx:controller="contextproject.controllers.PlayerControlsController"
-	xmlns:fx="http://javafx.com/fxml" fx:id="playButton">
+<GridPane fx:controller="contextproject.controllers.PlayerControlsController"
+	xmlns:fx="http://javafx.com/fxml">
 	<stylesheets>
-		<URL value="@../stylesheets/player_controls.css"/>
+		<URL value="@../stylesheets/player_controls.css" />
 	</stylesheets>
-</Button>
+	<Button fx:id="playButton">
+	</Button>
+</GridPane>
+

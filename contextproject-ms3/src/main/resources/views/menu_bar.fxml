@@ -13,7 +13,7 @@
 		<MenuItem fx:id="menuItem" text="Open">
 		</MenuItem>
 	</Menu>
-	<Menu fx:id="menu2" text="Export">
+	<Menu fx:id="menuItemExport" text="Export">
 	</Menu>
 	<stylesheets>
 		<URL value="@../stylesheets/menu_bar.css" />
