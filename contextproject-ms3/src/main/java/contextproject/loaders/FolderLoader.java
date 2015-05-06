@@ -36,19 +36,14 @@ public class FolderLoader implements PlaylistLoader {
    * @param directory
    *          location of the folder.
    */
-  private void addToList(File directory) {
+  private void addToList(File directory) throws NullPointerException {
     log.info("Scanning " + directory);
-    try {
-      for (File file : directory.listFiles()) {
-        if (file.length() >= 4 && file.toString().endsWith(".mp3")) {
-          list.add(file.toString());
-        } else if (file.isDirectory()) {
-          this.addToList(file);
-        }
+    for (File file : directory.listFiles()) {
+      if (file.length() >= 4 && file.toString().endsWith(".mp3")) {
+        list.add(file.toString());
+      } else if (file.isDirectory()) {
+        this.addToList(file);
       }
-    } catch (NullPointerException e) {
-      log.error("No such directory");
-      log.trace(StackTrace.stackTrace(e));
     }
   }
   /**
@@ -59,13 +54,8 @@ public class FolderLoader implements PlaylistLoader {
   }
 
   @Override
-  public Playlist load() {
-    try {
-      this.addToList(folder);
-    } catch (NullPointerException e) {
-      log.error("Exception");
-      log.trace(StackTrace.stackTrace(e));
-    }
+  public Playlist load() throws NullPointerException {
+    this.addToList(folder);
     ArrayList<String> array = this.getList();
     Playlist pl = new Playlist();
     for (String s : array) {

@@ -1,6 +1,7 @@
 package contextproject.models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -28,6 +29,21 @@ public class TrackTest {
       e.printStackTrace();
     }
 
+  }
+  
+  @Test
+  public void equalsTest() {
+    URL resourceUrl = getClass().getResource("/beep.mp3");
+    Path resourcePath;
+    try {
+      resourcePath = Paths.get(resourceUrl.toURI());
+      Track track = new Track(resourcePath.toString());
+      Track track2 = new Track(resourcePath.toString());
+      assertTrue(track.equals(track2));
+    } catch (URISyntaxException e) {
+      fail("file wans't read correctly");
+      e.printStackTrace();
+    }
   }
 
 }
