@@ -64,4 +64,11 @@ public class KeyTest {
     assertTrue(key.getNormalizedKeyFlag().equals("check"));
     assertTrue(key.getNormalizedKeyNumber() == 10);
   }
+  
+  @Test 
+  public void zeroKeyTest() {
+    Key key = new Key("Bb");
+    key.setNormalizedKeyNumber(0);
+    assertEquals(key.getNormalizedKeyString(), "0");
+  }
 }

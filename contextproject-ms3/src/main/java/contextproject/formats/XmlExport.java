@@ -33,7 +33,7 @@ public class XmlExport {
   /**
    * Write.
    */
-  public void write() {
+  public void export() {
     XMLEncoder encoder = null;
     try {
       encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
@@ -44,31 +44,5 @@ public class XmlExport {
     encoder.writeObject(playlist);
     encoder.close();
   }
-  
-  /**
-   * Main.
-   */
-  public static void main(String [] args) {
-    FolderLoader folderLoader 
-    = new FolderLoader("C:/Users/Emiel/git/contextproject-ms3/contextproject-ms3/src/test/resources");
-
-    Playlist pl = folderLoader.load();
-    Key key = new Key("Bb");
-    pl.get(0).setKey(key);
-    String loc = "C:/Users/Emiel/Documents/test.xml";
-    XmlExport example = new XmlExport(loc, pl);
-    example.write();
-    
-    LibraryLoader ll = new LibraryLoader(loc);
-    
-    Playlist pl2 = ll.load();
-    System.out.println(pl2.get(0).getKey().getNormalizedKeyString());
-    System.out.println(pl.get(0).getKey().getMusicalKeyString());
-    System.out.println(pl2.get(0).getKey().getMusicalKeyString());
-    System.out.println(pl2.get(0).getAlbum());
-    System.out.println(pl.get(0).getAlbum());
-
-    System.out.println(pl.containsAll(pl2));
-  }
-
+ 
 }

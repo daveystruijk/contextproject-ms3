@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.io.File;
 
-public class XmlBuilderTest {
+public class XmlExportTest {
 
   private Playlist pl;
   private String folder;
@@ -27,7 +27,7 @@ public class XmlBuilderTest {
   @Test
   public void test() {
     XmlExport export = new XmlExport(folder + File.separator + "test.xml", pl);
-    export.write();
+    export.export();
     File file = new File(folder + File.separator + "test.xml");
     assertTrue(file.exists());
   }
