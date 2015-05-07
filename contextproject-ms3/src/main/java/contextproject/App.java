@@ -1,16 +1,18 @@
 package contextproject;
 
-import contextproject.controllers.CLIController;
-import contextproject.controllers.WindowController;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import contextproject.controllers.CLIController;
+import contextproject.controllers.WindowController;
+import contextproject.loaders.FolderLoader;
+import contextproject.models.Playlist;
 
 /**
  * Hello world.
@@ -18,6 +20,7 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
   static Logger log = LogManager.getLogger(App.class.getName());
+  static final String DIRECTORY = "/Users/daveystruijk/Documents/FEESJE/House (Chill)";
   /**
    * This will start our app with a graphical user interface.
    */
@@ -36,11 +39,16 @@ public class App extends Application {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
     Parent root = loader.load();
     WindowController controller = (WindowController) loader.getController();
-    controller.doSomething();
+    
+    FolderLoader folderLoader = new FolderLoader(DIRECTORY);
+    Playlist playlist = folderLoader.load();
+    controller.setLibrary(playlist); // TODO: use libraryloader
+    
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Cool demo!");
     stage.setScene(scene);
     stage.show();
+    
 
   }
 

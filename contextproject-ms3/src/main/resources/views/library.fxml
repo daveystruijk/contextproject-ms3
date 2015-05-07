@@ -2,13 +2,36 @@
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.GridPane?>
 
-<ListView fx:controller="contextproject.controllers.LibraryController"
-	xmlns:fx="http://javafx.com/fxml" fx:id="listView">
+<TableView fx:controller="contextproject.controllers.LibraryController"
+	xmlns:fx="http://javafx.com/fxml" fx:id="tableView">
 	<stylesheets>
 		<URL value="@../stylesheets/library.css" />
 	</stylesheets>
-</ListView>
+	<columns>
+		<TableColumn text="Title">
+		  <cellValueFactory>
+        <PropertyValueFactory property="title" />
+      </cellValueFactory>
+		</TableColumn>
+		<TableColumn text="Artist">
+		  <cellValueFactory>
+        <PropertyValueFactory property="artist" />
+      </cellValueFactory>
+		</TableColumn>
+		<TableColumn text="BPM">
+		  <cellValueFactory>
+        <PropertyValueFactory property="bpm" />
+      </cellValueFactory>
+		</TableColumn>
+		<TableColumn text="Key">
+		  <cellValueFactory>
+        <PropertyValueFactory property="key" />
+      </cellValueFactory>
+    </TableColumn>
+	</columns> 
+</TableView>
