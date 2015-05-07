@@ -23,6 +23,17 @@ Branching will be done somewhat like: [A successful Git branching model](http://
 
 Master must *always have a running version* and pass all tests. If something critical needs to be fixed immediately, we create a **hotfix branch** and make a pull request into master. Feature branches are prefixed "feature-", and hotfix branches are prefixed "hotfix-".
 
+## Dependencies
+### TarsosDSP
+For audio processing, we use [TarsosDSP](https://github.com/JorenSix/TarsosDSP) (and [TarsosTranscoder for mp3 decoding](https://github.com/JorenSix/TarsosTranscoder)). Because they are not maven projects, you need to download them manually to your local maven repository. To achieve this, run:
+```
+cd contextproject-ms3
+wget http://0110.be/releases/TarsosDSP/TarsosDSP-2.2/TarsosDSP-2.2.jar
+mvn install:install-file -DgroupId=be.tarsos.dsp -DartifactId=TarsosDSP -Dpackaging=jar -Dversion=2.2 -Dfile=TarsosDSP-2.2.jar -DgeneratePom=true
+wget http://0110.be/releases/TarsosTranscoder/TarsosTranscoder-1.2.jar
+mvn install:install-file -DgroupId=be.tarsos.transcoder -DartifactId=TarsosTranscoder -Dpackaging=jar -Dversion=1.2 -Dfile=TarsosTranscoder-1.2.jar -DgeneratePom=true
+```
+
 ## Integration
 ### Travis CI
 Maven tests are ran each time someone pushes to github, using [Travis CI](https://travis-ci.org/). (configuration can be found in the *.travis.yml* file)
