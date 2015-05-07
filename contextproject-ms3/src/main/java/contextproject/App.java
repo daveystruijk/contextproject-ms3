@@ -13,6 +13,8 @@ import contextproject.controllers.CLIController;
 import contextproject.controllers.WindowController;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
+import contextproject.sorters.GreedyPlaylistSorter;
+import contextproject.sorters.PlaylistSorter;
 
 /**
  * Hello world.
@@ -42,7 +44,9 @@ public class App extends Application {
     
     FolderLoader folderLoader = new FolderLoader(DIRECTORY);
     Playlist playlist = folderLoader.load();
-    controller.setLibrary(playlist); // TODO: use libraryloader
+    PlaylistSorter sorter = new GreedyPlaylistSorter();
+    Playlist mixablePlaylist = sorter.sort(playlist);
+    controller.setLibrary(mixablePlaylist);
     
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Cool demo!");

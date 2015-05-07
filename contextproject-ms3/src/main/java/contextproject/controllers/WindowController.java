@@ -11,6 +11,7 @@ public class WindowController {
   
   public void setLibrary(Playlist playlist) {
     libraryController.setLibrary(playlist);
+    libraryController.initialize();
     playerControlsController.togglePlayPause();
   }
 }
