@@ -34,6 +34,9 @@ wget http://0110.be/releases/TarsosTranscoder/TarsosTranscoder-1.2.jar
 mvn install:install-file -DgroupId=be.tarsos.transcoder -DartifactId=TarsosTranscoder -Dpackaging=jar -Dversion=1.2 -Dfile=TarsosTranscoder-1.2.jar -DgeneratePom=true
 ```
 
+### JavaFX
+It helps to have JavaFX integrated into Eclipse itself, by going to ```Help -> Install New Software``` with URL: ```http://download.eclipse.org/efxclipse/updates-released/1.2.0/site```
+
 ## Integration
 ### Travis CI
 Maven tests are ran each time someone pushes to github, using [Travis CI](https://travis-ci.org/). (configuration can be found in the *.travis.yml* file)

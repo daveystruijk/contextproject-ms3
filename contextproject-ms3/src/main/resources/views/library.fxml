@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<ListView fx:controller="contextproject.controllers.LibraryController"
+	xmlns:fx="http://javafx.com/fxml" fx:id="listView">
+	<stylesheets>
+		<URL value="@../stylesheets/library.css" />
+	</stylesheets>
+</ListView>

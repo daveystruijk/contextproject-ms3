@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Slider?>
+
+<GridPane fx:controller="contextproject.controllers.PlayerControlsController"
+	xmlns:fx="http://javafx.com/fxml">
+	<stylesheets>
+		<URL value="@../stylesheets/player_controls.css" />
+	</stylesheets>
+	<Button fx:id="playButton">
+	</Button>
+	<Label GridPane.columnIndex="1" text="Volume" fx:id="vLabel"></Label>
+	<Slider GridPane.columnIndex="2">
+	</Slider>
+</GridPane>
+
