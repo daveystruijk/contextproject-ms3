@@ -1,20 +1,10 @@
 package contextproject;
 
 import contextproject.controllers.CLIController;
-import contextproject.controllers.PlayerControlsController;
 import contextproject.controllers.WindowController;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import be.tarsos.dsp.AudioDispatcher;
-import be.tarsos.dsp.io.TarsosDSPAudioInputStream;
-import be.tarsos.dsp.io.jvm.AudioPlayer;
-import be.tarsos.dsp.io.jvm.JVMAudioInputStream;
-import be.tarsos.transcoder.Attributes;
-import be.tarsos.transcoder.DefaultAttributes;
-import be.tarsos.transcoder.Streamer;
-import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
