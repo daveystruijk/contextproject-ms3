@@ -10,11 +10,12 @@
 <MenuBar fx:controller="contextproject.controllers.MenuBarController"
 	xmlns:fx="http://javafx.com/fxml" fx:id="menuBar" prefWidth="1200">
 	<Menu fx:id="menu" text="File">
-		<MenuItem fx:id="menuItem" text="Open">
+		<MenuItem fx:id="menuItemImport" text="Import Folder">
+		</MenuItem>
+		<MenuItem fx:id="menuItemExport" text="Export Library">
 		</MenuItem>
 	</Menu>
-	<Menu fx:id="menuItemExport" text="Export">
-	</Menu>
+
 	<stylesheets>
 		<URL value="@../stylesheets/menu_bar.css" />
 	</stylesheets>

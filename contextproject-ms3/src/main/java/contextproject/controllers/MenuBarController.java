@@ -11,7 +11,7 @@ public class MenuBarController {
   @FXML
   private MenuBar menuBar;
   @FXML
-  private MenuItem menuItem;
+  private MenuItem menuItemImport;
   @FXML
   private MenuItem menuItemExport;
 }
