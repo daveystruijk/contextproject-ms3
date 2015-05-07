@@ -1,13 +1,13 @@
 package contextproject.loaders;
 
-import contextproject.models.Playlist;
-import contextproject.models.Track;
+import java.io.File;
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.util.ArrayList;
+import contextproject.models.Playlist;
+import contextproject.models.Track;
 
 /**
  * Class to read all the mp3 files from a given folder.
@@ -37,7 +37,8 @@ public class FolderLoader implements PlaylistLoader {
    */
   private void addToList(File directory) throws NullPointerException {
     log.info("Scanning " + directory);
-    for (File file : directory.listFiles()) {
+    File[] fileList = directory.listFiles();
+    for (File file : fileList) {
       if (file.length() >= 4 && file.toString().endsWith(".mp3")) {
         list.add(file.toString());
       } else if (file.isDirectory()) {
