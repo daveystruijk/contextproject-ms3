@@ -36,6 +36,13 @@ public class BeatGrid {
   }
 
   /**
+   * Constructor without arguments.
+   */
+  public BeatGrid() {
+
+  }
+
+  /**
    * Returns the time of the nth beat. Note: beat count start a beat 1.
    * 
    * @param beat
@@ -68,4 +75,80 @@ public class BeatGrid {
     return outro;
   }
 
+  /**
+   * Get the first beat of the beat grid.
+   * 
+   * @return first beat.
+   */
+  public long getFirstBeat() {
+    return firstBeat;
+  }
+
+  /**
+   * Get the time per beat of the beat grid.
+   * 
+   * @return time per beat.
+   */
+  public double getTimePerBeat() {
+    return timePerBeat;
+  }
+
+  /**
+   * Get the max beat of the beat grid.
+   * 
+   * @return max beat.
+   */
+  public int getMaxBeat() {
+    return maxBeat;
+  }
+
+  /**
+   * Set the beat range of the intro of the beat grid.
+   * 
+   * @param introRange
+   *          beat range of the intro.
+   */
+  public void setIntro(BeatRange introRange) {
+    intro = introRange;
+  }
+
+  /**
+   * Set the beat range of the outro of the beat grid.
+   * 
+   * @param outroRange
+   *          beat range of the outro.
+   */
+  public void setOutro(BeatRange outroRange) {
+    outro = outroRange;
+  }
+
+  /**
+   * Set the first beat of the beat grid.
+   * 
+   * @param fb
+   *          first beat.
+   */
+  public void setFirstBeat(long fb) {
+    firstBeat = fb;
+  }
+
+  /**
+   * Set the time per beat of the beat grid.
+   * 
+   * @param tpb
+   *          time per beat.
+   */
+  public void setTimePerBeat(double tpb) {
+    timePerBeat = tpb;
+  }
+
+  /**
+   * Set the max beat of the beat grid.
+   * 
+   * @param mb
+   *          max beat.
+   */
+  public void setMaxBeat(int mb) {
+    maxBeat = mb;
+  }
 }

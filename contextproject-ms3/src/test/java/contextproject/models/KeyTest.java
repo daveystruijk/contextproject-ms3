@@ -53,4 +53,22 @@ public class KeyTest {
   public void keyNormalizedInvalidTest() {
     new Key("40B");
   }
+  
+  @Test
+  public void setTest() {
+    Key key = new Key("Bb");
+    key.setMusicalKeyString("test");
+    key.setNormalizedKeyFlag("check");
+    key.setNormalizedKeyNumber(10);
+    assertTrue(key.getMusicalKeyString().equals("test"));
+    assertTrue(key.getNormalizedKeyFlag().equals("check"));
+    assertTrue(key.getNormalizedKeyNumber() == 10);
+  }
+  
+  @Test 
+  public void zeroKeyTest() {
+    Key key = new Key("Bb");
+    key.setNormalizedKeyNumber(0);
+    assertEquals(key.getNormalizedKeyString(), "0");
+  }
 }

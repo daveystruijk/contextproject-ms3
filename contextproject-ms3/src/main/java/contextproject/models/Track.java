@@ -10,9 +10,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Hashtable;
 
-public class Track {
+public class Track implements Serializable {
+
+  private static final long serialVersionUID = -4652897251022204080L;
+
   private static Logger log = LogManager.getLogger(Track.class.getName());
 
   private Mp3File song;
@@ -46,6 +50,13 @@ public class Track {
     createSong();
     extractInfo(info);
     getMetadata();
+  }
+  
+  /**
+   * Constructor without arguments.
+   */
+  public Track() {
+
   }
 
   /**
@@ -160,6 +171,80 @@ public class Track {
   }
 
   /**
+   * Set title.
+   * 
+   * @param songTitle title of the song.
+   */
+  public void setTitle(String songTitle) {
+    title = songTitle;
+  }
+
+
+  /**
+   * Set Artist.
+   * 
+   * @param songArtist artist of the song.
+   */
+  public void setArtist(String songArtist) {
+    artist = songArtist;
+  }
+
+  /**
+   * setAlbum.
+   * 
+   * @param songAlbum album of the song.
+   */
+  public void setAlbum(String songAlbum) {
+    album = songAlbum;
+  }
+
+  /**
+   * setPath.
+   * 
+   * @param path path of the song.
+   */
+  public void setPath(String path) {
+    absolutePath = path;
+  }
+
+  /**
+   * Set length of the song.
+   * 
+   * @param songLength length of the song
+   */
+  public void setLength(long songLength) {
+    length = songLength;
+  }
+
+  /**
+   * Set the beats per minute of the track.
+   * 
+   * @param songBpm bpm of the song
+   */
+  public void setBpm(double songBpm) {
+    bpm = songBpm;
+  }
+
+  /**
+   *  Set the key of the song.
+   * 
+   * @param songKey key of the song.
+   */
+  public void setKey(Key songKey) {
+    key = songKey;
+
+  }
+
+  /**
+   * set the BeatGrid of the track.
+   * 
+   * @param songBeatGrid BeatGrid of the song
+   */
+  public void setBeatGrid(BeatGrid songBeatGrid) {
+    beatGrid = songBeatGrid;
+  }
+  
+  /**
    * String with title.
    * 
    * @return String
@@ -232,6 +317,12 @@ public class Track {
     return beatGrid;
   }
 
+  
+  
+  
+  
+  
+
   /**
    * Equals method to check if an object is the same as the Track object.
    * 
@@ -241,7 +332,10 @@ public class Track {
    */
   public boolean equals(Object other) {
     if (other instanceof Track) {
-      return (this.getPath().equals(((Track) other).getPath()));
+      if (this.getPath() != null && ((Track) other).getPath() != null) {
+        return (this.getPath().equals(((Track) other).getPath()));
+      }
+      return false;
     }
     return false;
   }

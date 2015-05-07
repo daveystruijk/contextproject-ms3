@@ -12,8 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Hashtable;
 
-
-
 public class TrackTest {
 
   private static final double DELTA = 1e-15;
@@ -35,7 +33,7 @@ public class TrackTest {
     }
 
   }
-  
+
   @Test
   public void equalsTest() {
     URL resourceUrl = getClass().getResource("/beep.mp3");
@@ -100,6 +98,49 @@ public class TrackTest {
       assertEquals(track.getBeatGrid().getIntro(), new BeatRange(12, 18));
       assertEquals(track.getBeatGrid().getOutro(), new BeatRange(100, 150));
       assertEquals(track.getKey().getNormalizedKeyString(), "11B");
+    } catch (URISyntaxException e) {
+      fail("file wans't read correctly");
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void setTest() {
+
+    Hashtable<String, String> info = new Hashtable<String, String>();
+    info.put("startBeatIntro", "12");
+    info.put("introBeatLength", "18");
+    info.put("startBeatOutro", "100");
+    info.put("outroBeatLength", "150");
+    info.put("key", "11B");
+    info.put("firstBeat", "12");
+
+    URL resourceUrl = getClass().getResource("/beep.mp3");
+    Path resourcePath;
+
+    try {
+      resourcePath = Paths.get(resourceUrl.toURI());
+      Track track = new Track(resourcePath.toString(), info);
+      track.setAlbum("album");
+      track.setArtist("artist");
+      track.setBpm(60);
+      track.setLength(100);
+      track.setPath("path");
+      track.setTitle("Title");
+
+      BeatGrid bg = new BeatGrid((long) 100, 60, 5, 10, 10, 90, 10);
+      Key newKey = new Key("10B");
+
+      track.setBeatGrid(bg);
+      track.setKey(newKey);
+
+      assertEquals(track.getAlbum(), "album");
+      assertEquals(track.getTitle(), "Title");
+      assertEquals(track.getArtist(), "artist");
+      assertEquals(track.getLength(), new Long(100));
+      assertEquals(track.getBeatGrid().getIntro(), new BeatRange(10, 10));
+      assertEquals(track.getBeatGrid().getOutro(), new BeatRange(90, 10));
+      assertEquals(track.getKey().getNormalizedKeyString(), "10B");
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");
       e.printStackTrace();
