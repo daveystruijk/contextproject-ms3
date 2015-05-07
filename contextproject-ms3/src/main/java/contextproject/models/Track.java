@@ -1,19 +1,22 @@
 package contextproject.models;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Hashtable;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
 import contextproject.helpers.StackTrace;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Hashtable;
+
 public class Track implements Serializable {
+
+  private static final long serialVersionUID = -4652897251022204080L;
+
   private static Logger log = LogManager.getLogger(Track.class.getName());
 
   private Mp3File song;

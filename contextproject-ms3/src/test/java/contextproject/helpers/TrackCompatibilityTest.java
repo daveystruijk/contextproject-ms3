@@ -1,10 +1,12 @@
 package contextproject.helpers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import contextproject.models.Key;
 
 import org.junit.Test;
 
-import contextproject.models.Key;
+
 
 public class TrackCompatibilityTest {
 

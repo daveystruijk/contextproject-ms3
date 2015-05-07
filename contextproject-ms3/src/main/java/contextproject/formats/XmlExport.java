@@ -1,19 +1,17 @@
 package contextproject.formats;
 
+import contextproject.helpers.StackTrace;
+import contextproject.loaders.LibraryLoader;
+import contextproject.models.Playlist;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import contextproject.helpers.StackTrace;
-import contextproject.loaders.FolderLoader;
-import contextproject.loaders.LibraryLoader;
-import contextproject.models.Key;
-import contextproject.models.Playlist;
 
 /**
  * Class to export data to a XML file.

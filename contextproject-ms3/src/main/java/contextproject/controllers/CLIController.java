@@ -1,18 +1,17 @@
 package contextproject.controllers;
 
+import contextproject.formats.M3UBuilder;
+import contextproject.loaders.FolderLoader;
+import contextproject.models.Playlist;
+import contextproject.sorters.GreedyPlaylistSorter;
+import contextproject.sorters.PlaylistSorter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
-
-import contextproject.formats.M3UBuilder;
-import contextproject.loaders.FolderLoader;
-import contextproject.models.Playlist;
-import contextproject.models.Track;
-import contextproject.sorters.GreedyPlaylistSorter;
-import contextproject.sorters.PlaylistSorter;
 
 /**
  * Controls CLI for time being.

@@ -2,13 +2,13 @@ package contextproject.loaders;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
+import contextproject.formats.XmlExport;
+import contextproject.models.Playlist;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import contextproject.formats.XmlExport;
-import contextproject.models.Playlist;
+import java.io.File;
 
 public class LibraryLoaderTest {
 
