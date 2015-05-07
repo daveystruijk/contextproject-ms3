@@ -3,7 +3,7 @@ package contextproject.models;
 public class BeatGrid {
 
   private long firstBeat;
-  private float timePerBeat;
+  private double timePerBeat;
   private int maxBeat;
   private BeatRange intro;
   private BeatRange outro;
@@ -18,12 +18,21 @@ public class BeatGrid {
    * @param firstBeat
    *          Long
    */
-  public BeatGrid(Long length, float bpm, long firstBeat) {
+  public BeatGrid(Long length, double bpm, long firstBeat, int startBeatIntro, int introBeatLength,
+      int startBeatOutro, int outroBeatLength) {
     this.firstBeat = firstBeat;
     this.timePerBeat = (60000 / bpm);
     this.maxBeat = (int) ((length - this.firstBeat) / this.timePerBeat) + 1;
-    this.intro = new BeatRange(1, 32);
-    this.outro = new BeatRange(maxBeat - 32, 32);
+    if (startBeatIntro != 0 && introBeatLength != 0) {
+      this.intro = new BeatRange(startBeatIntro, introBeatLength);
+    } else {
+      this.intro = new BeatRange(1, 32);
+    }
+    if (startBeatOutro != 0 && outroBeatLength != 0) {
+      this.outro = new BeatRange(startBeatOutro, outroBeatLength);
+    } else {
+      this.outro = new BeatRange(maxBeat - 32, 32);
+    }
   }
 
   /**
