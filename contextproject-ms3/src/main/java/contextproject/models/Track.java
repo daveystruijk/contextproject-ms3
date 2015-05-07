@@ -231,4 +231,18 @@ public class Track {
   public BeatGrid getBeatGrid() {
     return beatGrid;
   }
+
+  /**
+   * Equals method to check if an object is the same as the Track object.
+   * 
+   * @param other
+   *          object
+   * @return true if equals, else false.
+   */
+  public boolean equals(Object other) {
+    if (other instanceof Track) {
+      return (this.getPath().equals(((Track) other).getPath()));
+    }
+    return false;
+  }
 }

@@ -1,6 +1,6 @@
 package contextproject.loaders;
 
-import java.util.ArrayList;
+import contextproject.models.Playlist;
 /**
  * Interface for the loaders to ensure it has the right functionality.
  *
@@ -11,6 +11,6 @@ public interface PlaylistLoader {
    * 
    * @return list of names of the mp3 files
    */
-  public ArrayList<String> load();
+  public Playlist load();
 
 }
