@@ -16,8 +16,6 @@ import contextproject.sorters.PlaylistSorter;
 
 /**
  * Controls CLI for time being.
- * 
- * @author Felix
  */
 public class CLIController {
 
@@ -34,7 +32,7 @@ public class CLIController {
     sc.close();
     
     FolderLoader folderLoader = new FolderLoader(fileName);
-    Playlist playlist = new Playlist(folderLoader.load());
+    Playlist playlist = folderLoader.load();
     PlaylistSorter sorter = new GreedyPlaylistSorter();
     Playlist result = sorter.sort(playlist);
     
