@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import contextproject.helpers.StackTrace;
 import contextproject.loaders.FolderLoader;
 import contextproject.loaders.LibraryLoader;
+import contextproject.models.Key;
 import contextproject.models.Playlist;
 
 /**
@@ -50,18 +51,23 @@ public class XmlExport {
   public static void main(String [] args) {
     FolderLoader folderLoader 
     = new FolderLoader("C:/Users/Emiel/git/contextproject-ms3/contextproject-ms3/src/test/resources");
+
     Playlist pl = folderLoader.load();
+    Key key = new Key("Bb");
+    pl.get(0).setKey(key);
     String loc = "C:/Users/Emiel/Documents/test.xml";
     XmlExport example = new XmlExport(loc, pl);
     example.write();
     
     LibraryLoader ll = new LibraryLoader(loc);
-        
+    
     Playlist pl2 = ll.load();
-    System.out.println(pl);
-    System.out.println(pl2);
-    System.out.println(pl.get(0).getArtist());
-    System.out.println(pl2.get(0).getArtist());
+    System.out.println(pl2.get(0).getKey().getNormalizedKeyString());
+    System.out.println(pl.get(0).getKey().getMusicalKeyString());
+    System.out.println(pl2.get(0).getKey().getMusicalKeyString());
+    System.out.println(pl2.get(0).getAlbum());
+    System.out.println(pl.get(0).getAlbum());
+
     System.out.println(pl.containsAll(pl2));
   }
 

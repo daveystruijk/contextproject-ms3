@@ -34,6 +34,13 @@ public class BeatGrid {
       this.outro = new BeatRange(maxBeat - 32, 32);
     }
   }
+  
+  /**
+   * Constructor without arguments.
+   */
+  public BeatGrid() {
+    
+  }
 
   /**
    * Returns the time of the nth beat. Note: beat count start a beat 1.
@@ -67,5 +74,36 @@ public class BeatGrid {
   public BeatRange getOutro() {
     return outro;
   }
+  
+  public long getFirstBeat() {
+    return firstBeat;
+  }
+  
+  public double getTimePerBeat() {
+    return timePerBeat;
+  }
+  
+  public int getMaxBeat() {
+    return maxBeat;
+  }
+  
+  public void setIntro(BeatRange introRange) {
+    intro = introRange;
+  }
+  
+  public void setOutro(BeatRange outroRange) {
+    outro = outroRange;
+  }
+  
+  public void setFirstBeat(long fb) {
+    firstBeat = fb;
+  }
+  
+  public void setTimePerBeat(double tpb) {
+    timePerBeat = tpb;
+  }
 
+  public void setMaxBeat(int mb) {
+    maxBeat = mb;
+  }
 }

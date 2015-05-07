@@ -1,12 +1,14 @@
 package contextproject.models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class BeatGridTest {
 
+  private static final double DELTA = 1e-15;
   private BeatGrid beatGrid;
   private BeatGrid beatGrid2;
   private BeatGrid beatGrid3;
@@ -62,6 +64,54 @@ public class BeatGridTest {
   @Test
   public void getOutroTrueTest() {
     assertEquals(beatGrid3.getOutro(), new BeatRange(100, 14));
+  }
+
+  @Test
+  public void getFirstBeatTest() {
+    assertEquals(beatGrid.getFirstBeat(), 469);
+  }
+
+  @Test
+  public void getMaxBeat() {
+    long length = 1875001;
+    assertEquals(beatGrid.getMaxBeat(),
+        (int) ((length - beatGrid.getFirstBeat()) / beatGrid.getTimePerBeat()) + 1);
+  }
+
+  @Test
+  public void getTimePerBeatTest() {
+    double bpm = 128;
+    assertEquals(beatGrid.getTimePerBeat(), (60000 / bpm), DELTA);
+  }
+
+  @Test
+  public void setFirstBeatTest() {
+    beatGrid.setFirstBeat(10);
+    assertEquals(beatGrid.getFirstBeat(), 10);
+  }
+
+  @Test
+  public void setMaxBeatTest() {
+    beatGrid.setMaxBeat(10);
+    assertEquals(beatGrid.getMaxBeat(), 10);
+  }
+
+  @Test
+  public void setTimePerBeatTest() {
+    beatGrid.setTimePerBeat(10);
+    assertEquals(beatGrid.getTimePerBeat(), 10, DELTA);
+  }
+
+  @Test
+  public void setIntroTest() {
+    beatGrid.setIntro(null);
+    assertTrue(beatGrid.getIntro() == null);
+  }
+
+  @Test
+  public void setOutroTest() {
+    beatGrid.setOutro(null);
+    assertTrue(beatGrid.getOutro() == null);
   }
 
 }

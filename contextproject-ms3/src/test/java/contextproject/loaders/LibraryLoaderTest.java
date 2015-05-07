@@ -2,10 +2,10 @@ package contextproject.loaders;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
 
 public class LibraryLoaderTest {
 

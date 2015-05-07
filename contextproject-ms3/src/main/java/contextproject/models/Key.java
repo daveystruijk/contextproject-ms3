@@ -1,18 +1,29 @@
 package contextproject.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Key {
+public class Key implements Serializable {
+
+  private static final long serialVersionUID = -3532632476298869674L;
   private int normalizedKeyNumber;
   private String normalizedKeyFlag;
   private String musicalKeyString;
 
   /**
+   * Constructor without arguments.
+   */
+  public Key() {
+
+  }
+
+  /**
    * Get the key of a song from the meta data.
    * 
-   * @param keyString String key from ID3 information
+   * @param keyString
+   *          String key from ID3 information
    */
   public Key(String keyString) throws IllegalArgumentException {
     if (keyString != null) {
@@ -150,20 +161,23 @@ public class Key {
         break;
 
       default :
-        boolean foundNormalizedKey = parseNormalizedString(keyString);
+        boolean foundNormalizedKey = setNormalizedString(keyString);
         if (!foundNormalizedKey) {
           throw new IllegalArgumentException("Key cannot be detected");
         }
     }
   }
-  
+
   /**
    * Try to parse the key string if it is normalized already.
-   * @param keyString The given key as text
+   * 
+   * @param keyString
+   *          The given key as text
    * @return Boolean whether the parsing succeeded or not
-   * @throws NumberFormatException When matching fails
+   * @throws NumberFormatException
+   *           When matching fails
    */
-  private boolean parseNormalizedString(String keyString) throws NumberFormatException {
+  private boolean setNormalizedString(String keyString) throws NumberFormatException {
     Pattern pattern = Pattern.compile("([0-9]{1,2})([AB])");
     Matcher matcher = pattern.matcher(keyString);
     if (matcher.matches()) {
@@ -188,6 +202,16 @@ public class Key {
   }
 
   /**
+   * Set the musical key of the key.
+   * 
+   * @param mk
+   *          musicalKey
+   */
+  public void setMusicalKeyString(String mk) {
+    musicalKeyString = mk;
+  }
+
+  /**
    * returns the key in camelot wheel notation.
    * 
    * @return String
@@ -199,6 +223,44 @@ public class Key {
       return normalizedKeyNumber + "";
     }
 
+  }
+
+  /**
+   * Get normalized key flag of the key.
+   * 
+   * @return Normalized key flag.
+   */
+  public String getNormalizedKeyFlag() {
+    return normalizedKeyFlag;
+  }
+
+  /**
+   * get normalizedkKey number of the key.
+   * 
+   * @return Normalized key number.
+   */
+  public int getNormalizedKeyNumber() {
+    return normalizedKeyNumber;
+  }
+
+  /**
+   * Set the normalized they flag of the key.
+   * 
+   * @param nk
+   *          string representation of the normalized key flag.
+   */
+  public void setNormalizedKeyFlag(String nk) {
+    normalizedKeyFlag = nk;
+  }
+
+  /**
+   * Set the normalized they number of the key.
+   * 
+   * @param nk
+   *          integer representation of the normalized key number.
+   */
+  public void setNormalizedKeyNumber(int nk) {
+    normalizedKeyNumber = nk;
   }
 
   /**

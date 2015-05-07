@@ -227,7 +227,7 @@ public class Track implements Serializable {
    * 
    * @param songKey key of the song.
    */
-  public void getKey(Key songKey) {
+  public void setKey(Key songKey) {
     key = songKey;
 
   }
@@ -237,7 +237,7 @@ public class Track implements Serializable {
    * 
    * @param songBeatGrid BeatGrid of the song
    */
-  public void getBeatGrid(BeatGrid songBeatGrid) {
+  public void setBeatGrid(BeatGrid songBeatGrid) {
     beatGrid = songBeatGrid;
   }
   
