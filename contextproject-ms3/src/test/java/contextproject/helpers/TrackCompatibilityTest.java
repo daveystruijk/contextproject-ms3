@@ -6,8 +6,6 @@ import contextproject.models.Key;
 
 import org.junit.Test;
 
-
-
 public class TrackCompatibilityTest {
 
   @Test
