@@ -13,7 +13,7 @@ import java.io.File;
 
 public class FolderLoaderTest {
 
-  Playlist pl;
+  private Playlist pl;
   private static String directory;
 
   /**
@@ -55,10 +55,10 @@ public class FolderLoaderTest {
     assertTrue(loader.load().containsAll(pl) && pl.containsAll(loader.load()));
   }
   
-  @Test(expected = NullPointerException.class)
+  @Test
   public void noDirectoryTest2() {
     FolderLoader loader = new FolderLoader("noDirectory");
-    loader.load().isEmpty();
+    assertTrue(loader.load().isEmpty());
   }
 
   @Test

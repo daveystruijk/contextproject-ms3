@@ -1,14 +1,14 @@
 package contextproject.loaders;
 
-import java.io.File;
-import java.util.ArrayList;
+import contextproject.helpers.StackTrace;
+import contextproject.models.Playlist;
+import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import contextproject.models.Playlist;
-import contextproject.models.Track;
-
+import java.io.File;
+import java.util.ArrayList;
 /**
  * Class to read all the mp3 files from a given folder.
  *
@@ -35,15 +35,20 @@ public class FolderLoader implements PlaylistLoader {
    * @param directory
    *          location of the folder.
    */
-  private void addToList(File directory) throws NullPointerException {
+  private void addToList(File directory) {
     log.info("Scanning " + directory);
-    File[] fileList = directory.listFiles();
-    for (File file : fileList) {
-      if (file.length() >= 4 && file.toString().endsWith(".mp3")) {
-        list.add(file.toString());
-      } else if (file.isDirectory()) {
-        this.addToList(file);
+    try {
+      File[] fileList = directory.listFiles();
+      for (File file : fileList) {
+        if (file.length() >= 4 && file.toString().endsWith(".mp3")) {
+          list.add(file.toString());
+        } else if (file.isDirectory()) {
+          this.addToList(file);
+        }
       }
+    } catch (NullPointerException e) {
+      log.error("No such directory");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
   /**
