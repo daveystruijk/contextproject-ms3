@@ -30,6 +30,7 @@ public class XmlExportTest {
     export.export();
     File file = new File(folder + File.separator + "test.xml");
     assertTrue(file.exists());
+    file.delete();
   }
 
 }

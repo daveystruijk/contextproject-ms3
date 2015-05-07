@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import contextproject.formats.XmlExport;
 import contextproject.models.Playlist;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,6 +24,17 @@ public class LibraryLoaderTest {
     directory = System.getProperty("user.dir").toString() + File.separator + "src" + File.separator
         + "test" + File.separator + "resources" + File.separator + "loadTest" + File.separator;
     fileName = "test.xml";
+  }
+  
+  /**
+   * After running tests the file that is used to test should be deleted.
+   */
+  @After
+  public void removeFile() {
+    File file = new File(directory + fileName);
+    if (file.exists()) {
+      file.delete();
+    }
   }
 
   @Test
