@@ -12,7 +12,7 @@ public class BeatGridTest {
   private BeatGrid beatGrid3;
 
   /**
-   * @Before.
+   * Before running the test this method is done first to initialize the BeatGrid.
    */
   @Before
   public void setup() {

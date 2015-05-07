@@ -26,28 +26,57 @@ public class Track {
   private BeatGrid beatGrid;
 
   /**
-   * constructor of a track.
+   * Constructor of a track with extended information from library . 
+   * The hashtable could contain the following keys 
+   * (all values should be strings that will be parsed later):
+   * 
+   * <p>
+   * String title, String artist, String album, long length, double bpm, String key, 
+   * long firstBeat, int beatIntroStart, int beatsIntroLength, 
+   * int beatOutroStart, int beatsOutroLength
+   * 
+   * @param abPath
+   *          Path of the mp3 file
+   * @param info
+   *          Hashtable with extended information
+   */
+  public Track(String abPath, Hashtable<String, String> info) {
+
+    this.absolutePath = abPath;
+    createSong();
+    extractInfo(info);
+    getMetadata();
+  }
+
+  /**
+   * constructor of a track with only id3 information.
    * 
    * @param abPath
    *          Path of the mp3 file
    */
-  public Track(String abPath, Hashtable<String, String> info) {
+  public Track(String abPath) {
+    this.absolutePath = abPath;
+    createSong();
+    getMetadata();
+  }
 
-    // String title, String artist, String album, long length, double bpm, String key, long
-    // firstBeat, int beatIntroStart, int beatsIntroLength, int beatOutroStart, int beatsOutroLength
+  private void createSong() {
     try {
-      song = new Mp3File(abPath);
+      song = new Mp3File(absolutePath);
     } catch (UnsupportedTagException e) {
-      log.error("There was a Unsupported tag exception with file:" + abPath);
+      log.error("There was a Unsupported tag exception with file:" + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (InvalidDataException e) {
-      log.error("There was a Invalid data exception with file:" + abPath);
+      log.error("There was a Invalid data exception with file:" + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (IOException e) {
-      log.error("There was a IO exception with file:" + abPath);
+      log.error("There was a IO exception with file:" + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     }
-    this.absolutePath = abPath;
+  }
+
+  private void extractInfo(Hashtable<String, String> info) {
+
     this.title = info.get("title");
     this.artist = info.get("artist");
     this.album = info.get("album");
