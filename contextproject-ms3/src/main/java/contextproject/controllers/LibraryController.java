@@ -22,7 +22,7 @@ public class LibraryController {
   public void begin() {
     PlayerService.getInstance().setCurrentTrack(library.get(0));
     PlayerService.getInstance().play();
-    
+
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
