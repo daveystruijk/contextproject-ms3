@@ -284,4 +284,10 @@ public class Key implements Serializable {
     return neighbors;
   }
 
+  /**
+   * Returns a string representation of the key object.
+   */
+  public String toString() {
+    return this.getNormalizedKeyString();
+  }
 }
