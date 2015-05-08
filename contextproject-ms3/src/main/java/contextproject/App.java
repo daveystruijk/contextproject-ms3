@@ -35,7 +35,7 @@ public class App extends Application {
   @Override
   public void start(Stage stage) throws Exception {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
-    Parent root = loader.load();
+    Parent root = (Parent) loader.load();
     WindowController controller = (WindowController) loader.getController();
     controller.doSomething();
     Scene scene = new Scene(root, 1200, 800);
