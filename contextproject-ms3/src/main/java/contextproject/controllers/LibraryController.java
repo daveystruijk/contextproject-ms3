@@ -19,14 +19,17 @@ public class LibraryController {
   /**
    * Setup events on the tableView items.
    */
-  public void initialize() {
+  public void begin() {
+    PlayerService.getInstance().setCurrentTrack(library.get(0));
+    PlayerService.getInstance().play();
+    
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
         if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
           PlayerService.getInstance().setCurrentTrack(
               tableView.getSelectionModel().getSelectedItem());
-          PlayerService.getInstance().play();
+          PlayerService.getInstance().transition();
         }
       }
     });

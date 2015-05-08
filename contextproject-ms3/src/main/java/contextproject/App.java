@@ -1,14 +1,20 @@
 package contextproject;
 
+import java.io.File;
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import contextproject.audio.PlayerService;
 import contextproject.controllers.CLIController;
 import contextproject.controllers.WindowController;
 import contextproject.loaders.FolderLoader;
@@ -22,7 +28,7 @@ import contextproject.sorters.PlaylistSorter;
  */
 public class App extends Application {
   static Logger log = LogManager.getLogger(App.class.getName());
-  static final String DIRECTORY = "/Users/daveystruijk/Documents/FEESJE/House (Chill)";
+
   /**
    * This will start our app with a graphical user interface.
    */
@@ -42,18 +48,33 @@ public class App extends Application {
     Parent root = loader.load();
     WindowController controller = (WindowController) loader.getController();
     
-    FolderLoader folderLoader = new FolderLoader(DIRECTORY);
-    Playlist playlist = folderLoader.load();
-    PlaylistSorter sorter = new GreedyPlaylistSorter();
-    Playlist mixablePlaylist = sorter.sort(playlist);
-    controller.setLibrary(mixablePlaylist);
     
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Cool demo!");
     stage.setScene(scene);
     stage.show();
+    scene.getWindow().setOnHidden(new EventHandler<WindowEvent>(){
+      @Override
+      public void handle(WindowEvent arg0) {
+        PlayerService.getInstance().exit();
+        System.exit(0);
+      }
+    });
     
-
+    String directory = "";
+    DirectoryChooser directoryChooser = new DirectoryChooser();
+    File selectedDirectory = directoryChooser.showDialog(stage);
+    if(selectedDirectory == null){
+      System.out.println("No directory selected.");
+      System.exit(-1);
+    }else{
+      directory = selectedDirectory.getAbsolutePath();
+    }
+    
+    FolderLoader folderLoader = new FolderLoader(directory);
+    Playlist playlist = folderLoader.load();
+    PlaylistSorter sorter = new GreedyPlaylistSorter();
+    Playlist mixablePlaylist = sorter.sort(playlist);
+    controller.setLibrary(mixablePlaylist);   
   }
-
 }

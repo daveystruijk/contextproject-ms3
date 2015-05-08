@@ -43,27 +43,6 @@ public class PlayerService {
     attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(44100);
     audioFormat = Streamer.streamAudioFormat(attributes);
-    
-    /*
-    // Current track stream setup
-    currentStream = Streamer.stream(currentTrack.getPath(), attributes);
-    currentTarsosStream = new JVMAudioInputStream(currentStream);
-    currentPlayer = new AudioPlayer(audioFormat);
-    currentDispatcher = new AudioDispatcher(currentTarsosStream, 2048, 0);
-    currentDispatcher.addAudioProcessor(currentPlayer);
-    currentThread = new Thread(currentDispatcher);
-
-    // Next track stream setup
-    nextStream = Streamer.stream(nextTrack.getPath(), attributes);
-    nextTarsosStream = new JVMAudioInputStream(nextStream);
-    nextPlayer = new AudioPlayer(audioFormat);
-    nextDispatcher = new AudioDispatcher(nextTarsosStream, 2048, 0);
-    nextDispatcher.addAudioProcessor(nextPlayer);
-    nextThread = new Thread(nextDispatcher);
-
-    currentThread.start();
-    nextThread.start();
-    */
   }
   
   /**
@@ -82,6 +61,17 @@ public class PlayerService {
       e.printStackTrace();
     } catch (LineUnavailableException e) {
       e.printStackTrace();
+    }
+  }
+  
+  public void transition() {
+    currentThread.stop();
+    this.play();
+  }
+  
+  public void exit() {
+    if(currentThread != null) {
+      currentThread.stop();
     }
   }
 
