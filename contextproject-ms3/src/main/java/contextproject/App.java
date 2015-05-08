@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import contextproject.audio.PlayerService;
 import contextproject.controllers.CLIController;
 import contextproject.controllers.WindowController;
+import contextproject.formats.XmlExport;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
 import contextproject.sorters.GreedyPlaylistSorter;
@@ -29,6 +30,8 @@ import contextproject.sorters.PlaylistSorter;
 public class App extends Application {
   static Logger log = LogManager.getLogger(App.class.getName());
 
+  private Playlist playlist;
+  
   /**
    * This will start our app with a graphical user interface.
    */
@@ -57,6 +60,10 @@ public class App extends Application {
       @Override
       public void handle(WindowEvent arg0) {
         PlayerService.getInstance().exit();
+        if(playlist != null) {
+          XmlExport exporter = new XmlExport("library.xml", playlist);
+          exporter.export();
+        }
         System.exit(0);
       }
     });
@@ -72,7 +79,7 @@ public class App extends Application {
     }
     
     FolderLoader folderLoader = new FolderLoader(directory);
-    Playlist playlist = folderLoader.load();
+    playlist = folderLoader.load();
     PlaylistSorter sorter = new GreedyPlaylistSorter();
     Playlist mixablePlaylist = sorter.sort(playlist);
     controller.setLibrary(mixablePlaylist);   
