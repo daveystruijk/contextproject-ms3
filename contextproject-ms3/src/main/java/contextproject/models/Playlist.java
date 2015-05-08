@@ -1,8 +1,9 @@
 package contextproject.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Playlist extends ArrayList<Track> {
+public class Playlist extends ArrayList<Track> implements Serializable {
   
   /**
    * serialVersionUID.

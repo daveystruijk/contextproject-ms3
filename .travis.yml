@@ -1,7 +1,12 @@
 language: java
 jdk:
   - oraclejdk8
-before_install: cd contextproject-ms3
+before_install:
+  - cd contextproject-ms3
+  - wget http://0110.be/releases/TarsosDSP/TarsosDSP-2.2/TarsosDSP-2.2.jar
+  - mvn install:install-file -DgroupId=be.tarsos.dsp -DartifactId=TarsosDSP -Dpackaging=jar -Dversion=2.2 -Dfile=TarsosDSP-2.2.jar -DgeneratePom=true
+  - wget http://0110.be/releases/TarsosTranscoder/TarsosTranscoder-1.2.jar
+  - mvn install:install-file -DgroupId=be.tarsos.transcoder -DartifactId=TarsosTranscoder -Dpackaging=jar -Dversion=1.2 -Dfile=TarsosTranscoder-1.2.jar -DgeneratePom=true
 notifications:
   webhooks:
     - http://octopull.rmhartog.me/api/travis/webhook
@@ -9,3 +14,5 @@ after_script:
   - echo "== CHECKSTYLE_RESULT ==" && cat "target/checkstyle-result.xml" && echo "== END_CHECKSTYLE_RESULT =="
   - echo "== PMD_RESULT ==" && cat "target/pmd.xml" && echo "== END_PMD_RESULT =="
   - echo "== FINDBUGS_RESULT ==" && cat "target/findbugsXml.xml" && echo "== END_FINDBUGS_RESULT =="
+notifications:
+  hipchat: aaf4773e753e4b56a25c9e7b6e7de1@Contextproject-ms3

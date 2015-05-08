@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<BorderPane fx:controller="contextproject.controllers.WindowController"
+	xmlns:fx="http://javafx.com/fxml">
+	<stylesheets>
+		<URL value="@../stylesheets/window.css" />
+	</stylesheets>
+	<top>
+		<GridPane>
+			<!--Mark-up for the menu bar. -->
+			<fx:include fx:id="menuBar" source="menu_bar.fxml"
+				GridPane.rowIndex="0" />
+			<!-- Player controls: Play/pause -->
+			<fx:include fx:id="playerControls" source="player_controls.fxml"
+				GridPane.rowIndex="1" />
+		</GridPane>
+	</top>
+	<left>
+		<!-- TODO7: Playlists browser -->
+	</left>
+	<center>
+		<fx:include fx:id="library" source="library.fxml" />
+	</center>
+	<right>
+
+	</right>
+	<bottom>
+		<!-- TODO: Status stuff / bottom bar -->
+	</bottom>
+
+</BorderPane>
