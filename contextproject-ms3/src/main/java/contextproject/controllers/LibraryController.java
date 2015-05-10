@@ -1,14 +1,15 @@
 package contextproject.controllers;
 
+import contextproject.audio.PlayerService;
+import contextproject.models.Playlist;
+import contextproject.models.Track;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
-import contextproject.audio.PlayerService;
-import contextproject.models.Playlist;
-import contextproject.models.Track;
 
 public class LibraryController {
   @FXML

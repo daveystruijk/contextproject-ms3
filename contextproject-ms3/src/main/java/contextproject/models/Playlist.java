@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Playlist extends ArrayList<Track> implements Serializable {
-  
+
   /**
    * serialVersionUID.
    */
@@ -14,12 +14,14 @@ public class Playlist extends ArrayList<Track> implements Serializable {
    * Construct an empty playlist.
    */
   public Playlist() {
-    
+
   }
-  
+
   /**
    * Generate an ArrayList with tracks.
-   * @param songs ArrayList with absolute path
+   * 
+   * @param songs
+   *          ArrayList with absolute path
    */
   public Playlist(ArrayList<String> songs) {
     for (String song : songs) {

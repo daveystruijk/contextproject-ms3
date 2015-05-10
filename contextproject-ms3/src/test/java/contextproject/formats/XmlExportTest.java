@@ -19,8 +19,8 @@ public class XmlExportTest {
    */
   @Before
   public void initialize() {
-    folder = System.getProperty("user.dir").toString() + File.separator + "src"
-        + File.separator + "test" + File.separator + "resources" + File.separator + "loadTest";
+    folder = System.getProperty("user.dir").toString() + File.separator + "src" + File.separator
+        + "test" + File.separator + "resources" + File.separator + "loadTest";
     pl = new Playlist();
   }
 

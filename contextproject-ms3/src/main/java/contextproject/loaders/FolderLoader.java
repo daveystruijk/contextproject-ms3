@@ -67,7 +67,7 @@ public class FolderLoader implements PlaylistLoader {
       try {
         Track track = new Track(s);
         pl.add(track);
-      } catch(Exception e) {
+      } catch (Exception e) {
         // Ignore anything that goes wrong for now,
         // we'll just not add the track to the playlist.
       }
