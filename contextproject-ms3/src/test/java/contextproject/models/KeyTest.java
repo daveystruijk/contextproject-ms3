@@ -25,7 +25,7 @@ public class KeyTest {
     assertEquals(key.getNeighborKeys().size(), 4);
     assertTrue(key.getNeighborKeys().contains("12A"));
   }
-  
+
   /**
    * test for situation with key E -> 12B.
    */
@@ -37,7 +37,7 @@ public class KeyTest {
     assertEquals(key.getNeighborKeys().size(), 4);
     assertTrue(key.getNeighborKeys().contains("1B"));
   }
-  
+
   /**
    * test direct normalized key input.
    */
@@ -48,12 +48,12 @@ public class KeyTest {
     assertEquals(key.getNeighborKeys().size(), 4);
     assertTrue(key.getNeighborKeys().contains("12B"));
   }
-  
+
   @Test(expected = IllegalArgumentException.class)
   public void keyNormalizedInvalidTest() {
     new Key("40B");
   }
-  
+
   @Test
   public void setTest() {
     Key key = new Key("Bb");
@@ -64,8 +64,8 @@ public class KeyTest {
     assertTrue(key.getNormalizedKeyFlag().equals("check"));
     assertTrue(key.getNormalizedKeyNumber() == 10);
   }
-  
-  @Test 
+
+  @Test
   public void zeroKeyTest() {
     Key key = new Key("Bb");
     key.setNormalizedKeyNumber(0);

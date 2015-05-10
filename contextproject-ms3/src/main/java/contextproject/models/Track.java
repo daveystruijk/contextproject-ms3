@@ -30,14 +30,12 @@ public class Track implements Serializable {
   private BeatGrid beatGrid;
 
   /**
-   * Constructor of a track with extended information from library . 
-   * The hashtable could contain the following keys 
-   * (all values should be strings that will be parsed later):
+   * Constructor of a track with extended information from library . The hashtable could contain the
+   * following keys (all values should be strings that will be parsed later):
    * 
    * <p>
-   * String title, String artist, String album, long length, double bpm, String key, 
-   * long firstBeat, int beatIntroStart, int beatsIntroLength, 
-   * int beatOutroStart, int beatsOutroLength
+   * String title, String artist, String album, long length, double bpm, String key, long firstBeat,
+   * int beatIntroStart, int beatsIntroLength, int beatOutroStart, int beatsOutroLength
    * 
    * @param abPath
    *          Path of the mp3 file
@@ -51,7 +49,7 @@ public class Track implements Serializable {
     extractInfo(info);
     getMetadata();
   }
-  
+
   /**
    * Constructor without arguments.
    */
@@ -173,17 +171,18 @@ public class Track implements Serializable {
   /**
    * Set title.
    * 
-   * @param songTitle title of the song.
+   * @param songTitle
+   *          title of the song.
    */
   public void setTitle(String songTitle) {
     title = songTitle;
   }
 
-
   /**
    * Set Artist.
    * 
-   * @param songArtist artist of the song.
+   * @param songArtist
+   *          artist of the song.
    */
   public void setArtist(String songArtist) {
     artist = songArtist;
@@ -192,7 +191,8 @@ public class Track implements Serializable {
   /**
    * setAlbum.
    * 
-   * @param songAlbum album of the song.
+   * @param songAlbum
+   *          album of the song.
    */
   public void setAlbum(String songAlbum) {
     album = songAlbum;
@@ -201,7 +201,8 @@ public class Track implements Serializable {
   /**
    * setPath.
    * 
-   * @param path path of the song.
+   * @param path
+   *          path of the song.
    */
   public void setPath(String path) {
     absolutePath = path;
@@ -210,7 +211,8 @@ public class Track implements Serializable {
   /**
    * Set length of the song.
    * 
-   * @param songLength length of the song
+   * @param songLength
+   *          length of the song
    */
   public void setLength(long songLength) {
     length = songLength;
@@ -219,16 +221,18 @@ public class Track implements Serializable {
   /**
    * Set the beats per minute of the track.
    * 
-   * @param songBpm bpm of the song
+   * @param songBpm
+   *          bpm of the song
    */
   public void setBpm(double songBpm) {
     bpm = songBpm;
   }
 
   /**
-   *  Set the key of the song.
+   * Set the key of the song.
    * 
-   * @param songKey key of the song.
+   * @param songKey
+   *          key of the song.
    */
   public void setKey(Key songKey) {
     key = songKey;
@@ -238,12 +242,13 @@ public class Track implements Serializable {
   /**
    * set the BeatGrid of the track.
    * 
-   * @param songBeatGrid BeatGrid of the song
+   * @param songBeatGrid
+   *          BeatGrid of the song
    */
   public void setBeatGrid(BeatGrid songBeatGrid) {
     beatGrid = songBeatGrid;
   }
-  
+
   /**
    * String with title.
    * 
@@ -316,12 +321,6 @@ public class Track implements Serializable {
   public BeatGrid getBeatGrid() {
     return beatGrid;
   }
-
-  
-  
-  
-  
-  
 
   /**
    * Equals method to check if an object is the same as the Track object.
