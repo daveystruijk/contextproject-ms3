@@ -62,7 +62,7 @@ public class KeyTest {
     key.setNormalizedKeyNumber(10);
     assertTrue(key.getMusicalKeyString().equals("test"));
     assertTrue(key.getNormalizedKeyFlag().equals("check"));
-    assertTrue(key.getNormalizedKeyNumber() == 10);
+    assertEquals(key.getNormalizedKeyNumber(), 10);
   }
 
   @Test
@@ -70,5 +70,144 @@ public class KeyTest {
     Key key = new Key("Bb");
     key.setNormalizedKeyNumber(0);
     assertEquals(key.getNormalizedKeyString(), "0");
+  }
+
+  @Test
+  public void setTestTwo() {
+    Key key = new Key("C");
+    assertEquals(key.getNormalizedKeyNumber(), 8);
+    assertEquals(key.getNormalizedKeyFlag(), "B");
+  }
+
+  @Test
+  public void setTestThree() {
+    Key key = new Key("Dd");
+    assertEquals(key.getNormalizedKeyNumber(), 3);
+    assertEquals(key.getNormalizedKeyFlag(), "B");
+  }
+
+  @Test
+  public void setTestFour() {
+    Key key = new Key("D");
+    assertEquals(key.getNormalizedKeyNumber(), 10);
+    assertEquals(key.getNormalizedKeyFlag(), "B");
+  }
+
+  @Test
+  public void setTestFive() {
+    Key key = new Key("Eb");
+    assertEquals(key.getNormalizedKeyNumber(), 5);
+    assertEquals(key.getNormalizedKeyFlag(), "B");
+  }
+
+  @Test
+  public void setTestSix() {
+    Key key = new Key("F");
+    assertEquals(key.getNormalizedKeyNumber(), 7);
+    assertEquals(key.getNormalizedKeyFlag(), "B");
+  }
+
+  @Test
+  public void setTestSeven() {
+    Key key = new Key("Gb");
+    assertEquals(key.getNormalizedKeyNumber(), 2);
+    assertEquals(key.getNormalizedKeyFlag(), "B");
+  }
+
+  @Test
+  public void setTestEight() {
+    Key key = new Key("G");
+    assertEquals(key.getNormalizedKeyNumber(), 9);
+    assertEquals(key.getNormalizedKeyFlag(), "B");
+  }
+
+  @Test
+  public void setTestNine() {
+    Key key = new Key("Ab");
+    assertEquals(key.getNormalizedKeyNumber(), 4);
+    assertEquals(key.getNormalizedKeyFlag(), "B");
+  }
+
+  @Test
+  public void setTestTen() {
+    Key key = new Key("Am");
+    assertEquals(key.getNormalizedKeyNumber(), 8);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestEleven() {
+    Key key = new Key("Bbm");
+    assertEquals(key.getNormalizedKeyNumber(), 3);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestTwelve() {
+    Key key = new Key("Bm");
+    assertEquals(key.getNormalizedKeyNumber(), 10);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestThirteen() {
+    Key key = new Key("Cm");
+    assertEquals(key.getNormalizedKeyNumber(), 5);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestFourteen() {
+    Key key = new Key("Dbm");
+    assertEquals(key.getNormalizedKeyNumber(), 12);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestFifteen() {
+    Key key = new Key("Dm");
+    assertEquals(key.getNormalizedKeyNumber(), 7);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestSixteen() {
+    Key key = new Key("Ebm");
+    assertEquals(key.getNormalizedKeyNumber(), 2);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestSeventeen() {
+    Key key = new Key("Em");
+    assertEquals(key.getNormalizedKeyNumber(), 9);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestEighteen() {
+    Key key = new Key("Fm");
+    assertEquals(key.getNormalizedKeyNumber(), 4);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestNineteen() {
+    Key key = new Key("Gbm");
+    assertEquals(key.getNormalizedKeyNumber(), 11);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void setTestTwenty() {
+    Key key = new Key("Gm");
+    assertEquals(key.getNormalizedKeyNumber(), 6);
+    assertEquals(key.getNormalizedKeyFlag(), "A");
+  }
+
+  @Test
+  public void toStringTest() {
+    Key key = new Key("Fm");
+    assertEquals(key.toString(), "4A");
   }
 }

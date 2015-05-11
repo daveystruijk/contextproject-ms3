@@ -2,7 +2,12 @@ package contextproject.helpers;
 
 import static org.junit.Assert.assertEquals;
 
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import contextproject.models.Key;
+import contextproject.models.Track;
 
 import org.junit.Test;
 
@@ -22,4 +27,10 @@ public class TrackCompatibilityTest {
   public void testKeyScore() {
     assertEquals(1.0f, TrackCompatibility.getKeyScore(new Key("B"), new Key("B")), 0.0001);
   }
+
+  @Test
+  public void testDifferentKeyScore() {
+    assertEquals(0.7f, TrackCompatibility.getKeyScore(new Key("A"), new Key("B")), 0.0001);
+  }
+
 }
