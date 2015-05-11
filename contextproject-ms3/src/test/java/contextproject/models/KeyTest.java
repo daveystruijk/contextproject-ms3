@@ -81,7 +81,7 @@ public class KeyTest {
 
   @Test
   public void setTestThree() {
-    Key key = new Key("Dd");
+    Key key = new Key("Db");
     assertEquals(key.getNormalizedKeyNumber(), 3);
     assertEquals(key.getNormalizedKeyFlag(), "B");
   }
