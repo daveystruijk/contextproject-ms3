@@ -60,7 +60,7 @@ public class Key implements Serializable {
         normalizedKeyFlag = "B";
         break;
 
-      case "Dd" :
+      case "Db" :
         normalizedKeyNumber = 3;
         normalizedKeyFlag = "B";
         break;
