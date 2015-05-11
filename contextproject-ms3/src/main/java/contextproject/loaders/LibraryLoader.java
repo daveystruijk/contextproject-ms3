@@ -1,18 +1,18 @@
 package contextproject.loaders;
 
-import contextproject.helpers.StackTrace;
-import contextproject.models.Playlist;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.beans.XMLDecoder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class LibraryLoader implements PlaylistLoader {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import contextproject.helpers.StackTrace;
+import contextproject.models.Library;
+
+public class LibraryLoader {
 
   private static Logger log = LogManager.getLogger(LibraryLoader.class.getName());
   private File file;
@@ -21,14 +21,17 @@ public class LibraryLoader implements PlaylistLoader {
     file = new File(folder);
   }
 
-  @Override
-  public Playlist load() {
+  /**
+   * Load the library from the xml.
+   * @return library.
+   */
+  public Library load() {
 
-    Playlist playlist = null;
+    Library library = null;
     try {
       FileInputStream fis = new FileInputStream(file);
       XMLDecoder in = new XMLDecoder(fis);
-      playlist = (Playlist) in.readObject();
+      library = (Library) in.readObject();
       in.close();
       fis.close();
 
@@ -40,7 +43,7 @@ public class LibraryLoader implements PlaylistLoader {
       log.trace(StackTrace.stackTrace(e));
     }
 
-    return playlist;
+    return library;
   }
 
 }

@@ -2,14 +2,15 @@ package contextproject.loaders;
 
 import static org.junit.Assert.assertEquals;
 
-import contextproject.formats.XmlExport;
-import contextproject.models.Playlist;
+import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
+import contextproject.formats.XmlExport;
+import contextproject.models.Library;
+import contextproject.models.Playlist;
 
 public class LibraryLoaderTest {
 
@@ -47,10 +48,12 @@ public class LibraryLoaderTest {
   public void equalsPlaylistTest() {
     FolderLoader loader = new FolderLoader(directory);
     Playlist pl = loader.load();
-    XmlExport export = new XmlExport(directory + fileName, pl);
+    Library library = new Library();
+    library.add(pl);
+    XmlExport export = new XmlExport(directory + fileName, library);
     export.export();
     LibraryLoader lib = new LibraryLoader(directory + fileName);
-    assertEquals(pl, lib.load());
+    assertEquals(library, lib.load());
   }
 
 }
