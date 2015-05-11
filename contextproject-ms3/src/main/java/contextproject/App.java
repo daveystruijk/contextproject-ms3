@@ -47,6 +47,7 @@ public class App extends Application {
   @Override
   public void start(Stage stage) throws Exception {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
+
     Parent root = loader.load();
     final WindowController controller = (WindowController) loader.getController();
 
