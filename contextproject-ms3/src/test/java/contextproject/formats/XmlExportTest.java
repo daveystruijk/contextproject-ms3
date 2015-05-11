@@ -25,12 +25,12 @@ public class XmlExportTest {
   }
 
   @Test
-  public void test() {
+  public void fileExcistsTest() {
     XmlExport export = new XmlExport(folder + File.separator + "test.xml", library);
     export.export();
     File file = new File(folder + File.separator + "test.xml");
     assertTrue(file.exists());
     file.delete();
   }
-
+  
 }

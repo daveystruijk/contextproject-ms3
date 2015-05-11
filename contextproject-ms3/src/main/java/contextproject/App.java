@@ -86,8 +86,7 @@ public class App extends Application {
 
     FolderLoader folderLoader = new FolderLoader(directory);
     playlist = folderLoader.load();
-    XmlExport export = new XmlExport("library.xml", library);
-    export.add(playlist);
+    library.add(playlist);
     PlaylistSorter sorter = new GreedyPlaylistSorter();
     Playlist mixablePlaylist = sorter.sort(playlist);
     controller.setLibrary(mixablePlaylist);

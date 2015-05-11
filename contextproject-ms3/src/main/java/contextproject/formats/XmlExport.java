@@ -45,13 +45,4 @@ public class XmlExport {
     encoder.close();
   }
   
-  /**
-   * Method to add a playlist to the current xml.
-   * It makes one playlist from the xml playlist and to be added playlist.
-   * @param pl playlist to be added.
-   */
-  public void add(Playlist pl) {
-    library.add(pl);
-  }
-
 }
