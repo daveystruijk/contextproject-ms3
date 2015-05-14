@@ -22,13 +22,13 @@
 		</GridPane>
 	</top>
 	<left>
-		<!-- TODO7: Playlists browser -->
+		<fx:include fx:id="playlists" source="playlists.fxml"/>
 	</left>
 	<center>
 		<fx:include fx:id="library" source="library.fxml" />
 	</center>
 	<right>
-
+		
 	</right>
 	<bottom>
 		<!-- TODO: Status stuff / bottom bar -->

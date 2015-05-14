@@ -16,6 +16,8 @@ public class Playlist extends ArrayList<Track> implements Serializable {
   public Playlist() {
 
   }
+  
+  private String name;
 
   /**
    * Generate an ArrayList with tracks.
@@ -28,5 +30,13 @@ public class Playlist extends ArrayList<Track> implements Serializable {
       Track track = new Track(song);
       this.add(track);
     }
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
   }
 }

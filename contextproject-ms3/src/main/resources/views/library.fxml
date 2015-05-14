@@ -8,7 +8,9 @@
 <?import javafx.scene.layout.GridPane?>
 
 <TableView fx:controller="contextproject.controllers.LibraryController"
-	xmlns:fx="http://javafx.com/fxml" fx:id="tableView">
+	xmlns:fx="http://javafx.com/fxml" fx:id="tableView"
+	GridPane.hgrow = "ALWAYS"
+	GridPane.vgrow = "ALWAYS">
 	<stylesheets>
 		<URL value="@../stylesheets/library.css" />
 	</stylesheets>

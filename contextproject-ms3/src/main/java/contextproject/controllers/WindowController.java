@@ -11,6 +11,8 @@ public class WindowController {
   @FXML
   private LibraryController libraryController;
   @FXML
+  private PlaylistsController playlistsController;
+  @FXML
   private PlayerControlsController playerControlsController;
 
   /**
@@ -19,9 +21,11 @@ public class WindowController {
    * @param playlist
    *          : The playlist that comes from our algorithm
    */
-  public void setLibrary(Playlist playlist) {
+  public void setLibrary(Playlist playlist,String name) {
     libraryController.setLibrary(playlist);
+    playlistsController.setLibrary(playlist,name,libraryController);
     libraryController.begin();
+    playlistsController.begin();
     playerControlsController.togglePlayPause();
   }
 }
