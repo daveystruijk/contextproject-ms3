@@ -1,19 +1,55 @@
 package contextproject.controllers;
 
+import contextproject.audio.PlayerService;
+import contextproject.models.Playlist;
+import contextproject.models.Track;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 
 public class LibraryController {
   @FXML
-  private ListView<String> listView;
+  private TableView<Track> tableView;
+
+  private Playlist library;
+
   /**
-   * Prints these elements in the GUI.
+   * Setup events on the tableView items.
    */
-  public void setItems() {
-    ObservableList<String> items = FXCollections
-        .observableArrayList("One", "Two", "Three", "Nice!");
-    listView.setItems(items);
+  public void begin() {
+    PlayerService.getInstance().setCurrentTrack(library.get(0));
+    PlayerService.getInstance().play();
+
+    tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent event) {
+        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+          PlayerService.getInstance().setCurrentTrack(
+              tableView.getSelectionModel().getSelectedItem());
+          PlayerService.getInstance().transition();
+        }
+      }
+    });
+  }
+
+  /**
+   * Update the table view.
+   */
+  public void update() {
+    ObservableList<Track> items = FXCollections.observableArrayList(library);
+    tableView.setItems(items);
+  }
+
+  public Playlist getLibrary() {
+    return this.library;
+  }
+
+  public void setLibrary(Playlist playlist) {
+    this.library = playlist;
+    this.update();
   }
 }

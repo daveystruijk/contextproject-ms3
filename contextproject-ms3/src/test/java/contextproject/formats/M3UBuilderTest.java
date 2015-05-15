@@ -36,7 +36,7 @@ public class M3UBuilderTest {
   public void buildTest() {
     assertEquals(builder.build(), song + "\n" + song + "\n");
   }
-  
+
   @Test
   public void buildFailTest() {
     assertFalse(builder.build().equals(song));

@@ -64,8 +64,13 @@ public class FolderLoader implements PlaylistLoader {
     ArrayList<String> array = this.getList();
     Playlist pl = new Playlist();
     for (String s : array) {
-      // pl.add(new Track(s), new Hashtable());
-      pl.add(new Track(s));
+      try {
+        Track track = new Track(s);
+        pl.add(track);
+      } catch (Exception e) {
+        // Ignore anything that goes wrong for now,
+        // we'll just not add the track to the playlist.
+      }
     }
     return pl;
   }

@@ -60,7 +60,7 @@ public class Key implements Serializable {
         normalizedKeyFlag = "B";
         break;
 
-      case "Dd" :
+      case "Db" :
         normalizedKeyNumber = 3;
         normalizedKeyFlag = "B";
         break;
@@ -284,4 +284,10 @@ public class Key implements Serializable {
     return neighbors;
   }
 
+  /**
+   * Returns a string representation of the key object.
+   */
+  public String toString() {
+    return this.getNormalizedKeyString();
+  }
 }

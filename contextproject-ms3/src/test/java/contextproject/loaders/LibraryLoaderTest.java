@@ -25,7 +25,7 @@ public class LibraryLoaderTest {
         + "test" + File.separator + "resources" + File.separator + "loadTest" + File.separator;
     fileName = "test.xml";
   }
-  
+
   /**
    * After running tests the file that is used to test should be deleted.
    */
@@ -42,14 +42,14 @@ public class LibraryLoaderTest {
     LibraryLoader lib = new LibraryLoader("noDirectory");
     assertEquals(lib.load(), null);
   }
-  
+
   @Test
   public void equalsPlaylistTest() {
     FolderLoader loader = new FolderLoader(directory);
     Playlist pl = loader.load();
     XmlExport export = new XmlExport(directory + fileName, pl);
     export.export();
-    LibraryLoader  lib = new LibraryLoader(directory + fileName);
+    LibraryLoader lib = new LibraryLoader(directory + fileName);
     assertEquals(pl, lib.load());
   }
 

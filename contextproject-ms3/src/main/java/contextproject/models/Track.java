@@ -320,10 +320,7 @@ public class Track implements Serializable {
   
   public String toString(){
     return title;
-  }
-  
-  
-  
+  }  
 
   /**
    * Equals method to check if an object is the same as the Track object.
