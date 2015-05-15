@@ -7,12 +7,12 @@ import contextproject.models.Track;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
-public class Graph extends DefaultDirectedWeightedGraph<Track, DefaultWeightedEdge> {
+public class Graph extends DefaultDirectedWeightedGraph<Track, WeightedEdge> {
 
   private Playlist playlist;
 
   public Graph(Playlist playlist) {
-    super(DefaultWeightedEdge.class);
+    super(WeightedEdge.class);
     this.playlist = playlist;
     initialize();
   }
@@ -34,9 +34,7 @@ public class Graph extends DefaultDirectedWeightedGraph<Track, DefaultWeightedEd
       for (int j = i + 1; j < playlist.size(); j++) {
         Track tempTrack = playlist.get(j);
         int score = getConvertedScore(TrackCompatibility.getScore(currentTrack, tempTrack));
-        System.out.println(currentTrack + "  +  " + tempTrack + "   =   " + score);
         this.setEdgeWeight(this.addEdge(currentTrack, tempTrack), score);
-
         this.setEdgeWeight(this.addEdge(tempTrack, currentTrack), score);
       }
     }

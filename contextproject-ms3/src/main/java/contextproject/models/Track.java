@@ -318,7 +318,9 @@ public class Track implements Serializable {
   }
 
   
-  
+  public String toString(){
+    return title;
+  }
   
   
   
