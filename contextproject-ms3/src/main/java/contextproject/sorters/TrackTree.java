@@ -1,5 +1,6 @@
 package contextproject.sorters;
 
+import contextproject.models.Playlist;
 import contextproject.models.Track;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class TrackTree {
    * @param endTracks ArrayList(TrackNode)
    * @return ArrayList(Track)
    */
-  public ArrayList<Track> optimalPath(ArrayList<TrackNode> endTracks) {
+  public Playlist optimalPath(ArrayList<TrackNode> endTracks) {
     TrackNode bestPath = root;
     double bestScore = 0.0;
     double bestLowest = 0.0;
@@ -80,7 +81,7 @@ public class TrackTree {
       }
     }
 
-    ArrayList<Track> res = new ArrayList<Track>();
+    Playlist res = new Playlist();
     res.add(bestPath.getTrack());
     
     while (bestPath.hasParent()) {

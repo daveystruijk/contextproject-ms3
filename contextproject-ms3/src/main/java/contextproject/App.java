@@ -7,12 +7,14 @@ import contextproject.formats.XmlExport;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
 import contextproject.sorters.GreedyPlaylistSorter;
+import contextproject.sorters.MaximumFlowPlaylistSorter;
 import contextproject.sorters.PlaylistSorter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -79,7 +81,8 @@ public class App extends Application {
 
     FolderLoader folderLoader = new FolderLoader(directory);
     playlist = folderLoader.load();
-    PlaylistSorter sorter = new GreedyPlaylistSorter();
+    //PlaylistSorter sorter = new GreedyPlaylistSorter();
+    PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
     Playlist mixablePlaylist = sorter.sort(playlist);
     controller.setLibrary(mixablePlaylist);
   }

@@ -1,5 +1,6 @@
 package contextproject.sorters;
 
+import contextproject.models.Playlist;
 import contextproject.models.Track;
 
 import org.jgrapht.DirectedGraph;
@@ -16,7 +17,7 @@ public class MaxFlow {
   private Track bestSource;
   private Track bestSink;
   private TrackTree trackTree;
-  private ArrayList<Track> optimalPath;
+  private Playlist optimalPath;
 
   /**
    * Constructor for a MaxFlow calculator.
