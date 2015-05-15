@@ -46,6 +46,7 @@ public class TrackTree {
     double bestLowest = 0.0;
     int bestDepth = 0;
     for (TrackNode trackNode : endTracks) {
+      
       TrackNode track = trackNode;
       double tempScore = 0.0;
       int tempDepth = 1;
@@ -59,6 +60,7 @@ public class TrackTree {
         tempDepth++;
         trackNode = trackNode.getParent();
       }
+      
       if (tempDepth > bestDepth) {
         bestScore = tempScore;
         bestDepth = tempDepth;
@@ -80,10 +82,12 @@ public class TrackTree {
 
     ArrayList<Track> res = new ArrayList<Track>();
     res.add(bestPath.getTrack());
+    
     while (bestPath.hasParent()) {
       bestPath = bestPath.getParent();
       res.add(bestPath.getTrack());
     }
+    
     Collections.reverse(res);
     return res;
   }
