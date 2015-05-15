@@ -1,15 +1,9 @@
 package contextproject.sorters;
 
-import com.googlecode.jctree.ArrayListTree;
-import com.googlecode.jctree.NodeNotFoundException;
-import com.googlecode.jctree.Tree;
-
 import contextproject.models.Track;
 
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.EdmondsKarpMaximumFlow;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,22 +12,27 @@ import java.util.Map;
 public class MaxFlow {
 
   private DirectedGraph<Track, WeightedEdge> graph;
-  private Map<WeightedEdge, Double> bestPath;
+  private Map<WeightedEdge, Double> bestFlow;
   private Track bestSource;
   private Track bestSink;
+  private TrackTree trackTree;
+  private ArrayList<Track> optimalPath;
 
+  /**
+   * Constructor for a MaxFlow calculator.
+   * @param graph Graph
+   */
   public MaxFlow(Graph graph) {
-    System.out.println(graph);
     this.graph = graph;
     calculateMaxflow();
     convertMap();
-    System.out.println(bestPath.toString() + "\n" + bestSource.toString()
-        + "\n" + bestSink.toString());
-    System.out.println(getOptimalPath().toString());
-    System.out.println("finished");
+    calculateOptimalPath();
   }
 
-  public void calculateMaxflow() {
+  /**
+   * calculate the maximum flow from graph.
+   */
+  private void calculateMaxflow() {
     Double bestscore = 0.0;
 
     for (int i = 0; i < graph.vertexSet().size(); i++) {
@@ -46,22 +45,16 @@ public class MaxFlow {
           graph.removeEdge(edge1);
           graph.removeEdge(edge2);
 
-          EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(
-              graph);
+          EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp = new 
+              EdmondsKarpMaximumFlow<Track, WeightedEdge>(graph);
 
           edmondsKarp.calculateMaximumFlow(source, sink);
-          // System.out
-          // .println("\n" + "Source: " + edmondsKarp.getCurrentSource());
-          // System.out.println("Sink: " + edmondsKarp.getCurrentSink());
-          // System.out.println(edmondsKarp.getMaximumFlowValue());
-          // System.out.println(edmondsKarp.getMaximumFlow() + "\n");
-
           graph.addEdge(source, sink, edge1);
           graph.addEdge(sink, source, edge2);
 
           if (edmondsKarp.getMaximumFlowValue() > bestscore) {
             bestscore = edmondsKarp.getMaximumFlowValue();
-            bestPath = edmondsKarp.getMaximumFlow();
+            bestFlow = edmondsKarp.getMaximumFlow();
             bestSource = edmondsKarp.getCurrentSource();
             bestSink = edmondsKarp.getCurrentSink();
           }
@@ -72,11 +65,14 @@ public class MaxFlow {
     }
   }
 
+  /**
+   * Convert the map so that all directed path exist in both ways with same score.
+   */
   private void convertMap() {
     Map<WeightedEdge, Double> tempMap = new HashMap<WeightedEdge, Double>(
-        bestPath);
+        bestFlow);
 
-    for (WeightedEdge edge : bestPath.keySet()) {
+    for (WeightedEdge edge : bestFlow.keySet()) {
       if (tempMap.containsKey(edge)) {
         double highScore = tempMap.get(edge);
         WeightedEdge edge2 = graph.getEdge((Track) edge.getEdgeTarget(),
@@ -97,10 +93,14 @@ public class MaxFlow {
         }
       }
     }
-    bestPath = new HashMap<WeightedEdge, Double>(tempMap);
+    bestFlow = new HashMap<WeightedEdge, Double>(tempMap);
   }
 
-  public ArrayList<Track> getOptimalPath() {
+  /**
+   * calculate longest possible path from the maximum flow.
+   * @return ArrayList(Track)
+   */
+  private void calculateOptimalPath() {
     TrackTree tree = new TrackTree(new TrackNode(bestSource));
     ArrayList<TrackNode> children = new ArrayList<TrackNode>();
     ArrayList<TrackNode> newChildren = new ArrayList<TrackNode>();
@@ -108,20 +108,22 @@ public class MaxFlow {
     children.add(new TrackNode(bestSource));
     while (children.size() > 0) {
       newChildren = new ArrayList<TrackNode>();
-      for (WeightedEdge edge : bestPath.keySet()){ //get al possible childs
-        TrackNode possibleChild = new TrackNode( (Track) edge.getEdgeTarget() ,bestPath.get(edge));
+      for (WeightedEdge edge : bestFlow.keySet()) { // get al possible childs
+        TrackNode possibleChild = new TrackNode((Track) edge.getEdgeTarget(),
+            bestFlow.get(edge));
         TrackNode possibleParent = new TrackNode((Track) edge.getEdgeSource());
 
-        if(children.contains(possibleParent)){
-          for(TrackNode parent : children){
-            if( parent.equals(possibleParent) && !tree.hasAncestor(parent, possibleChild) && !possibleChild.equals(new TrackNode(bestSource))){
-              if(possibleChild.equals(new TrackNode(bestSink))){
+        if (children.contains(possibleParent)) {
+          for (TrackNode parent : children) {
+            if (parent.equals(possibleParent)
+                && !tree.hasAncestor(parent, possibleChild)
+                && !possibleChild.equals(new TrackNode(bestSource))) {
+              if (possibleChild.equals(new TrackNode(bestSink))) {
                 finishedNodes.add(possibleChild);
-              }
-              else{
+              } else {
                 newChildren.add(possibleChild);
               }
-              parent.addChild(possibleChild);  
+              parent.addChild(possibleChild);
               possibleChild.setParent(parent);
             }
           }
@@ -129,7 +131,16 @@ public class MaxFlow {
       }
       children = newChildren;
     }
-    return tree.optimalPath(finishedNodes);
-
+    trackTree = tree;
+    optimalPath =  trackTree.optimalPath(finishedNodes);
   }
+  
+  /**
+   * Get optimal Path.
+   * @return ArrayList(Track)
+   */
+  public ArrayList<Track> getOptimalPath() {
+    return optimalPath;
+  }
+  
 }

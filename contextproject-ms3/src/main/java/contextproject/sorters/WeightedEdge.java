@@ -1,15 +1,26 @@
 package contextproject.sorters;
 
-import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
-public class WeightedEdge extends DefaultWeightedEdge{
-  
-  public Object getEdgeSource(){
+public class WeightedEdge extends DefaultWeightedEdge {
+
+  private static final long serialVersionUID = 1L;
+
+  /**
+   * Return edge source.
+   * 
+   * @return Track
+   */
+  public Object getEdgeSource() {
     return getSource();
   }
-  
-  public Object getEdgeTarget(){
+
+  /**
+   * Return edge target.
+   * 
+   * @return Track
+   */
+  public Object getEdgeTarget() {
     return getTarget();
   }
 
