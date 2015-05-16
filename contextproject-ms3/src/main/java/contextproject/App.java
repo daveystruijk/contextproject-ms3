@@ -17,6 +17,7 @@ import java.io.File;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,6 +33,8 @@ public class App extends Application {
   static Logger log = LogManager.getLogger(App.class.getName());
 
   private Playlist playlist;
+  @FXML
+  private static WindowController controller;
 
   /**
    * This will start our app with a graphical user interface.
@@ -52,6 +55,7 @@ public class App extends Application {
 
     Parent root = (Parent) loader.load();
     final WindowController controller = (WindowController) loader.getController();
+    this.controller = controller;
 
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Cool demo!");
@@ -85,5 +89,9 @@ public class App extends Application {
     PlaylistSorter sorter = new GreedyPlaylistSorter();
     Playlist mixablePlaylist = sorter.sort(playlist);
     controller.setLibrary(mixablePlaylist,playlistname);
+  }
+  
+  public static WindowController getController() {
+    return controller;
   }
 }
