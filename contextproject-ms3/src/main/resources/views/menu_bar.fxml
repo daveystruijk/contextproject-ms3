@@ -11,7 +11,7 @@
 	xmlns:fx="http://javafx.com/fxml" fx:id="menuBar" prefWidth="1200">
 	<Menu fx:id="menu" text="File">
 		<MenuItem fx:id="menuItemImport" text="Import Folder"
-		onAction="#pushButton">
+		onAction="#importPlaylistButtonAction">
 		</MenuItem>
 		<MenuItem fx:id="menuItemExport" text="Export Library">
 		</MenuItem>

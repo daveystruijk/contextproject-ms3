@@ -30,7 +30,7 @@ public class MenuBarController {
   private WindowController controller;
   
   
-  @FXML protected void pushButton(ActionEvent event) {
+  @FXML protected void importPlaylistButtonAction(ActionEvent event) {
     this.controller = App.getController();
     String directory = "";
     DirectoryChooser directoryChooser = new DirectoryChooser();
