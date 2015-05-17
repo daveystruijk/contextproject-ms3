@@ -36,7 +36,6 @@ public class LibraryController {
           String name = tableView.getSelectionModel().getSelectedItem().getName();
           Playlist lib = getLibrary(name);
           playlistController.setPlaylist(lib);
-
         }
       }
     });

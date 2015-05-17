@@ -1,11 +1,7 @@
 package contextproject.audio;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.AudioProcessor;
-import contextproject.models.Track;
 
 public class MixerProcessor implements AudioProcessor {
   private double gain = 1.0f;
@@ -15,6 +11,8 @@ public class MixerProcessor implements AudioProcessor {
     float[] floatBuffer = audioEvent.getFloatBuffer();
     for (int i = audioEvent.getOverlap(); i < floatBuffer.length; i++) {
       float newValue = manipulateSignal(floatBuffer[i]);
+      
+      // Clipping
       if (newValue > 1.0f) {
         newValue = 1.0f;
       } else if (newValue < -1.0f) {

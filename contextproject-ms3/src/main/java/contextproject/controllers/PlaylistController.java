@@ -28,7 +28,7 @@ public class PlaylistController {
       @Override
       public void handle(MouseEvent event) {
         if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-          PlayerService.getInstance().setCurrentTrack(
+          PlayerService.getInstance().setNextTrack(
               tableView.getSelectionModel().getSelectedItem());
           PlayerService.getInstance().transition();
         }
