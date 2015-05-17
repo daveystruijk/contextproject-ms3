@@ -5,12 +5,12 @@ import static org.junit.Assert.assertEquals;
 import contextproject.controllers.LibraryController;
 import org.junit.Test;
 
-public class LibraryControllerTest {
+public class PlaylistControllerTest {
 
   @Test
   public void beginTest() {
-    LibraryController libController = new LibraryController();
-    assertEquals(libController.getLibrary(), null);
+    PlaylistController playController = new PlaylistController();
+    assertEquals(playController.getPlaylist(), null);
     
   }
 

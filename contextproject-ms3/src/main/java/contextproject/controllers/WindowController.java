@@ -9,9 +9,9 @@ public class WindowController {
   @FXML
   private Text actiontarget;
   @FXML
-  private LibraryController libraryController;
+  private PlaylistController playlistController;
   @FXML
-  private PlaylistsController playlistsController;
+  private LibraryController libraryController;
   @FXML
   private PlayerControlsController playerControlsController;
 
@@ -22,10 +22,10 @@ public class WindowController {
    *          : The playlist that comes from our algorithm
    */
   public void setLibrary(Playlist playlist,String name) {
-    libraryController.setLibrary(playlist);
-    playlistsController.setLibrary(playlist,name,libraryController);
+    playlistController.setPlaylist(playlist);
+    libraryController.setLibrary(playlist,name,playlistController);
+    playlistController.begin();
     libraryController.begin();
-    playlistsController.begin();
     playerControlsController.togglePlayPause();
   }
 }

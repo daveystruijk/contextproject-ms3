@@ -22,10 +22,10 @@
 		</GridPane>
 	</top>
 	<left>
-		<fx:include fx:id="playlists" source="playlists.fxml"/>
+		<fx:include fx:id="library" source="library.fxml"/>
 	</left>
 	<center>
-		<fx:include fx:id="library" source="library.fxml" />
+		<fx:include fx:id="playlist" source="playlist.fxml" />
 	</center>
 	<right>
 		
