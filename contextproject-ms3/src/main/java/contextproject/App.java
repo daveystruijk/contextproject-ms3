@@ -4,6 +4,7 @@ import contextproject.audio.PlayerService;
 import contextproject.controllers.CLIController;
 import contextproject.controllers.WindowController;
 import contextproject.formats.XmlExport;
+import contextproject.helpers.PlaylistName;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
 import contextproject.sorters.GreedyPlaylistSorter;
@@ -13,8 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,6 +33,8 @@ public class App extends Application {
   static Logger log = LogManager.getLogger(App.class.getName());
 
   private Playlist playlist;
+  @FXML
+  private static WindowController controller;
 
   /**
    * This will start our app with a graphical user interface.
@@ -48,8 +53,9 @@ public class App extends Application {
   public void start(Stage stage) throws Exception {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
 
-    Parent root = loader.load();
+    Parent root = (Parent) loader.load();
     final WindowController controller = (WindowController) loader.getController();
+    this.controller = controller;
 
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Cool demo!");
@@ -78,9 +84,14 @@ public class App extends Application {
     }
 
     FolderLoader folderLoader = new FolderLoader(directory);
+    String playlistname = PlaylistName.getName(directory);
     playlist = folderLoader.load();
     PlaylistSorter sorter = new GreedyPlaylistSorter();
     Playlist mixablePlaylist = sorter.sort(playlist);
-    controller.setLibrary(mixablePlaylist);
+    controller.setLibrary(mixablePlaylist,playlistname);
+  }
+  
+  public static WindowController getController() {
+    return controller;
   }
 }
