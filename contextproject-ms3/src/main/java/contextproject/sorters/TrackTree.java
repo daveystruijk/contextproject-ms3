@@ -1,7 +1,6 @@
 package contextproject.sorters;
 
 import contextproject.models.Playlist;
-import contextproject.models.Track;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,18 +15,23 @@ public class TrackTree {
 
   /**
    * Check is a TrackNode is a ancestor of other TrackNode.
-   * @param trackNode TrackNode
-   * @param possibleAncestor TrackNode
+   * 
+   * @param trackNode
+   *          TrackNode
+   * @param possibleAncestor
+   *          TrackNode
    * @return boolean
    */
   public boolean hasAncestor(TrackNode trackNode, TrackNode possibleAncestor) {
-    boolean res = true;
+    boolean res = false;
     if (!trackNode.equals(possibleAncestor)) {
       if (!trackNode.hasParent()) {
         res = false;
       } else {
         res = hasAncestor(trackNode.getParent(), possibleAncestor);
       }
+    } else {
+      res = true;
     }
     return res;
   }
@@ -38,7 +42,9 @@ public class TrackTree {
 
   /**
    * Return best path Depth > Score > Highest minimum.
-   * @param endTracks ArrayList(TrackNode)
+   * 
+   * @param endTracks
+   *          ArrayList(TrackNode)
    * @return ArrayList(Track)
    */
   public Playlist optimalPath(ArrayList<TrackNode> endTracks) {
@@ -47,7 +53,7 @@ public class TrackTree {
     double bestLowest = 0.0;
     int bestDepth = 0;
     for (TrackNode trackNode : endTracks) {
-      
+
       TrackNode track = trackNode;
       double tempScore = 0.0;
       int tempDepth = 1;
@@ -55,13 +61,12 @@ public class TrackTree {
 
       while (trackNode.hasParent()) {
         tempScore += trackNode.getScore();
-        if (tempScore < tempLowest) {
-          tempLowest = tempScore;
+        if (trackNode.getScore() < tempLowest) {
+          tempLowest = trackNode.getScore();
         }
         tempDepth++;
         trackNode = trackNode.getParent();
       }
-      
       if (tempDepth > bestDepth) {
         bestScore = tempScore;
         bestDepth = tempDepth;
@@ -72,8 +77,7 @@ public class TrackTree {
         bestDepth = tempDepth;
         bestLowest = tempLowest;
         bestPath = track;
-      } else if (tempDepth == bestDepth && tempScore == bestScore
-          && tempLowest > bestLowest) {
+      } else if (tempDepth == bestDepth && tempScore == bestScore && tempLowest > bestLowest) {
         bestScore = tempScore;
         bestDepth = tempDepth;
         bestLowest = tempLowest;
@@ -83,12 +87,12 @@ public class TrackTree {
 
     Playlist res = new Playlist();
     res.add(bestPath.getTrack());
-    
+
     while (bestPath.hasParent()) {
       bestPath = bestPath.getParent();
       res.add(bestPath.getTrack());
     }
-    
+
     Collections.reverse(res);
     return res;
   }
