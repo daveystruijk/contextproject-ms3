@@ -33,7 +33,6 @@ public class CLIController {
 
     FolderLoader folderLoader = new FolderLoader(fileName);
     Playlist playlist = folderLoader.load();
-    //PlaylistSorter sorter = new GreedyPlaylistSorter();
     PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
     Playlist result = sorter.sort(playlist);
 

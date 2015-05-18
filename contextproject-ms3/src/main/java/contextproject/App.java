@@ -87,7 +87,6 @@ public class App extends Application {
     FolderLoader folderLoader = new FolderLoader(directory);
     String playlistname = PlaylistName.getName(directory);
     playlist = folderLoader.load();
-    //PlaylistSorter sorter = new GreedyPlaylistSorter();
     PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
     Playlist mixablePlaylist = sorter.sort(playlist);
     controller.setLibrary(mixablePlaylist,playlistname);
