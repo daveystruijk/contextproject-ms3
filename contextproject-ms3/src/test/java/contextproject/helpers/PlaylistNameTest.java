@@ -1,18 +1,19 @@
 package contextproject.helpers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import java.io.File;
 
-import org.junit.Test;
 
 public class PlaylistNameTest {
 
   @Test
-  public void MacTest() {
+  public void macTest() {
     String delimiter = File.separator;
     String path = delimiter + "Users" + delimiter + "Me" + delimiter + "file";
-    assertEquals("file",PlaylistName.getName(path));
+    assertEquals("file", PlaylistName.getName(path));
   }
 
 }
