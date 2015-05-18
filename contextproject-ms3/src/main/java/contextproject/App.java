@@ -2,6 +2,7 @@ package contextproject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -37,11 +38,11 @@ public class App extends Application {
 
   private Playlist playlist;
 
-  private Library library;
+  private static Library library;
+  private boolean empty = false;
 
   @FXML
   private static WindowController controller;
-
 
   /**
    * This will start our app with a graphical user interface.
@@ -65,33 +66,61 @@ public class App extends Application {
     this.controller = controller;
 
     Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Cool demo!");
+    stage.setTitle("Cool demo! bruh");
     stage.setScene(scene);
     stage.show();
-    
-    LibraryLoader libraryLoader = new LibraryLoader("library.xml");
+
     try {
+      LibraryLoader libraryLoader = new LibraryLoader("library.xml");
       library = libraryLoader.load();
-    }
-    catch(FileNotFoundException e) {
+      if(library.size()<1){
+        empty = true;
+      }
+    } catch (IOException e) {
       library = new Library();
+      empty = true;
     }
     scene.getWindow().setOnHidden(new EventHandler<WindowEvent>() {
       @Override
       public void handle(WindowEvent arg0) {
         PlayerService.getInstance().exit();
-        if (playlist != null) {
+        if (library != null) {
           XmlExport exporter = new XmlExport("library.xml", library);
           exporter.export();
+          System.out.println(library.size());
         }
         System.exit(0);
       }
     });
+    if (empty) {
+      String directory = "";
+      DirectoryChooser directoryChooser = new DirectoryChooser();
+      File selectedDirectory = directoryChooser.showDialog(null);
+      if (selectedDirectory == null) {
+        System.out.println("No directory selected.");
+        System.exit(-1);
+      } else {
+        directory = selectedDirectory.getAbsolutePath();
+      }
 
-    controller.setLibrary(mixablePlaylist,playlistname);
+      FolderLoader folderLoader = new FolderLoader(directory);
+      String playlistname = PlaylistName.getName(directory);
+      Playlist playlist = folderLoader.load();
+      PlaylistSorter sorter = new GreedyPlaylistSorter();
+      Playlist mixablePlaylist = sorter.sort(playlist);
+      controller.setEverything(mixablePlaylist, playlistname);
+    } else {
+      controller.setLibrary(library);
+    }
   }
-  
+
   public static WindowController getController() {
     return controller;
+  }
+  public static void setLibrary(Library lib){
+    library.clear();
+    for(Playlist pl :lib){
+    library.add(pl);
+    }
   }
 }

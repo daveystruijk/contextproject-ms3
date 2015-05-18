@@ -25,8 +25,9 @@ public class LibraryLoader {
    * Load the library from the xml.
    * 
    * @return library.
+   * @throws IOException 
    */
-  public Library load() throws FileNotFoundException {
+  public Library load() throws IOException {
 
     Library library = null;
     try {
@@ -38,10 +39,7 @@ public class LibraryLoader {
     } catch (ClassCastException e) {
       log.warn("library.xml is corrupted. Starting with empty library...");
       library = new Library();
-    } catch (IOException e) {
-      log.error("Exception");
-      log.trace(StackTrace.stackTrace(e));
-    }
+    } 
 
     return library;
   }
