@@ -80,7 +80,7 @@ public class MaxFlow {
             (Track) edge.getEdgeSource());
         double highScore2 = tempMap.get(edge2);
         
-        if (!(highScore == 0 && highScore2 == 0)) {
+        if (!(highScore < 10 && highScore2 < 10)) {
           
           if (highScore > highScore2) {
             tempMap.put(edge2, highScore);
