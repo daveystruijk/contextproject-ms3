@@ -7,6 +7,7 @@ import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.EdmondsKarpMaximumFlow;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,17 +44,17 @@ public class MaxFlow {
           Track sink = (Track) graph.vertexSet().toArray()[j];
           WeightedEdge edge1 = graph.getEdge(source, sink);
           WeightedEdge edge2 = graph.getEdge(sink, source);
-          
+
           graph.removeEdge(edge1);
           graph.removeEdge(edge2);
-          
+
           EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp = new 
               EdmondsKarpMaximumFlow<Track, WeightedEdge>(graph);
           edmondsKarp.calculateMaximumFlow(source, sink);
-          
+
           graph.addEdge(source, sink, edge1);
           graph.addEdge(sink, source, edge2);
-          
+
           if (edmondsKarp.getMaximumFlowValue() > bestscore) {
             bestscore = edmondsKarp.getMaximumFlowValue();
             bestFlow = edmondsKarp.getMaximumFlow();
@@ -73,21 +74,30 @@ public class MaxFlow {
   private void convertMap() {
     Map<WeightedEdge, Double> tempMap = new HashMap<WeightedEdge, Double>(
         bestFlow);
+    ArrayList<Double> scores = new ArrayList<Double>();
+    scores.addAll(bestFlow.values());
+    Collections.sort(scores);
+
+    double minScore = 1.0;
+    if(scores.size()>19){
+      minScore = scores.get(19);
+    }
+
     for (WeightedEdge edge : bestFlow.keySet()) {
       if (tempMap.containsKey(edge)) {
         double highScore = tempMap.get(edge);
         WeightedEdge edge2 = graph.getEdge((Track) edge.getEdgeTarget(),
             (Track) edge.getEdgeSource());
         double highScore2 = tempMap.get(edge2);
-        
-        if (!(highScore < 10 && highScore2 < 10)) {
-          
+
+        if (!(highScore < minScore && highScore2 < minScore)) {
+
           if (highScore > highScore2) {
             tempMap.put(edge2, highScore);
           } else {
             tempMap.put(edge, highScore2);
           }
-          
+
         } else {
           tempMap.remove(edge);
           tempMap.remove(edge2);
@@ -107,14 +117,14 @@ public class MaxFlow {
     ArrayList<TrackNode> newChildren = new ArrayList<TrackNode>();
     ArrayList<TrackNode> finishedNodes = new ArrayList<TrackNode>();
     children.add(new TrackNode(bestSource));
-    
+
     while (children.size() > 0) {
       newChildren = new ArrayList<TrackNode>();
       for (WeightedEdge edge : bestFlow.keySet()) {
         TrackNode possibleChild = new TrackNode((Track) edge.getEdgeTarget(),
             bestFlow.get(edge));
         TrackNode possibleParent = new TrackNode((Track) edge.getEdgeSource());
-        
+
         if (children.contains(possibleParent)) {
           for (TrackNode parent : children) {
             if (parent.equals(possibleParent)
@@ -125,7 +135,7 @@ public class MaxFlow {
               } else {
                 newChildren.add(possibleChild);
               }
-              
+
               parent.addChild(possibleChild);
               possibleChild.setParent(parent);
             }
@@ -137,7 +147,7 @@ public class MaxFlow {
     trackTree = tree;
     optimalPath =  trackTree.optimalPath(finishedNodes);
   }
-  
+
   /**
    * Get optimal Path.
    * @return ArrayList(Track)
@@ -145,5 +155,5 @@ public class MaxFlow {
   public ArrayList<Track> getOptimalPath() {
     return optimalPath;
   }
-  
+
 }
