@@ -1,6 +1,7 @@
 package contextproject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -60,8 +61,12 @@ public class App extends Application {
     stage.show();
     
     LibraryLoader libraryLoader = new LibraryLoader("library.xml");
-    libraryLoader.load();
-    
+    try {
+      library = libraryLoader.load();
+    }
+    catch(FileNotFoundException e) {
+      library = new Library();
+    }
     scene.getWindow().setOnHidden(new EventHandler<WindowEvent>() {
       @Override
       public void handle(WindowEvent arg0) {

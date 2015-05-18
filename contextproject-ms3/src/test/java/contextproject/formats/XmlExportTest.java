@@ -25,7 +25,7 @@ public class XmlExportTest {
   }
 
   @Test
-  public void fileExcistsTest() {
+  public void fileExistsTest() {
     XmlExport export = new XmlExport(folder + File.separator + "test.xml", library);
     export.export();
     File file = new File(folder + File.separator + "test.xml");

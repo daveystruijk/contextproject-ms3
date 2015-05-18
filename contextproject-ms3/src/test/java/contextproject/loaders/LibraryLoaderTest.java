@@ -1,16 +1,18 @@
 package contextproject.loaders;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-import java.io.File;
+import contextproject.formats.XmlExport;
+import contextproject.models.Library;
+import contextproject.models.Playlist;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import contextproject.formats.XmlExport;
-import contextproject.models.Library;
-import contextproject.models.Playlist;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class LibraryLoaderTest {
 
@@ -39,9 +41,9 @@ public class LibraryLoaderTest {
   }
 
   @Test
-  public void noFileTest() {
+  public void noFileTest() throws FileNotFoundException {
     LibraryLoader lib = new LibraryLoader("noDirectory");
-    assertEquals(lib.load(), null);
+    lib.load();
   }
 
   @Test
@@ -53,7 +55,11 @@ public class LibraryLoaderTest {
     XmlExport export = new XmlExport(directory + fileName, library);
     export.export();
     LibraryLoader lib = new LibraryLoader(directory + fileName);
-    assertEquals(library, lib.load());
+    try {
+      assertEquals(library, lib.load());
+    } catch (FileNotFoundException e) {
+      assertFalse(library.equals(null));
+    }
   }
 
 }
