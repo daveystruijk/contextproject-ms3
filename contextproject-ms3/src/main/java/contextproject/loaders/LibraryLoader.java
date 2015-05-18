@@ -35,7 +35,9 @@ public class LibraryLoader {
       library = (Library) in.readObject();
       in.close();
       fis.close();
-
+    } catch (ClassCastException e) {
+      log.warn("library.xml is corrupted. Starting with empty library...");
+      library = new Library();
     } catch (IOException e) {
       log.error("Exception");
       log.trace(StackTrace.stackTrace(e));

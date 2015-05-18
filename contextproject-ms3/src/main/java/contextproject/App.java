@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import contextproject.audio.PlayerService;
 import contextproject.controllers.CLIController;
 import contextproject.controllers.WindowController;
 import contextproject.formats.XmlExport;
+import contextproject.helpers.PlaylistName;
 import contextproject.loaders.FolderLoader;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Library;
@@ -34,7 +36,12 @@ public class App extends Application {
   static Logger log = LogManager.getLogger(App.class.getName());
 
   private Playlist playlist;
+
   private Library library;
+
+  @FXML
+  private static WindowController controller;
+
 
   /**
    * This will start our app with a graphical user interface.
@@ -52,8 +59,10 @@ public class App extends Application {
   @Override
   public void start(Stage stage) throws Exception {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
-    Parent root = loader.load();
+
+    Parent root = (Parent) loader.load();
     final WindowController controller = (WindowController) loader.getController();
+    this.controller = controller;
 
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Cool demo!");
@@ -79,21 +88,10 @@ public class App extends Application {
       }
     });
 
-    String directory = "";
-    DirectoryChooser directoryChooser = new DirectoryChooser();
-    File selectedDirectory = directoryChooser.showDialog(stage);
-    if (selectedDirectory == null) {
-      System.out.println("No directory selected.");
-      System.exit(-1);
-    } else {
-      directory = selectedDirectory.getAbsolutePath();
-    }
-
-    FolderLoader folderLoader = new FolderLoader(directory);
-    playlist = folderLoader.load();
-    library.add(playlist);
-    PlaylistSorter sorter = new GreedyPlaylistSorter();
-    Playlist mixablePlaylist = sorter.sort(playlist);
-    controller.setLibrary(mixablePlaylist);
+    controller.setLibrary(mixablePlaylist,playlistname);
+  }
+  
+  public static WindowController getController() {
+    return controller;
   }
 }
