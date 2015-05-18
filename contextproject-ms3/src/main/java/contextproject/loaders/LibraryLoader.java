@@ -1,6 +1,5 @@
 package contextproject.loaders;
 
-import contextproject.helpers.StackTrace;
 import contextproject.models.Library;
 
 import org.apache.logging.log4j.LogManager;
@@ -9,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import java.beans.XMLDecoder;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class LibraryLoader {
@@ -25,7 +23,7 @@ public class LibraryLoader {
    * Load the library from the xml.
    * 
    * @return library.
-   * @throws IOException 
+   * @throws IOException throws exception when the file is not found.
    */
   public Library load() throws IOException {
 

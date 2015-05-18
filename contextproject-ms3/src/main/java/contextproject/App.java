@@ -1,22 +1,5 @@
 package contextproject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import contextproject.audio.PlayerService;
 import contextproject.controllers.CLIController;
 import contextproject.controllers.WindowController;
@@ -29,14 +12,28 @@ import contextproject.models.Playlist;
 import contextproject.sorters.GreedyPlaylistSorter;
 import contextproject.sorters.PlaylistSorter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 /**
  * Hello world.
  *
  */
 public class App extends Application {
   static Logger log = LogManager.getLogger(App.class.getName());
-
-  private Playlist playlist;
 
   private static Library library;
   private boolean empty = false;
@@ -63,7 +60,7 @@ public class App extends Application {
 
     Parent root = (Parent) loader.load();
     final WindowController controller = (WindowController) loader.getController();
-    this.controller = controller;
+    App.controller = controller;
 
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Cool demo! bruh");
@@ -73,7 +70,7 @@ public class App extends Application {
     try {
       LibraryLoader libraryLoader = new LibraryLoader("library.xml");
       library = libraryLoader.load();
-      if(library.size()<1){
+      if (library.size() < 1) {
         empty = true;
       }
     } catch (IOException e) {
@@ -117,10 +114,15 @@ public class App extends Application {
   public static WindowController getController() {
     return controller;
   }
-  public static void setLibrary(Library lib){
+  
+  /**
+   * sets the library to be exported to library.xml.
+   * @param lib the library of the app.
+   */
+  public static void setLibrary(Library lib) {
     library.clear();
-    for(Playlist pl :lib){
-    library.add(pl);
+    for (Playlist pl : lib) {
+      library.add(pl);
     }
   }
 }

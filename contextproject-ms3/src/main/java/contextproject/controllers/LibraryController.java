@@ -26,8 +26,7 @@ public class LibraryController {
   private ArrayList<String> names = new ArrayList<String>();
 
   /**
-   * for the playlists.
-   * when clicked, show the tracks of the playlist.
+   * for the playlists. when clicked, show the tracks of the playlist.
    */
   public void begin(PlaylistController playlistcontroller) {
     this.playlistController = playlistcontroller;
@@ -58,12 +57,14 @@ public class LibraryController {
     }
 
   }
- /**
-  * sets the library of playlists.
-  * @param playlist the playlist itself
-  * @param name the name of the playlist.
-  * @param playlistController the controller where the tracks are shown.
-  */
+  /**
+   * sets the library of playlists.
+   * 
+   * @param playlist
+   *          the playlist itself
+   * @param name
+   *          the name of the playlist.
+   */
   public void setLibrary(Playlist playlist, String name) {
     this.names.add(name);
     this.lib.add(playlist);
@@ -72,12 +73,14 @@ public class LibraryController {
   }
   /**
    * sets the library of playlists.
-   * @param library the playlists in library.
+   * 
+   * @param library
+   *          the playlists in library.
    */
   public void setLibrary(Library library) {
-   int nr = 1;
+    int nr = 1;
     for (Playlist pl : library) {
-      String name = "playlist: "+nr;
+      String name = "playlist: " + nr;
       this.names.add(name);
       this.lib.add(pl);
       this.update();
@@ -88,14 +91,17 @@ public class LibraryController {
 
   /**
    * return the playlist.
-   * @param name the name of the playlist.
+   * 
+   * @param name
+   *          the name of the playlist.
    * @return the playlist.
    */
   public Playlist getPlaylist(String name) {
     int index = names.indexOf(name);
     return lib.get(index);
   }
-  public void setAppLibrary(Library library){
+  
+  public void setAppLibrary(Library library) {
     App.setLibrary(library);
   }
 }
