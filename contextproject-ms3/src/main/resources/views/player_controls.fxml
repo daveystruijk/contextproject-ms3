@@ -8,11 +8,11 @@
 <?import javafx.scene.control.Slider?>
 
 <GridPane fx:controller="contextproject.controllers.PlayerControlsController"
-	xmlns:fx="http://javafx.com/fxml">
-	<stylesheets>
-		<URL value="@../stylesheets/player_controls.css" />
-	</stylesheets>
-	<Button fx:id="playButton">
-	</Button>
-	<Text GridPane.columnIndex="1" text="..." fx:id="currentTrack"></Text>
+  xmlns:fx="http://javafx.com/fxml">
+  <stylesheets>
+    <URL value="@../stylesheets/player_controls.css" />
+  </stylesheets>
+  <Button fx:id="playButton">
+  </Button>
+  <Text GridPane.columnIndex="1" text="..." fx:id="currentTrack"></Text>
 </GridPane>

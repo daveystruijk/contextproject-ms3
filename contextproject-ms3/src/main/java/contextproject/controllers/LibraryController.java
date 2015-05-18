@@ -1,55 +1,81 @@
 package contextproject.controllers;
 
-import contextproject.audio.PlayerService;
 import contextproject.models.Playlist;
-import contextproject.models.Track;
+import contextproject.models.Property;
+
+import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 
 public class LibraryController {
   @FXML
-  private TableView<Track> tableView;
-
-  private Playlist library;
+  private TableView<Property> tableView;
+  @FXML
+  private TableColumn<Property, String> nameColumn;
+  @FXML
+  PlaylistController playlistController;
+  private ArrayList<Playlist> list = new ArrayList<Playlist>();
+  private ArrayList<String> names = new ArrayList<String>();
 
   /**
-   * Setup events on the tableView items.
+   * for the playlists.
+   * when clicked, show the tracks of the playlist.
    */
   public void begin() {
-    PlayerService.getInstance().setCurrentTrack(library.get(0));
-    PlayerService.getInstance().play();
 
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
-        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-          PlayerService.getInstance().setCurrentTrack(
-              tableView.getSelectionModel().getSelectedItem());
-          PlayerService.getInstance().transition();
+        if (event.isPrimaryButtonDown()) {
+          String name = tableView.getSelectionModel().getSelectedItem().getName();
+          Playlist lib = getLibrary(name);
+          playlistController.setPlaylist(lib);
+
         }
       }
     });
   }
 
   /**
-   * Update the table view.
+   * update the library.
    */
   public void update() {
-    ObservableList<Track> items = FXCollections.observableArrayList(library);
-    tableView.setItems(items);
-  }
+    tableView.getItems().clear();
+    ObservableList<String> items = FXCollections.observableArrayList(names);
+    for (String s : items) {
+      Property prop = new Property(s);
+      if (!tableView.getItems().contains(prop)) {
+        tableView.getItems().add(prop);
+      }
+    }
 
-  public Playlist getLibrary() {
-    return this.library;
   }
-
-  public void setLibrary(Playlist playlist) {
-    this.library = playlist;
+ /**
+  * sets the library of playlists.
+  * @param playlist the playlist itself
+  * @param name the name of the playlist.
+  * @param playlistController the controller where the tracks are shown.
+  */
+  public void setLibrary(Playlist playlist, String name, PlaylistController playlistController) {
+    this.playlistController = playlistController;
+    this.names.add(name);
+    this.list.add(playlist);
     this.update();
+  }
+
+  /**
+   * return the playlist.
+   * @param name the name of the playlist.
+   * @return the playlist.
+   */
+  public Playlist getLibrary(String name) {
+    int index = names.indexOf(name);
+    return list.get(index);
   }
 }
