@@ -1,11 +1,5 @@
 package contextproject.audio;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.LineUnavailableException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.io.TarsosDSPAudioInputStream;
@@ -15,13 +9,25 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
+
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
+
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.LineUnavailableException;
+
 
 public class PlayerService {
   private static PlayerService instance = null;
   private static Logger log = LogManager.getLogger(LibraryLoader.class.getName());
-  
+
   private Attributes attributes;
   private AudioFormat audioFormat;
   private AudioInputStream currentStream;
@@ -34,7 +40,7 @@ public class PlayerService {
   private AudioDispatcher nextDispatcher;
   private Thread currentThread;
   private Thread nextThread;
-  
+
   public Track currentTrack;
   public Track nextTrack;
 
@@ -44,7 +50,7 @@ public class PlayerService {
     attributes.setSamplingRate(44100);
     audioFormat = Streamer.streamAudioFormat(attributes);
   }
-  
+
   /**
    * Temporary method for playing tracks.
    */
@@ -63,14 +69,16 @@ public class PlayerService {
       e.printStackTrace();
     }
   }
-  
+
   public void transition() {
     currentThread.stop();
     this.play();
   }
-  
+  /**
+   * Stops the music.
+   */
   public void exit() {
-    if(currentThread != null) {
+    if (currentThread != null) {
       currentThread.stop();
     }
   }
@@ -93,6 +101,7 @@ public class PlayerService {
 
   /**
    * Returns the current PlayerService instance.
+   * 
    * @return PlayerService
    */
   public static PlayerService getInstance() {
