@@ -66,6 +66,7 @@ public class LibraryController {
    *          the name of the playlist.
    */
   public void setLibrary(Playlist playlist, String name) {
+    playlist.setName(name);
     this.names.add(name);
     this.lib.add(playlist);
     setAppLibrary(lib);
@@ -80,7 +81,12 @@ public class LibraryController {
   public void setLibrary(Library library) {
     int nr = 1;
     for (Playlist pl : library) {
-      String name = "playlist: " + nr;
+      String name = "";
+      if (pl.getName() == null) {
+        name = "playlist: " + nr;
+      } else {
+        name = pl.getName();
+      }
       this.names.add(name);
       this.lib.add(pl);
       this.update();
@@ -100,7 +106,7 @@ public class LibraryController {
     int index = names.indexOf(name);
     return lib.get(index);
   }
-  
+
   public void setAppLibrary(Library library) {
     App.setLibrary(library);
   }
