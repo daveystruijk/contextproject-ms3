@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class PlaylistProperty {
+public class TrackProperty {
 
   private final StringProperty title = new SimpleStringProperty();
   private final StringProperty artist = new SimpleStringProperty();
@@ -23,7 +23,7 @@ public class PlaylistProperty {
    * @param key key of track.
    * @param track the track itself, is for playability issues.
    */
-  public PlaylistProperty(String title, String artist,double bpm,Key key, Track track) {
+  public TrackProperty(String title, String artist,double bpm,Key key, Track track) {
     this.title.set(title);
     this.artist.set(artist);
     this.bpm.set(bpm);

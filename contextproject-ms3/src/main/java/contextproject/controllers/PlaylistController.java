@@ -4,7 +4,7 @@ import contextproject.audio.PlayerService;
 import contextproject.helpers.FileName;
 import contextproject.models.Key;
 import contextproject.models.Playlist;
-import contextproject.models.PlaylistProperty;
+import contextproject.models.TrackProperty;
 import contextproject.models.Track;
 
 import javafx.collections.FXCollections;
@@ -17,15 +17,15 @@ import javafx.scene.input.MouseEvent;
 
 public class PlaylistController {
   @FXML
-  private TableView<PlaylistProperty> tableView;
+  private TableView<TrackProperty> tableView;
   @FXML
-  private TableColumn<PlaylistProperty, String> titleColumn;
+  private TableColumn<TrackProperty, String> titleColumn;
   @FXML
-  private TableColumn<PlaylistProperty, String> artistColumn;
+  private TableColumn<TrackProperty, String> artistColumn;
   @FXML
-  private TableColumn<PlaylistProperty, Double> bpmColumn;
+  private TableColumn<TrackProperty, Double> bpmColumn;
   @FXML
-  private TableColumn<PlaylistProperty, Object> keyColumn;
+  private TableColumn<TrackProperty, Object> keyColumn;
 
   private Playlist playlist;
 
@@ -55,7 +55,7 @@ public class PlaylistController {
     tableView.getItems().clear();
     ObservableList<Track> items = FXCollections.observableArrayList(playlist);
     for (Track tr : items) {
-      PlaylistProperty prop = setProp(tr);
+      TrackProperty prop = setProp(tr);
       if (!tableView.getItems().contains(prop)) {
         tableView.getItems().add(prop);
       }
@@ -76,7 +76,7 @@ public class PlaylistController {
    * @param track the track to converted into a property
    * @return the property
    */
-  public PlaylistProperty setProp(Track track) {
+  public TrackProperty setProp(Track track) {
     String title = track.getTitle();
     if (title == null) {
       title = FileName.getName(track.getPath());
@@ -87,7 +87,7 @@ public class PlaylistController {
     }
     double bpm = track.getBpm();
     Key key = track.getKey();
-    PlaylistProperty prop = new PlaylistProperty(title, artist, bpm, key, track);
+    TrackProperty prop = new TrackProperty(title, artist, bpm, key, track);
     return prop;
   }
 }
