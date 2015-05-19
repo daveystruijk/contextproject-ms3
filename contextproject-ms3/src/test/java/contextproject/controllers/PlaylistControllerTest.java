@@ -1,8 +1,9 @@
 package contextproject.controllers;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
-import contextproject.controllers.LibraryController;
+
+
 import org.junit.Test;
 
 public class PlaylistControllerTest {
@@ -10,8 +11,9 @@ public class PlaylistControllerTest {
   @Test
   public void beginTest() {
     PlaylistController playController = new PlaylistController();
-    assertEquals(playController.getPlaylist(), null);
-    
+    PlaylistController dummyController = new PlaylistController();
+    assertNotEquals(playController, dummyController);
+
   }
 
 }
