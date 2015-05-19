@@ -16,7 +16,6 @@ public class FileName {
     temp = path.split(delimiter);
     int size = temp.length;
     String name = temp[(size - 1)];
-    System.out.println(name.replaceAll(" ", "_").toLowerCase());
     return name.replaceAll(" ", "_").toLowerCase();
   }
 }
