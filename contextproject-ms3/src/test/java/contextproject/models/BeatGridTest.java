@@ -1,7 +1,6 @@
 package contextproject.models;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -105,13 +104,13 @@ public class BeatGridTest {
   @Test
   public void setIntroTest() {
     beatGrid.setIntro(null);
-    assertTrue(beatGrid.getIntro() == null);
+    assertEquals(beatGrid.getIntro(), null);
   }
 
   @Test
   public void setOutroTest() {
     beatGrid.setOutro(null);
-    assertTrue(beatGrid.getOutro() == null);
+    assertEquals(beatGrid.getOutro(), null);
   }
 
 }
