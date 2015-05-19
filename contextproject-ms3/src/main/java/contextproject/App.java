@@ -63,7 +63,7 @@ public class App extends Application {
     App.controller = controller;
 
     Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Cool demo! bruh");
+    stage.setTitle("Demo Sprint 3");
     stage.setScene(scene);
     stage.show();
 
