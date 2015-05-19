@@ -2,7 +2,7 @@ package contextproject.helpers;
 
 import java.io.File;
 
-public class PlaylistName {
+public class FileName {
   /**
    * get the name of the folder.
    * 

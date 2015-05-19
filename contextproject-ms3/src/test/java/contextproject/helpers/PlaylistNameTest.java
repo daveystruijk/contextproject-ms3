@@ -12,7 +12,7 @@ public class PlaylistNameTest {
   public void MacTest() {
     String delimiter = File.separator;
     String path = delimiter + "Users" + delimiter + "Me" + delimiter + "file";
-    assertEquals("file",PlaylistName.getName(path));
+    assertEquals("file",FileName.getName(path));
   }
 
 }
