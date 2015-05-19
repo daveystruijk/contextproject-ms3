@@ -55,7 +55,7 @@ public class App extends Application {
 
     Parent root = (Parent) loader.load();
     final WindowController controller = (WindowController) loader.getController();
-    this.controller = controller;
+    App.controller = controller;
 
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Cool demo!");
@@ -88,9 +88,9 @@ public class App extends Application {
     playlist = folderLoader.load();
     PlaylistSorter sorter = new GreedyPlaylistSorter();
     Playlist mixablePlaylist = sorter.sort(playlist);
-    controller.setLibrary(mixablePlaylist,playlistname);
+    controller.setLibrary(mixablePlaylist, playlistname);
   }
-  
+
   public static WindowController getController() {
     return controller;
   }
