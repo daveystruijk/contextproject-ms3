@@ -22,7 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ M3UBuilderTest.class, TrackCompatibilityTest.class, FolderLoaderTest.class,
     BeatGridTest.class, KeyTest.class, TrackTest.class, AppTest.class, BeatRangeTest.class,
     LibraryLoaderTest.class, XmlExportTest.class, PlaylistControllerTest.class,
-    M3UBuilderTest.class, PlaylistNameTest.class LibraryTest.class })
+    M3UBuilderTest.class, PlaylistNameTest.class, LibraryTest.class })
 public class AllTests {
 
 }
