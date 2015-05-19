@@ -17,15 +17,15 @@ public class LibraryProperty implements Serializable{
   public LibraryProperty(String name) {
     this.name.set(name);
   }
-  
+
   public final StringProperty nameProperty() {
     return this.name;
   }
-     
+
   public final String getName() {
     return this.nameProperty().get();
   }
-     
+
   public final void setName(String name) {
     this.nameProperty().set(name);
   }

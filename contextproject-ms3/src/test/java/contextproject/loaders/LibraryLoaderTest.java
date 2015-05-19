@@ -2,17 +2,18 @@ package contextproject.loaders;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+
 import contextproject.formats.XmlExport;
 import contextproject.models.Library;
 import contextproject.models.Playlist;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class LibraryLoaderTest {
 
@@ -40,7 +41,7 @@ public class LibraryLoaderTest {
     }
   }
 
-  @Test
+  @Test(expected = IOException.class)
   public void noFileTest() throws IOException {
     LibraryLoader lib = new LibraryLoader("noDirectory");
     lib.load();

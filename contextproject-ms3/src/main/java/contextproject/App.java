@@ -63,7 +63,7 @@ public class App extends Application {
     App.controller = controller;
 
     Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Cool demo! bruh");
+    stage.setTitle("Demo Sprint 3");
     stage.setScene(scene);
     stage.show();
 
@@ -114,7 +114,7 @@ public class App extends Application {
   public static WindowController getController() {
     return controller;
   }
-  
+
   /**
    * sets the library to be exported to library.xml.  
    * @param lib the library of the app.
