@@ -32,10 +32,18 @@ public class Playlist extends ArrayList<Track> implements Serializable {
     }
   }
 
+  /**
+   * Set the name of the playlist.
+   * @param name playlist name.
+   */
   public void setName(String name) {
     this.name = name;
   }
 
+  /**
+   * Get the name of the playlist.
+   * @return name of the playlist.
+   */
   public String getName() {
     return name;
   }

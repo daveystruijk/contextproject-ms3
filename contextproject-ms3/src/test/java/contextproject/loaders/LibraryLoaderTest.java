@@ -1,15 +1,18 @@
 package contextproject.loaders;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-import contextproject.formats.XmlExport;
-import contextproject.models.Playlist;
+import java.io.File;
+import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
+import contextproject.formats.XmlExport;
+import contextproject.models.Library;
+import contextproject.models.Playlist;
 
 public class LibraryLoaderTest {
 
@@ -37,20 +40,26 @@ public class LibraryLoaderTest {
     }
   }
 
-  @Test
-  public void noFileTest() {
+  @Test(expected = IOException.class)
+  public void noFileTest() throws IOException {
     LibraryLoader lib = new LibraryLoader("noDirectory");
-    assertEquals(lib.load(), null);
+    lib.load();
   }
 
   @Test
   public void equalsPlaylistTest() {
     FolderLoader loader = new FolderLoader(directory);
     Playlist pl = loader.load();
-    XmlExport export = new XmlExport(directory + fileName, pl);
+    Library library = new Library();
+    library.add(pl);
+    XmlExport export = new XmlExport(directory + fileName, library);
     export.export();
     LibraryLoader lib = new LibraryLoader(directory + fileName);
-    assertEquals(pl, lib.load());
+    try {
+      assertEquals(library, lib.load());
+    } catch (IOException e) {
+      assertFalse(library.equals(null));
+    }
   }
 
 }

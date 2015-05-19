@@ -1,7 +1,6 @@
 package contextproject.loaders;
 
-import contextproject.helpers.StackTrace;
-import contextproject.models.Playlist;
+import contextproject.models.Library;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,10 +8,9 @@ import org.apache.logging.log4j.Logger;
 import java.beans.XMLDecoder;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class LibraryLoader implements PlaylistLoader {
+public class LibraryLoader {
 
   private static Logger log = LogManager.getLogger(LibraryLoader.class.getName());
   private File file;
@@ -21,26 +19,27 @@ public class LibraryLoader implements PlaylistLoader {
     file = new File(folder);
   }
 
-  @Override
-  public Playlist load() {
+  /**
+   * Load the library from the xml.
+   * 
+   * @return library.
+   * @throws IOException throws exception when the file is not found.
+   */
+  public Library load() throws IOException {
 
-    Playlist playlist = null;
+    Library library = null;
     try {
       FileInputStream fis = new FileInputStream(file);
       XMLDecoder in = new XMLDecoder(fis);
-      playlist = (Playlist) in.readObject();
+      library = (Library) in.readObject();
       in.close();
       fis.close();
+    } catch (ClassCastException e) {
+      log.warn("library.xml is corrupted. Starting with empty library...");
+      library = new Library();
+    } 
 
-    } catch (FileNotFoundException e) {
-      log.error("Exception");
-      log.trace(StackTrace.stackTrace(e));
-    } catch (IOException e) {
-      log.error("Exception");
-      log.trace(StackTrace.stackTrace(e));
-    }
-
-    return playlist;
+    return library;
   }
 
 }
