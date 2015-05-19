@@ -21,6 +21,7 @@ public class MaxFlow {
   private Track bestSink;
   private TrackTree trackTree;
   private Playlist optimalPath;
+  private int maxDepth = 5;
 
   /**
    * Constructor for a MaxFlow calculator.
@@ -127,7 +128,7 @@ public class MaxFlow {
     ArrayList<TrackNode> finishedNodes = new ArrayList<TrackNode>();
     children.add(new TrackNode(bestSource));
     int depth = 0;
-    while (children.size() > 0 && depth < 5) {
+    while (children.size() > 0 && depth < maxDepth) {
       newChildren = new ArrayList<TrackNode>();
       for (WeightedEdge edge : bestFlow.keySet()) {
         TrackNode possibleChild = new TrackNode((Track) edge.getEdgeTarget(), bestFlow.get(edge));
@@ -137,7 +138,7 @@ public class MaxFlow {
           for (TrackNode parent : children) {
             if (parent.equals(possibleParent) && !tree.hasAncestor(parent, possibleChild)
                 && !possibleChild.equals(new TrackNode(bestSource))
-                && !optimalPath.contains(possibleChild)) {
+                && !optimalPath.contains(possibleChild.getTrack())) {
               if (possibleChild.equals(new TrackNode(bestSink))) {
                 finishedNodes.add(possibleChild);
               } else {
@@ -156,13 +157,29 @@ public class MaxFlow {
       depth++;
       children = newChildren;
     }
-
     trackTree = tree;
     if (finishedNodes.size() > 0) {
-      optimalPath = trackTree.optimalPath(finishedNodes);
+      System.out.println(newChildren.size() + "    " + finishedNodes.size());
+      if (optimalPath.size() > 1) {
+        optimalPath.addAll(trackTree.optimalPath(finishedNodes).subList(1, maxDepth-1));
+      } else {
+        optimalPath = trackTree.optimalPath(finishedNodes);
+      }
+
     } else {
-      optimalPath.addAll(trackTree.optimalPath(children).subList(1, 5));
+      if (optimalPath.size() > 1) {
+        optimalPath.addAll(trackTree.optimalPath(children).subList(1, maxDepth-1));
+      } else {
+        optimalPath = trackTree.optimalPath(children);
+      }
       bestSource = optimalPath.get(optimalPath.size() - 1);
+      System.out.println(optimalPath.toString());
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
       calculateOptimalPath();
     }
   }
