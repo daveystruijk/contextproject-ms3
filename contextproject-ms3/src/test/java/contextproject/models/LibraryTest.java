@@ -3,9 +3,9 @@ package contextproject.models;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 public class LibraryTest {
 
@@ -14,7 +14,7 @@ public class LibraryTest {
     Library lib = new Library();
     assertTrue(lib.isEmpty());
   }
-  
+
   @Test
   public void argumentConstructorTest() {
     ArrayList<Playlist> array = new ArrayList<Playlist>();
