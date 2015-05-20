@@ -2,7 +2,7 @@ package contextproject.helpers;
 
 import java.io.File;
 
-public class PlaylistName {
+public class FileName {
   /**
    * get the name of the folder.
    * 
@@ -16,7 +16,6 @@ public class PlaylistName {
     temp = path.split("\\"+delimiter);
     int size = temp.length;
     String name = temp[(size - 1)];
-    System.out.println(name.replaceAll(" ", "_").toLowerCase());
     return name.replaceAll(" ", "_").toLowerCase();
   }
 }
