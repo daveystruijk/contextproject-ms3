@@ -40,7 +40,7 @@ public class PlaylistController {
       @Override
       public void handle(MouseEvent event) {
         if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-          PlayerService.getInstance().setCurrentTrack(
+          PlayerService.getInstance().setNextTrack(
               tableView.getSelectionModel().getSelectedItem().getTrack());
           PlayerService.getInstance().transition();
         }
@@ -70,7 +70,7 @@ public class PlaylistController {
     this.playlist = playlist;
     this.update();
   }
-  
+
   /**
    * set the property to be added to the view.
    * @param track the track to converted into a property

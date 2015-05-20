@@ -1,13 +1,12 @@
 package contextproject.audio;
 
+import javax.sound.sampled.LineUnavailableException;
 
-import be.tarsos.dsp.AudioDispatcher;
-import be.tarsos.dsp.io.TarsosDSPAudioInputStream;
-import be.tarsos.dsp.io.jvm.AudioPlayer;
-import be.tarsos.dsp.io.jvm.JVMAudioInputStream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
-import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.loaders.LibraryLoader;
@@ -28,59 +27,61 @@ public class PlayerService {
   private static PlayerService instance = null;
   private static Logger log = LogManager.getLogger(LibraryLoader.class.getName());
 
+  private TrackProcessor currentProcessor;
+  private TrackProcessor nextProcessor;
+
   private Attributes attributes;
-  private AudioFormat audioFormat;
-  private AudioInputStream currentStream;
-  private AudioInputStream nextStream;
-  private TarsosDSPAudioInputStream currentTarsosStream;
-  private TarsosDSPAudioInputStream nextTarsosStream;
-  private AudioPlayer currentPlayer;
-  private AudioPlayer nextPlayer;
-  private AudioDispatcher currentDispatcher;
-  private AudioDispatcher nextDispatcher;
-  private Thread currentThread;
-  private Thread nextThread;
 
   public Track currentTrack;
   public Track nextTrack;
 
+  final int SAMPLE_RATE = 44100;
+
   protected PlayerService() throws EncoderException, LineUnavailableException {
     // Initialize standard attributes for audio playback
     attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
-    attributes.setSamplingRate(44100);
-    audioFormat = Streamer.streamAudioFormat(attributes);
+    attributes.setSamplingRate(SAMPLE_RATE);
   }
 
   /**
    * Temporary method for playing tracks.
    */
   public void play() {
+    currentProcessor = new TrackProcessor(attributes);
+    currentProcessor.load(currentTrack);
     try {
-      currentStream = Streamer.stream(currentTrack.getPath(), attributes);
-      currentTarsosStream = new JVMAudioInputStream(currentStream);
-      currentPlayer = new AudioPlayer(audioFormat);
-      currentDispatcher = new AudioDispatcher(currentTarsosStream, 2048, 0);
-      currentDispatcher.addAudioProcessor(currentPlayer);
-      currentThread = new Thread(currentDispatcher);
-      currentThread.start();
-    } catch (EncoderException e) {
-      e.printStackTrace();
-    } catch (LineUnavailableException e) {
+      currentProcessor.play(1.0);
+    } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }
   }
 
   public void transition() {
-    currentThread.stop();
-    this.play();
+    nextProcessor = new TrackProcessor(attributes);
+    nextProcessor.load(nextTrack);
+    try {
+      nextProcessor.play(0.0);
+    } catch (EncoderException | LineUnavailableException e) {
+      e.printStackTrace();
+    }
+
+    // TODO: Refactor into transition class
+    for(int i = 0; i < 30; i++) {
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      currentProcessor.setGain(1.0 - (i / 30.0));
+      nextProcessor.setGain((double) i / 30.0);
+    }
+    currentProcessor.unload();
+    currentProcessor = nextProcessor;
   }
   /**
    * Stops the music.
    */
   public void exit() {
-    if (currentThread != null) {
-      currentThread.stop();
-    }
   }
 
   public Track getCurrentTrack() {
@@ -101,7 +102,7 @@ public class PlayerService {
 
   /**
    * Returns the current PlayerService instance.
-   * 
+   *
    * @return PlayerService
    */
   public static PlayerService getInstance() {
