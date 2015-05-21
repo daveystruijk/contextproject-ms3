@@ -13,7 +13,7 @@ public class FileName {
   public static String getName(String path) {
     String[] temp;
     String delimiter = File.separator;
-    temp = path.split("\\"+delimiter);
+    temp = path.split("\\" + delimiter);
     int size = temp.length;
     String name = temp[(size - 1)];
     return name.replaceAll(" ", "_").toLowerCase();

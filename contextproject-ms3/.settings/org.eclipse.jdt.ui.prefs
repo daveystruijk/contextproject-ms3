@@ -61,6 +61,6 @@ eclipse.preferences.version=1
 formatter_profile=_eclipse-cs contextproject-ms3
 formatter_settings_version=12
 org.eclipse.jdt.ui.ignorelowercasenames=true
-org.eclipse.jdt.ui.importorder=\#;contextproject;org;java;javax;com;
+org.eclipse.jdt.ui.importorder=\#;com;contextproject;org;java;javax;
 org.eclipse.jdt.ui.ondemandthreshold=99
 org.eclipse.jdt.ui.staticondemandthreshold=99

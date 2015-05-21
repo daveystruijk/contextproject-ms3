@@ -57,7 +57,8 @@ public class MaxFlow {
           graph.removeEdge(edge1);
           graph.removeEdge(edge2);
 
-          EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(
+          EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp 
+              = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(
               graph);
           edmondsKarp.calculateMaximumFlow(source, sink);
 
@@ -108,9 +109,6 @@ public class MaxFlow {
     Collections.reverse(scores);
 
     double minScore = 0.5;
-    // if (scores.size() > 19) {
-    // minScore = scores.get(19);
-    // }
 
     for (WeightedEdge edge : bestFlow.keySet()) {
       if (tempMap.containsKey(edge)) {

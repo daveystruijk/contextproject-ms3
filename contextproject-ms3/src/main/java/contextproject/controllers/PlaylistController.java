@@ -4,8 +4,8 @@ import contextproject.audio.PlayerService;
 import contextproject.helpers.FileName;
 import contextproject.models.Key;
 import contextproject.models.Playlist;
-import contextproject.models.TrackProperty;
 import contextproject.models.Track;
+import contextproject.models.TrackProperty;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

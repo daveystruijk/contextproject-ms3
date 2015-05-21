@@ -1,10 +1,5 @@
 package contextproject.audio;
 
-import javax.sound.sampled.LineUnavailableException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
@@ -15,13 +10,7 @@ import contextproject.models.Track;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
-
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
-
 
 public class PlayerService {
   private static PlayerService instance = null;
@@ -66,7 +55,7 @@ public class PlayerService {
     }
 
     // TODO: Refactor into transition class
-    for(int i = 0; i < 30; i++) {
+    for (int i = 0; i < 30; i++) {
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {

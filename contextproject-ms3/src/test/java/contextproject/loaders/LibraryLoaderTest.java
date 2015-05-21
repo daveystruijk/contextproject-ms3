@@ -7,12 +7,12 @@ import contextproject.formats.XmlExport;
 import contextproject.models.Library;
 import contextproject.models.Playlist;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class LibraryLoaderTest {

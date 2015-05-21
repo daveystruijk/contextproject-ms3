@@ -53,14 +53,14 @@ public class TrackNodeTest {
     assertEquals(0, (int) tracknode1.getScore());
     assertEquals(1, (int) tracknode3.getScore());
   }
-  
+
   @Test
   public void scoreTest() {
     assertEquals(0, (int) tracknode2.getScore());
     tracknode2.setScore(2.0);
     assertEquals(2, (int) tracknode2.getScore());
   }
-  
+
   @Test
   public void parentTest() {
     assertEquals(false, tracknode2.hasParent());
@@ -68,24 +68,24 @@ public class TrackNodeTest {
     assertEquals(true, tracknode2.hasParent());
     assertEquals(tracknode1, tracknode2.getParent());
   }
-  
+
   @Test
   public void equalsTest() {
     assertEquals(true, tracknode2.equals(new TrackNode(track2)));
     assertEquals(false, tracknode2.equals(new TrackNode(track3)));
     assertEquals(false, tracknode2.equals(track2));
   }
-  
+
   @Test
-  public void childrenTest(){
+  public void childrenTest() {
     assertEquals(false, tracknode1.containsChild(tracknode2));
     assertEquals(0, tracknode1.getChildren().size());
     tracknode1.addChild(tracknode2);
     assertEquals(true, tracknode1.containsChild(tracknode2));
   }
-  
+
   @Test
-  public void toStringTest(){
+  public void toStringTest() {
     assertEquals("succesful test", tracknode1.toString());
   }
 }

@@ -17,76 +17,82 @@ public class TrackProperty {
 
   /**
    * constructor of the playlist property.
-   * @param title title of the song.
-   * @param artist the artist.
-   * @param bpm the bpm of the track.
-   * @param key key of track.
-   * @param track the track itself, is for playability issues.
+   * 
+   * @param title
+   *          title of the song.
+   * @param artist
+   *          the artist.
+   * @param bpm
+   *          the bpm of the track.
+   * @param key
+   *          key of track.
+   * @param track
+   *          the track itself, is for playability issues.
    */
-  public TrackProperty(String title, String artist,double bpm,Key key, Track track) {
+  public TrackProperty(String title, String artist, double bpm, Key key, Track track) {
     this.title.set(title);
     this.artist.set(artist);
     this.bpm.set(bpm);
     this.key.set(key);
     this.track.set(track);
   }
-  
+
   public final StringProperty titleProperty() {
     return this.title;
   }
-     
+
   public final String getTitle() {
     return this.titleProperty().get();
   }
-     
+
   public final void setTitle(String title) {
     this.titleProperty().set(title);
   }
-  
+
   public final StringProperty artistProperty() {
     return this.artist;
   }
-     
+
   public final String getArtist() {
     return this.artistProperty().get();
   }
-     
+
   public final void setArtist(String artist) {
     this.artistProperty().set(artist);
   }
-  
+
   public final DoubleProperty bpmProperty() {
     return this.bpm;
   }
-     
-  public final double getBPM() {
+
+  public final double getBpm() {
     return this.bpmProperty().get();
   }
-     
-  public final void setBPM(Double bpm) {
+
+  public final void setBpm(Double bpm) {
     this.bpmProperty().set(bpm);
   }
-  
+
   public final ObjectProperty<Key> keyProperty() {
     return this.key;
   }
-     
+
   public final Key getKey() {
     return this.keyProperty().get();
   }
-     
+
   public final void setKey(Key key) {
     this.keyProperty().set(key);
   }
-  
+
   public final ObjectProperty<Track> trackProperty() {
     return this.track;
   }
-     
+
   public final Track getTrack() {
     return this.trackProperty().get();
   }
-     
+
   public final void setatrack(Track track) {
     this.trackProperty().set(track);
   }
