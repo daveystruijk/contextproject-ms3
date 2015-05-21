@@ -13,7 +13,7 @@ public class PlaylistName {
   public static String getName(String path) {
     String[] temp;
     String delimiter = File.separator;
-    temp = path.split("\\"+delimiter);
+    temp = path.split("\\" + delimiter);
     int size = temp.length;
     String name = temp[(size - 1)];
     System.out.println(name.replaceAll(" ", "_").toLowerCase());
