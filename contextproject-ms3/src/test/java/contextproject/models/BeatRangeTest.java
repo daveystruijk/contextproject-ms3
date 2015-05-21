@@ -24,13 +24,13 @@ public class BeatRangeTest {
   @Test
   public void getStartTest() {
     assertEquals(beatRange.getStart(), 10);
-    assertFalse(beatRange2.getStart() == 10);
+    assertEquals(beatRange2.getStart(), 11);
   }
 
   @Test
   public void getLengthTest() {
     assertEquals(beatRange.getLength(), 10);
-    assertFalse(beatRange2.getLength() == 10);
+    assertEquals(beatRange2.getLength(), 11);
   }
 
   @Test

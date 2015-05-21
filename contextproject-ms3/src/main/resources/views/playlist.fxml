@@ -14,22 +14,24 @@
     <URL value="@../stylesheets/library.css" />
   </stylesheets>
   <columns>
-    <TableColumn text="Title" sortable="false">
+    <TableColumn text="Title" fx:id="titleColumn" sortable="false"
+    minWidth="300" prefWidth="350">
       <cellValueFactory>
         <PropertyValueFactory property="title" />
       </cellValueFactory>
     </TableColumn>
-    <TableColumn text="Artist" sortable="false">
+    <TableColumn text="Artist" fx:id="artistColumn" sortable="false"
+    minWidth="150" prefWidth="175">
       <cellValueFactory>
         <PropertyValueFactory property="artist" />
       </cellValueFactory>
     </TableColumn>
-    <TableColumn text="BPM" sortable="false">
+    <TableColumn text="BPM" fx:id="bpmColumn" sortable="false">
       <cellValueFactory>
         <PropertyValueFactory property="bpm" />
       </cellValueFactory>
     </TableColumn>
-    <TableColumn text="Key" sortable="false">
+    <TableColumn text="Key" fx:id="keyColumn" sortable="false">
       <cellValueFactory>
         <PropertyValueFactory property="key" />
       </cellValueFactory>

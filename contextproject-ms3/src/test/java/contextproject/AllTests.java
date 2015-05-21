@@ -24,9 +24,10 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ M3UBuilderTest.class, TrackCompatibilityTest.class, FolderLoaderTest.class,
     BeatGridTest.class, KeyTest.class, TrackTest.class, AppTest.class, BeatRangeTest.class,
-    LibraryLoaderTest.class, XmlExportTest.class, GraphTest.class, GreedyPlaylistSorterTest.class,
-    TrackNodeTest.class, TrackTreeTest.class, PlaylistControllerTest.class,
-    M3UBuilderTest.class, PlaylistNameTest.class})
+    GraphTest.class, GreedyPlaylistSorterTest.class, TrackNodeTest.class, TrackTreeTest.class,
+    M3UBuilderTest.class, LibraryLoaderTest.class, XmlExportTest.class, PlaylistControllerTest.class,
+    M3UBuilderTest.class, PlaylistNameTest.class, StackTraceTest.class, PropertyTest.class,
+    PlayerServiceTest.class, LibraryTest.class })
 public class AllTests {
 
 }

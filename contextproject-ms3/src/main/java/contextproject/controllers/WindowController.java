@@ -1,5 +1,6 @@
 package contextproject.controllers;
 
+import contextproject.models.Library;
 import contextproject.models.Playlist;
 
 import javafx.fxml.FXML;
@@ -21,11 +22,25 @@ public class WindowController {
    * @param playlist
    *          : The playlist that comes from our algorithm
    */
-  public void setLibrary(Playlist playlist,String name) {
+  public void setEverything(Playlist playlist, String name) {
     playlistController.setPlaylist(playlist);
-    libraryController.setLibrary(playlist,name,playlistController);
+    libraryController.setLibrary(playlist, name);
+    libraryController.begin(playlistController);
     playlistController.begin();
-    libraryController.begin();
+    playerControlsController.togglePlayPause();
+  }
+  /**
+   * this function passes on the library from the library.xml to the view
+   * 
+   * @param library
+   *          the loaded library
+   */
+  public void setLibrary(Library library) {
+    Playlist pl = library.get(0);
+    playlistController.setPlaylist(pl);
+    libraryController.setLibrary(library);
+    libraryController.begin(playlistController);
+    playlistController.begin();
     playerControlsController.togglePlayPause();
   }
 }
