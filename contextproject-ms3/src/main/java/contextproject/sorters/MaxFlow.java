@@ -11,8 +11,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.javafx.css.parser.LadderConverter;
-
 public class MaxFlow {
 
   private DirectedGraph<Track, WeightedEdge> graph;
@@ -33,8 +31,9 @@ public class MaxFlow {
     this.graph = graph;
     optimalPath = new Playlist();
     calculateMaxflow();
+
+    System.out.println(bestSource + "\n" + bestSink + "\n" + bestFlow.toString());
     convertMap();
-    System.out.println(bestFlow.toString());
     calculateOptimalPath();
     System.out.println(optimalPath.toString());
 
@@ -45,7 +44,8 @@ public class MaxFlow {
    */
   private void calculateMaxflow() {
     Double bestscore = 0.0;
-
+    Double bestAverage = 0.0;
+    int bestCountNonZero = 0;
     for (int i = 0; i < graph.vertexSet().size(); i++) {
       for (int j = 0; j < graph.vertexSet().size(); j++) {
         if (i != j) {
@@ -63,14 +63,34 @@ public class MaxFlow {
 
           graph.addEdge(source, sink, edge1);
           graph.addEdge(sink, source, edge2);
+          double average = 0.0;
+          int countNonZero = 0;
+          for (Double value : edmondsKarp.getMaximumFlow().values()) {
+            {
+              average += value;
+              if (value > 0) {
+                countNonZero++;
+              }
+            }
+            boolean add = false;
+            if (countNonZero > bestCountNonZero) {
+              add = true;
+            } else if (countNonZero == bestCountNonZero && average > bestAverage) {
+              add = true;
+            } else if (countNonZero == bestCountNonZero && average == bestAverage
+                && edmondsKarp.getMaximumFlowValue() > bestscore) {
+              add = true;
+            }
 
-          if (edmondsKarp.getMaximumFlowValue() > bestscore) {
-            bestscore = edmondsKarp.getMaximumFlowValue();
-            bestFlow = edmondsKarp.getMaximumFlow();
-            bestSource = edmondsKarp.getCurrentSource();
-            bestSink = edmondsKarp.getCurrentSink();
+            if (add) {
+              bestscore = edmondsKarp.getMaximumFlowValue();
+              bestFlow = edmondsKarp.getMaximumFlow();
+              bestSource = edmondsKarp.getCurrentSource();
+              bestSink = edmondsKarp.getCurrentSink();
+              bestAverage = average;
+              bestCountNonZero = countNonZero;
+            }
           }
-
         }
 
       }
@@ -87,7 +107,7 @@ public class MaxFlow {
     Collections.sort(scores);
     Collections.reverse(scores);
 
-    double minScore = 1.0;
+    double minScore = 0.5;
     // if (scores.size() > 19) {
     // minScore = scores.get(19);
     // }
@@ -158,28 +178,22 @@ public class MaxFlow {
       children = newChildren;
     }
     trackTree = tree;
+    System.out.println(children.size() + "    " + finishedNodes.size());
     if (finishedNodes.size() > 0) {
-      System.out.println(newChildren.size() + "    " + finishedNodes.size());
       if (optimalPath.size() > 1) {
-        optimalPath.addAll(trackTree.optimalPath(finishedNodes).subList(1, maxDepth-1));
+        optimalPath.addAll(trackTree.optimalPath(finishedNodes).subList(1, maxDepth - 1));
       } else {
         optimalPath = trackTree.optimalPath(finishedNodes);
       }
 
     } else {
       if (optimalPath.size() > 1) {
-        optimalPath.addAll(trackTree.optimalPath(children).subList(1, maxDepth-1));
+        optimalPath.addAll(trackTree.optimalPath(children).subList(1, maxDepth - 1));
       } else {
         optimalPath = trackTree.optimalPath(children);
       }
       bestSource = optimalPath.get(optimalPath.size() - 1);
       System.out.println(optimalPath.toString());
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
       calculateOptimalPath();
     }
   }
