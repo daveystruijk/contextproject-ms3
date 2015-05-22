@@ -4,8 +4,8 @@ import contextproject.audio.PlayerService;
 import contextproject.helpers.FileName;
 import contextproject.models.Key;
 import contextproject.models.Playlist;
-import contextproject.models.TrackProperty;
 import contextproject.models.Track;
+import contextproject.models.TrackProperty;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -73,7 +73,9 @@ public class PlaylistController {
 
   /**
    * set the property to be added to the view.
-   * @param track the track to converted into a property
+   * 
+   * @param track
+   *          the track to converted into a property
    * @return the property
    */
   public TrackProperty setProp(Track track) {

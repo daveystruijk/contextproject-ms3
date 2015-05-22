@@ -43,7 +43,7 @@ public class LibraryController {
   }
 
   /**
-   * update the library.
+   * Update the library.
    */
   public void update() {
     tableView.getItems().clear();
@@ -57,7 +57,7 @@ public class LibraryController {
 
   }
   /**
-   * sets the library of playlists.
+   * Sets the library of playlists.
    * 
    * @param playlist
    *          the playlist itself
