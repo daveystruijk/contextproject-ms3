@@ -155,7 +155,7 @@ public class TrackTest {
 
       track.setBeatGrid(bg);
       track.setKey(newKey);
-
+      assertTrue(track.equals(track));
       assertEquals(track.getAlbum(), "album");
       assertEquals(track.getTitle(), "Title");
       assertEquals(track.getArtist(), "artist");

@@ -64,7 +64,7 @@ public class TrackProcessor {
     setState(PlayerState.FILE_LOADED);
   }
   /**
-   * Unloads tracks,
+   * Unloads tracks.
    */
   public void unload() {
     if (dispatcher != null) {
