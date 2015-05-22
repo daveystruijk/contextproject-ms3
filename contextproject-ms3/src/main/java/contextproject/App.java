@@ -4,7 +4,7 @@ import contextproject.audio.PlayerService;
 import contextproject.controllers.CLIController;
 import contextproject.controllers.WindowController;
 import contextproject.formats.XmlExport;
-import contextproject.helpers.PlaylistName;
+import contextproject.helpers.FileName;
 import contextproject.loaders.FolderLoader;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Library;
@@ -101,7 +101,7 @@ public class App extends Application {
       }
 
       FolderLoader folderLoader = new FolderLoader(directory);
-      String playlistname = PlaylistName.getName(directory);
+      String playlistname = FileName.getName(directory);
       Playlist playlist = folderLoader.load();
       PlaylistSorter sorter = new GreedyPlaylistSorter();
       Playlist mixablePlaylist = sorter.sort(playlist);
@@ -116,10 +116,8 @@ public class App extends Application {
   }
 
   /**
-   * sets the library to be exported to library.xml.
-   * 
-   * @param lib
-   *          the library of the app.
+   * sets the library to be exported to library.xml.  
+   * @param lib the library of the app.
    */
   public static void setLibrary(Library lib) {
     library.clear();

@@ -1,19 +1,19 @@
 package contextproject.formats;
 
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import contextproject.helpers.StackTrace;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Library;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 /**
  * Class to export data to a XML file.
@@ -44,5 +44,5 @@ public class XmlExport {
     encoder.writeObject(library);
     encoder.close();
   }
-  
+
 }
