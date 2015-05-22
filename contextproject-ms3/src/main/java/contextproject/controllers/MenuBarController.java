@@ -1,7 +1,7 @@
 package contextproject.controllers;
 
 import contextproject.App;
-import contextproject.helpers.PlaylistName;
+import contextproject.helpers.FileName;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
 import contextproject.sorters.GreedyPlaylistSorter;
@@ -44,7 +44,7 @@ public class MenuBarController {
     }
 
     FolderLoader folderLoader = new FolderLoader(directory);
-    String playlistname = PlaylistName.getName(directory);
+    String playlistname = FileName.getName(directory);
     Playlist playlist = folderLoader.load();
     PlaylistSorter sorter = new GreedyPlaylistSorter();
     Playlist mixablePlaylist = sorter.sort(playlist);

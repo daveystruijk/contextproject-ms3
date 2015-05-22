@@ -5,12 +5,16 @@ import java.io.Serializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Property implements Serializable {
+public class LibraryProperty implements Serializable{
 
-  private static final long serialVersionUID = 3236190461451926648L;
+  /**
+   * serial.
+   */
+  private static final long serialVersionUID = 1L;
+  
   private final StringProperty name = new SimpleStringProperty();
-
-  public Property(String name) {
+  
+  public LibraryProperty(String name) {
     this.name.set(name);
   }
 

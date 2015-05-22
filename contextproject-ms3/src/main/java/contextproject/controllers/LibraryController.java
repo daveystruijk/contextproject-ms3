@@ -2,8 +2,8 @@ package contextproject.controllers;
 
 import contextproject.App;
 import contextproject.models.Library;
+import contextproject.models.LibraryProperty;
 import contextproject.models.Playlist;
-import contextproject.models.Property;
 
 import java.util.ArrayList;
 
@@ -17,9 +17,9 @@ import javafx.scene.input.MouseEvent;
 
 public class LibraryController {
   @FXML
-  private TableView<Property> tableView;
+  private TableView<LibraryProperty> tableView;
   @FXML
-  private TableColumn<Property, String> nameColumn;
+  private TableColumn<LibraryProperty, String> nameColumn;
   @FXML
   private PlaylistController playlistController;
   private Library lib = new Library();
@@ -37,7 +37,6 @@ public class LibraryController {
           String name = tableView.getSelectionModel().getSelectedItem().getName();
           Playlist lib = getPlaylist(name);
           playlistController.setPlaylist(lib);
-
         }
       }
     });
@@ -50,7 +49,7 @@ public class LibraryController {
     tableView.getItems().clear();
     ObservableList<String> items = FXCollections.observableArrayList(names);
     for (String s : items) {
-      Property prop = new Property(s);
+      LibraryProperty prop = new LibraryProperty(s);
       if (!tableView.getItems().contains(prop)) {
         tableView.getItems().add(prop);
       }
