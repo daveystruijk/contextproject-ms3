@@ -1,6 +1,7 @@
 package contextproject.models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -49,6 +50,27 @@ public class TrackTest {
     }
   }
 
+  @Test
+  public void notEqualsTest() {
+    URL urlOne = getClass().getResource("/beep.mp3");
+    URL urlTwo = getClass().getResource("/buz.mp3");
+    Path resourceOne;
+    Path resourceTwo;
+    try {
+      resourceOne = Paths.get(urlOne.toURI());
+      resourceTwo = Paths.get(urlTwo.toURI());
+
+      Track track = new Track(resourceOne.toString());
+      Track track2 = new Track(resourceTwo.toString());
+
+      assertFalse((track.equals(track2)));
+    } catch (Exception e) {
+      fail("");
+      e.printStackTrace();
+    }
+
+  }
+  
   @Test
   public void trackConstructorWithAdditionalInfoTest() {
 
@@ -133,7 +155,7 @@ public class TrackTest {
 
       track.setBeatGrid(bg);
       track.setKey(newKey);
-
+      assertTrue(track.equals(track));
       assertEquals(track.getAlbum(), "album");
       assertEquals(track.getTitle(), "Title");
       assertEquals(track.getArtist(), "artist");

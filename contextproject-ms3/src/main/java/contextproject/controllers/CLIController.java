@@ -29,19 +29,17 @@ public class CLIController {
 
     String fileName = sc.nextLine();
     sc.close();
-    
+
     FolderLoader folderLoader = new FolderLoader(fileName);
     Playlist playlist = folderLoader.load();
     PlaylistSorter sorter = new GreedyPlaylistSorter();
     Playlist result = sorter.sort(playlist);
-    
-    System.out.println("Done! Calculated mixable playlist through "
-        + result.size() + " tracks.");
-    
+
+    System.out.println("Done! Calculated mixable playlist through " + result.size() + " tracks.");
+
     M3UBuilder builder = new M3UBuilder(result);
     String name = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.m3u'").format(new Date());
-    String dirPath = System.getProperty("user.dir").toString() + File.separator 
-        + "playlists";
+    String dirPath = System.getProperty("user.dir").toString() + File.separator + "playlists";
     new File(dirPath).mkdirs();
     String fullPath = dirPath + File.separator + name;
     try {
@@ -51,7 +49,7 @@ public class CLIController {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    
+
     System.out.println("Exported to " + fullPath);
   }
 }

@@ -21,9 +21,9 @@ public class PlayerControlsController {
       public void handle(ActionEvent arg0) {
         if (playButton.getId().equals("playButton")) {
           playButton.setId("pauseButton");
-          //TODO Music player control: ON
+          // TODO Music player control: ON
         } else {
-          //TODO Music player contro: OFF
+          // TODO Music player control: OFF
           playButton.setId("playButton");
         }
       }

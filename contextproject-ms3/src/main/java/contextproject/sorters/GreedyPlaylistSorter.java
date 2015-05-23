@@ -12,7 +12,7 @@ public class GreedyPlaylistSorter implements PlaylistSorter {
   public Playlist sort(Playlist playlist) {
     ArrayList<Track> addedTracks = new ArrayList<Track>();
     Playlist mixablePlaylist = new Playlist();
-    
+
     Track currentTrack = playlist.get(0);
     mixablePlaylist.add(currentTrack);
     while (currentTrack != null) {
@@ -31,23 +31,20 @@ public class GreedyPlaylistSorter implements PlaylistSorter {
       if (bestMatch == null) {
         break;
       }
-      
-      System.out.println();
+
       printTrack(currentTrack);
       printTrack(bestMatch);
       System.out.println(bestScore);
-      System.out.println();
-      
+
       mixablePlaylist.add(bestMatch);
       currentTrack = bestMatch;
     }
-    
+
     return mixablePlaylist;
   }
 
-  
   public void printTrack(Track track) {
-    System.out.println(track.getArtist() + " - " + track.getTitle() + " | "
-        + track.getKey().getNormalizedKeyString() + ", " + track.getBpm());
+    System.out.println("\n" + track.getArtist() + " - " + track.getTitle() + " | "
+        + track.getKey().getNormalizedKeyString() + ", " + track.getBpm() + "\n");
   }
 }

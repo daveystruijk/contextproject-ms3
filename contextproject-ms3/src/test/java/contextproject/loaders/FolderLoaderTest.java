@@ -49,12 +49,11 @@ public class FolderLoaderTest {
   public void addSubDirectoryTest() {
     pl.add(new Track(directory + File.separator + "SubDirectory" + File.separator + "Beeps"
         + File.separator + "HighBeep" + File.separator + "HighBeep.mp3"));
-    pl.add(new Track(directory + File.separator + "SubDirectory" + File.separator 
-        + "shortBeep.mp3"));
+    pl.add(new Track(directory + File.separator + "SubDirectory" + File.separator + "shortBeep.mp3"));
     FolderLoader loader = new FolderLoader(directory + File.separator + "SubDirectory");
     assertTrue(loader.load().containsAll(pl) && pl.containsAll(loader.load()));
   }
-  
+
   @Test
   public void noDirectoryTest2() {
     FolderLoader loader = new FolderLoader("noDirectory");
@@ -67,8 +66,7 @@ public class FolderLoaderTest {
     pl.add(new Track(directory + File.separator + "buz2.mp3"));
     pl.add(new Track(directory + File.separator + "SubDirectory" + File.separator + "Beeps"
         + File.separator + "HighBeep" + File.separator + "HighBeep.mp3"));
-    pl.add(new Track(directory + File.separator + "SubDirectory" + File.separator 
-        + "shortBeep.mp3"));
+    pl.add(new Track(directory + File.separator + "SubDirectory" + File.separator + "shortBeep.mp3"));
     FolderLoader loader = new FolderLoader(directory);
     assertTrue(loader.load().containsAll(pl) && pl.containsAll(loader.load()));
   }

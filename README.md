@@ -7,9 +7,7 @@
 ![Master](https://travis-ci.org/daveystruijk/contextproject-ms3.svg?branch=develop)
 
 ## Planning
-Development will be planned in sprints. [Issues, upcoming features, and the current sprint plan can be found on Trello](https://trello.com/b/zRkZ4BgD/contextproject).
-
-**All non-technical deliverables can be found [here](https://drive.google.com/folderview?id=0Bz11IfzFqxcWflhYalNCZlJzM1g4WExrS3AyNVVvNGJfeDA4OW9NZ19jck50dmxXUm5USUk).**
+Development is planned in sprints. All sprint plans and reflections can be found in the [SE-deliverables](https://github.com/daveystruijk/contextproject-ms3/tree/develop/contextproject-ms3/SE-deliverables) directory.
 
 ## Group Members (MS3)
 - R.S. Graafmans

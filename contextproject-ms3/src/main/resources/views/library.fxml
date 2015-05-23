@@ -8,30 +8,17 @@
 <?import javafx.scene.layout.GridPane?>
 
 <TableView fx:controller="contextproject.controllers.LibraryController"
-	xmlns:fx="http://javafx.com/fxml" fx:id="tableView">
-	<stylesheets>
-		<URL value="@../stylesheets/library.css" />
-	</stylesheets>
-	<columns>
-		<TableColumn text="Title" sortable="false">
-		  <cellValueFactory>
-        <PropertyValueFactory property="title" />
-      </cellValueFactory>
-		</TableColumn>
-		<TableColumn text="Artist" sortable="false">
-		  <cellValueFactory>
-        <PropertyValueFactory property="artist" />
-      </cellValueFactory>
-		</TableColumn>
-		<TableColumn text="BPM" sortable="false">
-		  <cellValueFactory>
-        <PropertyValueFactory property="bpm" />
-      </cellValueFactory>
-		</TableColumn>
-		<TableColumn text="Key" sortable="false">
-		  <cellValueFactory>
-        <PropertyValueFactory property="key" />
+  xmlns:fx="http://javafx.com/fxml" fx:id="tableView" minWidth="220"
+  prefWidth="250">
+  <stylesheets>
+    <URL value="@../stylesheets/library.css" />
+  </stylesheets>
+  <columns>
+    <TableColumn text="Title" fx:id="nameColumn" sortable="false"
+      minWidth="220" prefWidth="250">
+      <cellValueFactory>
+        <PropertyValueFactory property="name" />
       </cellValueFactory>
     </TableColumn>
-	</columns> 
+  </columns>
 </TableView>
