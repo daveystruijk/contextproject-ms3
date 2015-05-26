@@ -44,8 +44,26 @@ public class TrackPropertyTest {
   }
 
   @Test
-  public void bpmTest() {
+  public void artistTest() {
     testProperty.setArtist("Felix!");
     assertEquals(testProperty.artistProperty().get(), testProperty.getArtist());
+  }
+
+  @Test
+  public void titleTest() {
+    testProperty.setTitle("Cool track!");
+    assertEquals(testProperty.titleProperty().get(), testProperty.getTitle());
+  }
+
+  @Test
+  public void bpmTest() {
+    testProperty.setBPM(220.d);
+    assertEquals(testProperty.bpmProperty().get(), testProperty.getBPM(), 0.00001f);
+  }
+
+  @Test
+  public void trackTest() {
+    testProperty.setatrack(testTrack);
+    assertEquals(testProperty.trackProperty().get(), testProperty.getTrack());
   }
 }
