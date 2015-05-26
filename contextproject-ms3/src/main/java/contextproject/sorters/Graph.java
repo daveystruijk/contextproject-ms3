@@ -61,9 +61,6 @@ public class Graph extends DefaultDirectedWeightedGraph<Track, WeightedEdge> {
    */
   private int getConvertedScore(double score) {
     int res = (int) Math.pow((1.001 - score), -1);
-//    if(res>20){
-//      res = 20;
-//    }
     return res;
   }
 

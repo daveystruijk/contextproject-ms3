@@ -31,9 +31,18 @@ public class MaxFlow {
     this.graph = graph;
     optimalPath = new Playlist();
     calculateMaxflow();
+    convertMap();
 
     System.out.println(bestSource + "\n" + bestSink + "\n" + bestFlow.toString());
-    convertMap();
+    for (int i = 1; i <= graph.vertexSet().size(); i++) {
+      if (Math.pow(graph.vertexSet().size() - 2, i) < 500000000) {
+        maxDepth = i;
+      } else {
+        break;
+      }
+    }
+    System.out.println(maxDepth);
+
     calculateOptimalPath();
     System.out.println(optimalPath.toString());
 
@@ -46,6 +55,7 @@ public class MaxFlow {
     Double bestscore = 0.0;
     Double bestAverage = 0.0;
     int bestCountNonZero = 0;
+
     for (int i = 0; i < graph.vertexSet().size(); i++) {
       for (int j = 0; j < graph.vertexSet().size(); j++) {
         if (i != j) {
@@ -54,18 +64,19 @@ public class MaxFlow {
           WeightedEdge edge1 = graph.getEdge(source, sink);
           WeightedEdge edge2 = graph.getEdge(sink, source);
 
-          graph.removeEdge(edge1);
+          graph.removeEdge(edge1); // remove the edges directly from source to sink
           graph.removeEdge(edge2);
 
           EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp 
               = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(
               graph);
-          edmondsKarp.calculateMaximumFlow(source, sink);
+          edmondsKarp.calculateMaximumFlow(source, sink); // calculate max flow
 
           graph.addEdge(source, sink, edge1);
           graph.addEdge(sink, source, edge2);
           double average = 0.0;
           int countNonZero = 0;
+          // calculate average, and the total non-zero's
           for (Double value : edmondsKarp.getMaximumFlow().values()) {
             {
               average += value;
@@ -74,7 +85,7 @@ public class MaxFlow {
               }
             }
             boolean add = false;
-            if (countNonZero > bestCountNonZero) {
+            if (countNonZero > bestCountNonZero) { // find best flow with best source and sink
               add = true;
             } else if (countNonZero == bestCountNonZero && average > bestAverage) {
               add = true;
@@ -106,7 +117,7 @@ public class MaxFlow {
     ArrayList<Double> scores = new ArrayList<Double>();
     scores.addAll(bestFlow.values());
     Collections.sort(scores);
-    Collections.reverse(scores);
+    Collections.reverse(scores); // begin with highest score
 
     double minScore = 0.5;
 
@@ -117,6 +128,7 @@ public class MaxFlow {
             (Track) edge.getEdgeSource());
         double highScore2 = tempMap.get(edge2);
 
+        // check if it's higher than minimal score
         if (!(highScore < minScore && highScore2 < minScore)) {
 
           if (highScore > highScore2) {
