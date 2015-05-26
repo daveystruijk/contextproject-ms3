@@ -68,9 +68,22 @@ public class TrackTest {
       fail("");
       e.printStackTrace();
     }
-
   }
-  
+
+  @Test
+  public void simpleNotEqualsTest() {
+    Track track1 = new Track();
+    Track track2 = new Track();
+    assertFalse(track1.equals(track2));
+  }
+
+  @Test
+  public void differentObjectEqualsTest() {
+    Track track1 = new Track();
+    Key key = new Key();
+    assertFalse(track1.equals(key));
+  }
+
   @Test
   public void trackConstructorWithAdditionalInfoTest() {
 
