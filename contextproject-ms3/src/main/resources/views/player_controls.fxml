@@ -12,7 +12,11 @@
   <stylesheets>
     <URL value="@../stylesheets/player_controls.css" />
   </stylesheets>
-  <Button fx:id="playButton">
+  <Text GridPane.columnIndex="0" GridPane.rowIndex="1" text = "current track:"></Text>
+  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="currentTrack" maxHeight = "20" minWidth="300" prefWidth="325"></TextField>
+  <Button fx:id="playButton" GridPane.columnIndex="1">
   </Button>
-  <Text GridPane.columnIndex="1" text="..." fx:id="currentTrack"></Text>
+  <Slider GridPane.columnIndex="2" GridPane.rowIndex="1"></Slider>
+  <Text GridPane.columnIndex="3" GridPane.rowIndex="1" text = "next track:"></Text>
+  <TextField GridPane.columnIndex="4" GridPane.rowIndex="1"  fx:id="nextTrack" maxHeight = "20" minWidth="300" prefWidth="325"></TextField>
 </GridPane>
