@@ -19,7 +19,7 @@ public class GreedyPlaylistSorter implements PlaylistSorter {
       addedTracks.add(currentTrack);
       Track bestMatch = null;
       double bestScore = 0.0f;
-      for (int j = 0; j < playlist.size(); j++) {
+      for (int j = 1; j < playlist.size(); j++) {
         if (currentTrack != playlist.get(j)) {
           double score = TrackCompatibility.getScore(currentTrack, playlist.get(j));
           if (score > bestScore && !addedTracks.contains(playlist.get(j))) {
