@@ -55,6 +55,7 @@ public class MaxFlow {
     Double bestscore = 0.0;
     Double bestAverage = 0.0;
     int bestCountNonZero = 0;
+    ArrayList<WeightedEdge> done = new ArrayList<WeightedEdge>();
 
     for (int i = 0; i < graph.vertexSet().size(); i++) {
       for (int j = 0; j < graph.vertexSet().size(); j++) {
@@ -63,44 +64,48 @@ public class MaxFlow {
           Track sink = (Track) graph.vertexSet().toArray()[j];
           WeightedEdge edge1 = graph.getEdge(source, sink);
           WeightedEdge edge2 = graph.getEdge(sink, source);
+          if (!done.contains(edge1) && !done.contains(edge2)) {
+            graph.removeEdge(edge1); // remove the edges directly from source to sink
+            graph.removeEdge(edge2);
 
-          graph.removeEdge(edge1); // remove the edges directly from source to sink
-          graph.removeEdge(edge2);
+            EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp 
+                = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(
+                graph);
+            edmondsKarp.calculateMaximumFlow(source, sink); // calculate max flow
 
-          EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp 
-              = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(
-              graph);
-          edmondsKarp.calculateMaximumFlow(source, sink); // calculate max flow
+            graph.addEdge(source, sink, edge1);
+            graph.addEdge(sink, source, edge2);
 
-          graph.addEdge(source, sink, edge1);
-          graph.addEdge(sink, source, edge2);
-          double average = 0.0;
-          int countNonZero = 0;
-          // calculate average, and the total non-zero's
-          for (Double value : edmondsKarp.getMaximumFlow().values()) {
-            {
-              average += value;
-              if (value > 0) {
-                countNonZero++;
+            done.add(edge1);
+            done.add(edge2);
+            double average = 0.0;
+            int countNonZero = 0;
+            // calculate average, and the total non-zero's
+            for (Double value : edmondsKarp.getMaximumFlow().values()) {
+              {
+                average += value;
+                if (value > 0) {
+                  countNonZero++;
+                }
               }
-            }
-            boolean add = false;
-            if (countNonZero > bestCountNonZero) { // find best flow with best source and sink
-              add = true;
-            } else if (countNonZero == bestCountNonZero && average > bestAverage) {
-              add = true;
-            } else if (countNonZero == bestCountNonZero && average == bestAverage
-                && edmondsKarp.getMaximumFlowValue() > bestscore) {
-              add = true;
-            }
+              boolean add = false;
+              if (countNonZero > bestCountNonZero) { // find best flow with best source and sink
+                add = true;
+              } else if (countNonZero == bestCountNonZero && average > bestAverage) {
+                add = true;
+              } else if (countNonZero == bestCountNonZero && average == bestAverage
+                  && edmondsKarp.getMaximumFlowValue() > bestscore) {
+                add = true;
+              }
 
-            if (add) {
-              bestscore = edmondsKarp.getMaximumFlowValue();
-              bestFlow = edmondsKarp.getMaximumFlow();
-              bestSource = edmondsKarp.getCurrentSource();
-              bestSink = edmondsKarp.getCurrentSink();
-              bestAverage = average;
-              bestCountNonZero = countNonZero;
+              if (add) {
+                bestscore = edmondsKarp.getMaximumFlowValue();
+                bestFlow = edmondsKarp.getMaximumFlow();
+                bestSource = edmondsKarp.getCurrentSource();
+                bestSink = edmondsKarp.getCurrentSink();
+                bestAverage = average;
+                bestCountNonZero = countNonZero;
+              }
             }
           }
         }
