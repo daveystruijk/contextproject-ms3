@@ -49,7 +49,7 @@ public class TrackCompatibilityTest {
       e.printStackTrace();
     }
   }
-  
+
   @Test
   public void testDifferentTracks() {
     URL resourceUrl = getClass().getResource("/beep.mp3");
@@ -67,6 +67,12 @@ public class TrackCompatibilityTest {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+  }
+
+  @Test
+  public void testInitialize() {
+    TrackCompatibility track = new TrackCompatibility();
+    assertEquals(track, track);
   }
 
 }

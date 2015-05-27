@@ -16,29 +16,27 @@ public class GreedyPlaylistSorterTest {
   private Track track = new Track();
   private Track track2 = new Track();
   private Track track3 = new Track();
-  private Track track4 = new Track();
-  private Track track5 = null;
   /**
    * Setting up playlist that can be sorted.
    */
   @Before
   public void setUp() {
     playlist.setName("testList");
-    track.setBpm(128);
-    track2.setBpm(128);
-    track3.setBpm(126);
+    track.setBpm(180);
+    track2.setBpm(180);
+    track3.setBpm(120);
     track.setKey(new Key("12A"));
     track2.setKey(new Key("9A"));
-    track3.setKey(new Key("4A"));
+    track3.setKey(new Key("12B"));
     playlist.add(track);
     playlist.add(track2);
-
+    playlist.add(track3);
   }
 
   @Test
   public void sortNoMatchTrackTest() {
     GreedyPlaylistSorter greedySort = new GreedyPlaylistSorter();
-    greedySort.sort(playlist);
+    assertEquals(greedySort.sort(playlist).size(), 2);
   }
 
 }
