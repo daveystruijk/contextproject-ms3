@@ -1,32 +1,23 @@
 package contextproject;
 
+import static org.junit.Assert.assertEquals;
+
 import contextproject.App;
+import contextproject.models.Library;
+import contextproject.models.Playlist;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-import javafx.stage.Stage;
+import java.util.ArrayList;
 
 /**
  * Unit test for simple App.
  */
 public class AppTest {
 
-  private Stage stage = Mockito.mock(Stage.class);
-  private App dummyApp = Mockito.mock(App.class);
-
-  @Before
-  public void setUp() throws Exception {
-
-    dummyApp.start(stage);
-  }
-
   @Test
-  public void appTest() throws Exception {
-
-    Mockito.verify(dummyApp).start(stage);
-
+  public void appSetup() {
+    App ap = new App();
+    assertEquals(App.getController(), null);
   }
-
 }
