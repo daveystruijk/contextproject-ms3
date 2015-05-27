@@ -22,14 +22,12 @@ public class GreedyPlaylistSorterTest {
   @Before
   public void setUp() {
     playlist.setName("testList");
-    track.setKey(new Key("7A"));
     track.setBpm(180);
-    track.setTitle("test1");
-    track2.setKey(new Key("3B"));
-    track2.setBpm(120);
-    track2.setTitle("");
-    track3.setKey(new Key("2A"));
-    track3.setBpm(180);
+    track2.setBpm(180);
+    track3.setBpm(120);
+    track.setKey(new Key("12A"));
+    track2.setKey(new Key("9A"));
+    track3.setKey(new Key("12B"));
     playlist.add(track);
     playlist.add(track2);
     playlist.add(track3);
