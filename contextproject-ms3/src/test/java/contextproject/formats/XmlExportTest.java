@@ -2,12 +2,12 @@ package contextproject.formats;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
+import contextproject.models.Library;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import contextproject.models.Library;
+import java.io.File;
 
 public class XmlExportTest {
 
@@ -32,5 +32,4 @@ public class XmlExportTest {
     assertTrue(file.exists());
     file.delete();
   }
-  
 }

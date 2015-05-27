@@ -1,6 +1,7 @@
 package contextproject.models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,7 @@ public class BeatGridTest {
   private BeatGrid beatGrid;
   private BeatGrid beatGrid2;
   private BeatGrid beatGrid3;
+  private BeatGrid beatGrid4;
 
   /**
    * Before running the test this method is done first to initialize the BeatGrid.
@@ -19,9 +21,15 @@ public class BeatGridTest {
   public void setup() {
     beatGrid = new BeatGrid((long) (1875001), 128, 469, 0, 0, 0, 0); // 4000 beats; 468.75 ms / beat
     beatGrid2 = new BeatGrid((long) (1875001), 128, 469, 12, 0, 100, 0); // 4000 beats; 468.75 ms /
-                                                                         // beat
+                                                                         // // beat
     beatGrid3 = new BeatGrid((long) (1875001), 128, 469, 12, 20, 100, 14); // 4000 beats; 468.75 ms
                                                                            // / beat
+    beatGrid4 = new BeatGrid();
+  }
+
+  @Test
+  public void equalsFalseTest() {
+    assertFalse(beatGrid.equals(beatGrid4));
   }
 
   @Test

@@ -22,6 +22,13 @@ public class BeatRangeTest {
   }
 
   @Test
+  public void emptyConstructorTest() {
+    BeatRange beatrange = new BeatRange();
+    BeatRange beatrange1 = new BeatRange();
+    assertTrue(beatrange.equals(beatrange1));
+  }
+
+  @Test
   public void getStartTest() {
     assertEquals(beatRange.getStart(), 10);
     assertEquals(beatRange2.getStart(), 11);
