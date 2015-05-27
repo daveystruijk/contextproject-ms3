@@ -73,7 +73,7 @@ public class App extends Application {
       if (library.size() < 1) {
         empty = true;
       }
-    } catch (IOException e) {
+    } catch (IOException | NullPointerException e) {
       library = new Library();
       empty = true;
     }
@@ -116,8 +116,10 @@ public class App extends Application {
   }
 
   /**
-   * sets the library to be exported to library.xml.  
-   * @param lib the library of the app.
+   * sets the library to be exported to library.xml.
+   * 
+   * @param lib
+   *          the library of the app.
    */
   public static void setLibrary(Library lib) {
     library.clear();
