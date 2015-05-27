@@ -39,7 +39,5 @@ public class GreedyPlaylistSorterTest {
   public void sortNoMatchTrackTest() {
     GreedyPlaylistSorter greedySort = new GreedyPlaylistSorter();
     assertEquals(greedySort.sort(playlist).size(), 2);
-
   }
-
 }
