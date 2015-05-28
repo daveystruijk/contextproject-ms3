@@ -57,7 +57,7 @@ public class App extends Application {
     attributes.setSamplingRate(44100);
     EnergyLevelProcessor processor = new EnergyLevelProcessor(attributes);
     try {
-      processor.detect(new Track("/Users/daveystruijk/Documents/FEESJE/House (Big Room)/Avicii - Levels (Clockwork Remix).mp3"));
+      processor.detect(new Track("C:/Users/Emiel/Documents/Smoothie/Bullet For My Valentine - Tears Don't Fall.mp3"));
     } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }
