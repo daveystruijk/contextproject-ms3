@@ -73,7 +73,7 @@ public class App extends Application {
       if (library.size() < 1) {
         empty = true;
       }
-    } catch (IOException e) {
+    } catch (IOException | NullPointerException e) {
       library = new Library();
       empty = true;
     }
