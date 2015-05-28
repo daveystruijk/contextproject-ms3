@@ -3,7 +3,7 @@ package contextproject.controllers;
 import contextproject.formats.M3UBuilder;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
-import contextproject.sorters.GreedyPlaylistSorter;
+import contextproject.sorters.MaximumFlowPlaylistSorter;
 import contextproject.sorters.PlaylistSorter;
 
 import java.io.File;
@@ -16,7 +16,7 @@ import java.util.Scanner;
 /**
  * Controls CLI for time being.
  */
-public class CLIController {
+public class CliController {
 
   /**
    * This will start a simple Command Line Interface for our first working version. Optionally to be
@@ -32,7 +32,7 @@ public class CLIController {
 
     FolderLoader folderLoader = new FolderLoader(fileName);
     Playlist playlist = folderLoader.load();
-    PlaylistSorter sorter = new GreedyPlaylistSorter();
+    PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
     Playlist result = sorter.sort(playlist);
 
     System.out.println("Done! Calculated mixable playlist through " + result.size() + " tracks.");
