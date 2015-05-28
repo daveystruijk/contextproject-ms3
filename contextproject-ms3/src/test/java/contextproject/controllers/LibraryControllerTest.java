@@ -13,12 +13,4 @@ public class LibraryControllerTest {
     LibraryController newLibrary = new LibraryController();
     assertNotEquals(newLibrary, null);
   }
-
-  @Test
-  public void setTest() {
-    LibraryController newLibrary = new LibraryController();
-    Library library = new Library();
-    newLibrary.getPlaylist("Test");
-  }
-
 }
