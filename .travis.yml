@@ -2,6 +2,7 @@ language: java
 jdk:
   - oraclejdk8
 before_install:
+  - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout $TRAVIS_BRANCH && echo \"OCTOPULL_SHA=$(git rev-parse HEAD)\"; true"
   - cd contextproject-ms3
   - wget http://0110.be/releases/TarsosDSP/TarsosDSP-2.2/TarsosDSP-2.2.jar
   - mvn install:install-file -DgroupId=be.tarsos.dsp -DartifactId=TarsosDSP -Dpackaging=jar -Dversion=2.2 -Dfile=TarsosDSP-2.2.jar -DgeneratePom=true
