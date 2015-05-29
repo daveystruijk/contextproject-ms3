@@ -11,7 +11,7 @@ public class MixerProcessor implements AudioProcessor {
     float[] floatBuffer = audioEvent.getFloatBuffer();
     for (int i = audioEvent.getOverlap(); i < floatBuffer.length; i++) {
       float newValue = manipulateSignal(floatBuffer[i]);
-      
+
       // Clipping
       if (newValue > 1.0f) {
         newValue = 1.0f;
