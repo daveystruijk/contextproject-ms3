@@ -70,7 +70,7 @@ public class EnergyLevelProcessor implements AudioProcessor {
 
   @Override
   public void processingFinished() {
-    System.out.println("Finished!");
+
   }
   
   /**

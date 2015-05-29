@@ -55,13 +55,6 @@ public class App extends Application {
   public static void main(String[] args) {
     Attributes attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(44100);
-    EnergyLevelProcessor processor = new EnergyLevelProcessor(attributes);
-    try {
-      processor.detect(new Track("C:/Users/Emiel/Documents/Smoothie/Bullet For My Valentine - Tears Don't Fall.mp3"));
-    } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
-    }
-    
     boolean gui = true;
     if (gui == true) {
       launch(args);
