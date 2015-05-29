@@ -5,14 +5,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ProgressBar?>
 
 <GridPane fx:controller="contextproject.controllers.PlayerControlsController"
   xmlns:fx="http://javafx.com/fxml">
   <stylesheets>
     <URL value="@../stylesheets/player_controls.css" />
   </stylesheets>
-  <Button fx:id="playButton">
+  <HBox GridPane.rowIndex = "0">
+  <HBox minWidth = "580" maxWidth = "580"></HBox>
+  <Button fx:id="playButton" GridPane.columnIndex="3">
   </Button>
-  <Text GridPane.columnIndex="1" text="..." fx:id="currentTrack"></Text>
+  </HBox>
+  <HBox GridPane.rowIndex = "1">
+   <Text GridPane.columnIndex="0" GridPane.rowIndex="1" text = "current track:"></Text>
+  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="currentTrack" maxHeight = "20" minWidth="300" prefWidth="315"></TextField>
+   <ProgressBar GridPane.columnIndex="2" GridPane.rowIndex="1" fx:id = "musicBar" minWidth = "400" prefHeight = "20"></ProgressBar>
+  <Text GridPane.columnIndex="3" GridPane.rowIndex="1" text = " "></Text>
+  <Text GridPane.columnIndex="4" GridPane.rowIndex="1" text = "next track:"></Text>
+  <TextField GridPane.columnIndex="5" GridPane.rowIndex="1"  fx:id="nextTrack" maxHeight = "20" minWidth="300" prefWidth="325"></TextField>
+  </HBox>
 </GridPane>

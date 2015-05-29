@@ -10,8 +10,6 @@ import contextproject.models.Track;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class PlayerService {
@@ -26,7 +24,7 @@ public class PlayerService {
   public Track currentTrack;
   public Track nextTrack;
 
-  final int SAMPLE_RATE = 44100;
+  private static final int SAMPLE_RATE = 44100;
 
   protected PlayerService() throws EncoderException, LineUnavailableException {
     // Initialize standard attributes for audio playback
