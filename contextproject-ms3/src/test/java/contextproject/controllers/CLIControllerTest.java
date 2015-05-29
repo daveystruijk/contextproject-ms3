@@ -4,11 +4,11 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
-public class CLIControllerTest {
+public class CliControllerTest {
 
   @Test
   public void test() {
-    CLIController controller = new CLIController();
+    CliController controller = new CliController();
     assertNotEquals(controller, null);
   }
 }

@@ -3,7 +3,6 @@ package contextproject.formats;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import contextproject.formats.M3UBuilder;
 import contextproject.models.Playlist;
 
 import org.junit.Before;

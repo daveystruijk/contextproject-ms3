@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import contextproject.models.Key;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
-import contextproject.sorters.GreedyPlaylistSorter;
 
 import org.junit.Before;
 import org.junit.Test;

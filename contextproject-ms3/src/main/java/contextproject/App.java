@@ -1,7 +1,7 @@
 package contextproject;
 
 import contextproject.audio.PlayerService;
-import contextproject.controllers.CLIController;
+import contextproject.controllers.CliController;
 import contextproject.controllers.WindowController;
 import contextproject.formats.XmlExport;
 import contextproject.helpers.FileName;
@@ -9,7 +9,7 @@ import contextproject.loaders.FolderLoader;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Library;
 import contextproject.models.Playlist;
-import contextproject.sorters.GreedyPlaylistSorter;
+import contextproject.sorters.MaximumFlowPlaylistSorter;
 import contextproject.sorters.PlaylistSorter;
 
 import org.apache.logging.log4j.LogManager;
@@ -49,7 +49,7 @@ public class App extends Application {
     if (gui == true) {
       launch(args);
     } else {
-      CLIController control = new CLIController();
+      CliController control = new CliController();
       control.run();
     }
   }
@@ -73,7 +73,7 @@ public class App extends Application {
       if (library.size() < 1) {
         empty = true;
       }
-    } catch (IOException e) {
+    } catch (IOException | NullPointerException e) {
       library = new Library();
       empty = true;
     }
@@ -103,7 +103,7 @@ public class App extends Application {
       FolderLoader folderLoader = new FolderLoader(directory);
       String playlistname = FileName.getName(directory);
       Playlist playlist = folderLoader.load();
-      PlaylistSorter sorter = new GreedyPlaylistSorter();
+      PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
       Playlist mixablePlaylist = sorter.sort(playlist);
       controller.setEverything(mixablePlaylist, playlistname);
     } else {
@@ -116,8 +116,10 @@ public class App extends Application {
   }
 
   /**
-   * sets the library to be exported to library.xml.  
-   * @param lib the library of the app.
+   * sets the library to be exported to library.xml.
+   * 
+   * @param lib
+   *          the library of the app.
    */
   public static void setLibrary(Library lib) {
     library.clear();

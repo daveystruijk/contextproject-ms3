@@ -2,8 +2,6 @@ package contextproject.models;
 
 import static org.junit.Assert.assertEquals;
 
-import contextproject.models.LibraryProperty;
-
 import org.junit.Test;
 
 public class PropertyTest {

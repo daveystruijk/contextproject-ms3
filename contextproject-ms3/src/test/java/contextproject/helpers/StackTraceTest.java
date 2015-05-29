@@ -2,8 +2,6 @@ package contextproject.helpers;
 
 import static org.junit.Assert.assertNotEquals;
 
-import contextproject.helpers.StackTrace;
-
 import org.junit.Test;
 
 public class StackTraceTest {
