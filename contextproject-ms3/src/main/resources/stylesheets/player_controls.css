@@ -24,3 +24,6 @@
 #vLabel {
 	
 }
+.text-field:focused {
+    -fx-focus-color: transparent;
+}

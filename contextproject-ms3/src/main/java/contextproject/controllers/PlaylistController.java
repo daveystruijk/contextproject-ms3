@@ -37,7 +37,7 @@ public class PlaylistController {
     this.playerControlsController = playerControlsController;
     PlayerService.getInstance().setCurrentTrack(playlist.get(0));
     PlayerService.getInstance().play();
-    String curtitle = playlist.get(0).getTitle();
+    Track curtitle = playlist.get(0);
     String nxtitle;
     if (1 > playlist.size() - 1) { 
       nxtitle = "none";
@@ -60,7 +60,7 @@ public class PlaylistController {
             nxtitle = playlist.get(playlist.indexOf(curtrack) + 1).getTitle();
           }
           PlayerService.getInstance().transition();
-          playerControlsController.update(curtrack.getTitle(),nxtitle);
+          playerControlsController.update(curtrack,nxtitle);
         }
       }
     });
