@@ -65,11 +65,11 @@ public class TrackProperty {
     return this.bpm;
   }
 
-  public final double getBPM() {
+  public final double getBpm() {
     return this.bpmProperty().get();
   }
 
-  public final void setBPM(Double bpm) {
+  public final void setBpm(Double bpm) {
     this.bpmProperty().set(bpm);
   }
 

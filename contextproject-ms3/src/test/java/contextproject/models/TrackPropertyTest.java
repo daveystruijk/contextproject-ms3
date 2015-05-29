@@ -57,8 +57,8 @@ public class TrackPropertyTest {
 
   @Test
   public void bpmTest() {
-    testProperty.setBPM(220.d);
-    assertEquals(testProperty.bpmProperty().get(), testProperty.getBPM(), 0.00001f);
+    testProperty.setBpm(220.d);
+    assertEquals(testProperty.bpmProperty().get(), testProperty.getBpm(), 0.00001f);
   }
 
   @Test
