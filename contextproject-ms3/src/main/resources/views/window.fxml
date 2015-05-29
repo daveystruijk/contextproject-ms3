@@ -16,9 +16,6 @@
       <!--Mark-up for the menu bar. -->
       <fx:include fx:id="menuBar" source="menu_bar.fxml"
         GridPane.rowIndex="0" />
-      <!-- Player controls: Play/pause -->
-      <fx:include fx:id="playerControls" source="player_controls.fxml"
-        GridPane.rowIndex="1" />
     </GridPane>
   </top>
   <left>
@@ -28,10 +25,12 @@
     <fx:include fx:id="playlist" source="playlist.fxml" />
   </center>
   <right>
-
   </right>
   <bottom>
-    <!-- TODO: Status stuff / bottom bar -->
+  <HBox>
+   <!-- Player controls: Play/pause -->
+      <fx:include fx:id="playerControls" source="player_controls.fxml"/>
+      </HBox>
   </bottom>
 
 </BorderPane>

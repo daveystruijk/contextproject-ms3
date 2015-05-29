@@ -26,8 +26,9 @@ public class WindowController {
     playlistController.setPlaylist(playlist);
     libraryController.setLibrary(playlist, name);
     libraryController.begin(playlistController);
-    playlistController.begin();
-    playerControlsController.togglePlayPause();
+    playerControlsController.initialize();
+    playlistController.begin(playerControlsController);
+    
   }
   /**
    * this function passes on the library from the library.xml to the view
@@ -40,7 +41,7 @@ public class WindowController {
     playlistController.setPlaylist(pl);
     libraryController.setLibrary(library);
     libraryController.begin(playlistController);
-    playlistController.begin();
-    playerControlsController.togglePlayPause();
+    playerControlsController.initialize();
+    playlistController.begin(playerControlsController);
   }
 }
