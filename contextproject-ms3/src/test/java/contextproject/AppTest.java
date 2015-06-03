@@ -26,7 +26,6 @@ public class AppTest extends ApplicationTest {
   public void start(Stage stage) throws Exception {
     // TODO Auto-generated method stub
     App ap = new App();
-    App.setController();
     ap.start(stage);
   }
 }

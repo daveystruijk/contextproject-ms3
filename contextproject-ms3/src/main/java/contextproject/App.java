@@ -124,10 +124,6 @@ public class App extends Application {
   public static WindowController getController() {
     return controller;
   }
-  
-  public static void setController() {
-    App.controller = new WindowController();
-  }
 
   /**
    * sets the library to be exported to library.xml.
