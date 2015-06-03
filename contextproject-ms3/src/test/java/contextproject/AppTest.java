@@ -6,16 +6,27 @@ import static org.junit.Assert.assertNotEquals;
 import contextproject.App;
 
 import org.junit.Test;
+import org.testfx.framework.junit.ApplicationTest;
+
+import javafx.stage.Stage;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest {
+public class AppTest extends ApplicationTest {
 
   @Test
   public void appSetup() {
     App ap = new App();
-    assertEquals(App.getController(), null);
+    assertNotEquals(App.getController(), null);
     assertNotEquals(ap, null);
+  }
+
+  @Override
+  public void start(Stage stage) throws Exception {
+    // TODO Auto-generated method stub
+    App ap = new App();
+    App.setController();
+    ap.start(stage);
   }
 }
