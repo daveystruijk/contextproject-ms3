@@ -4,6 +4,7 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
@@ -18,11 +19,12 @@ public class PlayerService {
 
   private TrackProcessor currentProcessor;
   private TrackProcessor nextProcessor;
+  private AirhornProcessor airhornProcessor;
 
   private Attributes attributes;
 
-  public Track currentTrack;
-  public Track nextTrack;
+  private Track currentTrack;
+  private Track nextTrack;
 
   private static final int SAMPLE_RATE = 44100;
 
@@ -30,35 +32,56 @@ public class PlayerService {
     // Initialize standard attributes for audio playback
     attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(SAMPLE_RATE);
+    
+    airhornProcessor = new AirhornProcessor(attributes, new Track(
+        "/Users/daveystruijk/Documents/FEESJE/Samples/Random - airhorn1.mp3"));
   }
-
+  
   /**
-   * Temporary method for playing tracks.
+   * Loads the current track and plays it.
+   * This method can be used when no track is playing currently,
+   * and we want to start the mix with an initial track.
    */
-  public void play() {
+  public void playCurrentTrack() {
     currentProcessor = new TrackProcessor(attributes);
-    currentProcessor.load(currentTrack);
     try {
-      currentProcessor.play(1.0);
+      currentProcessor.load(currentTrack, 1.0, 1.0);
+    } catch (EncoderException | LineUnavailableException e) {
+      e.printStackTrace();
+    }
+    while (currentProcessor.getState() != PlayerState.READY) {
+      try {
+        Thread.sleep(10);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+    currentProcessor.play();
+  }
+  
+  /**
+   * Prepares the next track for playback.
+   * Preparation means: Skipping the track to the point where a transition should happen.
+   */
+  public void prepareNextTrack() {
+    nextProcessor = new TrackProcessor(attributes);
+    try {
+      nextProcessor.load(nextTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }
   }
+  
   /**
-   * This takes care of the Track transitions. It loads the next track or throws an exception when
-   * needed
+   * Starts playing the next track if it's ready, and applies the specified transition.
+   * If the track is not prepared for transition yet, this method will throw an exception.
    */
-  public void transition() {
-    nextProcessor = new TrackProcessor(attributes);
-    nextProcessor.load(nextTrack);
-    try {
-      nextProcessor.play(0.0);
-    } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
-    }
-
-    // TODO: Refactor into transition class
-    for (int i = 0; i < 30; i++) {
+  public void transitionIntoNextTrack() {
+    nextProcessor.play();
+    
+    // TODO: Add support for multiple transition types
+    // Basically, this block should be an interchangeable method 
+    /*for (int i = 0; i < 30; i++) {
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {
@@ -66,16 +89,18 @@ public class PlayerService {
       }
       currentProcessor.setGain(1.0 - (i / 30.0));
       nextProcessor.setGain((double) i / 30.0);
-    }
+    }*/
+    
     currentProcessor.unload();
     currentProcessor = nextProcessor;
-  }
-  /**
-   * Stops the music.
-   */
-  public void exit() {
-  }
 
+    try {
+      airhornProcessor.play();
+    } catch (EncoderException | LineUnavailableException e) {
+      e.printStackTrace();
+    }
+  }
+  
   public Track getCurrentTrack() {
     return currentTrack;
   }
@@ -83,7 +108,7 @@ public class PlayerService {
   public void setCurrentTrack(Track currentTrack) {
     this.currentTrack = currentTrack;
   }
-
+  
   public Track getNextTrack() {
     return nextTrack;
   }

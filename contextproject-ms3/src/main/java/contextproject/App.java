@@ -65,59 +65,63 @@ public class App extends Application {
   }
 
   @Override
-  public void start(Stage stage) throws Exception {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
-
-    Parent root = (Parent) loader.load();
-    final WindowController controller = (WindowController) loader.getController();
-    App.controller = controller;
-
-    Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Demo Sprint 3");
-    stage.setScene(scene);
-    stage.show();
-
+  public void start(Stage stage) {
     try {
-      LibraryLoader libraryLoader = new LibraryLoader("library.xml");
-      library = libraryLoader.load();
-      if (library.size() < 1) {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
+  
+      Parent root = (Parent) loader.load();
+      final WindowController controller = (WindowController) loader.getController();
+      App.controller = controller;
+  
+      Scene scene = new Scene(root, 1200, 800);
+      stage.setTitle("Demo Sprint 3");
+      stage.setScene(scene);
+      stage.show();
+  
+      try {
+        LibraryLoader libraryLoader = new LibraryLoader("library.xml");
+        library = libraryLoader.load();
+        if (library.size() < 1) {
+          empty = true;
+        }
+      } catch (IOException | NullPointerException e) {
+        library = new Library();
         empty = true;
       }
-    } catch (IOException | NullPointerException e) {
-      library = new Library();
-      empty = true;
-    }
-    scene.getWindow().setOnHidden(new EventHandler<WindowEvent>() {
-      @Override
-      public void handle(WindowEvent arg0) {
-        PlayerService.getInstance().exit();
-        if (library != null) {
-          XmlExport exporter = new XmlExport("library.xml", library);
-          exporter.export();
-          System.out.println(library.size());
+      scene.getWindow().setOnHidden(new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent arg0) {
+          if (library != null) {
+            XmlExport exporter = new XmlExport("library.xml", library);
+            exporter.export();
+            System.out.println(library.size());
+          }
+          System.exit(0);
         }
-        System.exit(0);
-      }
-    });
-    if (empty) {
-      String directory = "";
-      DirectoryChooser directoryChooser = new DirectoryChooser();
-      File selectedDirectory = directoryChooser.showDialog(null);
-      if (selectedDirectory == null) {
-        System.out.println("No directory selected.");
-        System.exit(-1);
+      });
+      if (empty) {
+        String directory = "";
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(null);
+        if (selectedDirectory == null) {
+          System.out.println("No directory selected.");
+          System.exit(-1);
+        } else {
+          directory = selectedDirectory.getAbsolutePath();
+        }
+  
+        FolderLoader folderLoader = new FolderLoader(directory);
+        String playlistname = FileName.getName(directory);
+        Playlist playlist = folderLoader.load();
+        PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
+        Playlist mixablePlaylist = sorter.sort(playlist);
+        controller.setEverything(mixablePlaylist, playlistname);
       } else {
-        directory = selectedDirectory.getAbsolutePath();
+        controller.setLibrary(library);
       }
-
-      FolderLoader folderLoader = new FolderLoader(directory);
-      String playlistname = FileName.getName(directory);
-      Playlist playlist = folderLoader.load();
-      PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
-      Playlist mixablePlaylist = sorter.sort(playlist);
-      controller.setEverything(mixablePlaylist, playlistname);
-    } else {
-      controller.setLibrary(library);
+    } catch (Exception e) {
+      log.fatal(e.getMessage(), e);
+      System.exit(-1);
     }
   }
 

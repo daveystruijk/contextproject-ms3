@@ -11,13 +11,20 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.models.Track;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class TrackProcessor {
+
+  private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
+  
   // State
   private PlayerState state;
   private Track track;
@@ -33,13 +40,15 @@ public class TrackProcessor {
   private WaveformSimilarityBasedOverlapAdd wsola;
   private GainProcessor gainProcessor;
   private AudioDispatcher dispatcher;
+  private SkipAudioProcessor skipProcessor;
 
   private double tempo;
   private double currentTime;
   private double pausedAt;
   private double totalDuration;
+  
   /**
-   * Class that processes tracks.
+   * This class acts as an audio player.
    */
   public TrackProcessor(Attributes attributes) {
     try {
@@ -49,10 +58,11 @@ public class TrackProcessor {
       e.printStackTrace();
     }
   }
+  
   /**
    * Loads the Track that is specified.
    */
-  public void load(Track track) {
+  public void load(Track track, double startGain, double startBpm) throws EncoderException, LineUnavailableException{
     if (state != PlayerState.NO_FILE_LOADED) {
       this.unload();
     }
@@ -61,11 +71,12 @@ public class TrackProcessor {
     this.tempo = 1.0;
     this.pausedAt = 0;
     this.currentTime = 0;
-
+    this.setupDispatcherChain(startGain, startBpm);
     setState(PlayerState.FILE_LOADED);
   }
+  
   /**
-   * Unloads tracks.
+   * Unloads the current track.
    */
   public void unload() {
     if (dispatcher != null) {
@@ -74,8 +85,9 @@ public class TrackProcessor {
     track = null;
     setState(PlayerState.NO_FILE_LOADED);
   }
+  
   /**
-   * Play the trakcs.
+   * Play the current track.
    * 
    * @param startGain
    *          . Given start Track.
@@ -84,35 +96,71 @@ public class TrackProcessor {
    * @throws LineUnavailableException. Exception
    *           in the audio stream!
    */
-  public void play(double startGain) throws EncoderException, LineUnavailableException {
-    inputStream = Streamer.stream(track.getPath(), attributes);
-    tarsosStream = new JVMAudioInputStream(inputStream);
-
-    audioPlayer = new AudioPlayer(format);
-    wsola = new WaveformSimilarityBasedOverlapAdd(Parameters.musicDefaults(tempo,
-        format.getSampleRate()));
-    gainProcessor = new GainProcessor(startGain);
-    dispatcher = new AudioDispatcher(tarsosStream, wsola.getInputBufferSize(), wsola.getOverlap());
-
-    wsola.setDispatcher(dispatcher);
-    dispatcher.addAudioProcessor(wsola);
-    dispatcher.addAudioProcessor(gainProcessor);
-    dispatcher.addAudioProcessor(audioPlayer);
-
-    Thread thread = new Thread(dispatcher);
-    thread.start();
+  public void play() {
+    if (state != PlayerState.READY) {
+      throw new IllegalStateException("Track processor is not ready yet.");
+    }
+    // Dispatchers are already running, but skipProcessor is blocking
+    // the stream entirely. If we disable it, the track starts playing instantly!
+    skipProcessor.stop();
     setState(PlayerState.PLAYING);
   }
 
   public void setGain(double gain) {
     gainProcessor.setGain(gain);
   }
+  
+  /**
+   * Initializes and starts the dispatcher chain so the player can play.
+   * This method is called when a track is first loaded (this.load()).
+   * @param startGain
+   * @param startBpm
+   * @throws EncoderException
+   * @throws LineUnavailableException
+   */
+  private void setupDispatcherChain(double startGain, double startBpm) throws EncoderException,
+      LineUnavailableException {
+    // Initialize the correct stream objects from file
+    inputStream = Streamer.stream(track.getPath(), attributes);
+    tarsosStream = new JVMAudioInputStream(inputStream);
 
+    // Initialize audio processors
+    audioPlayer = new AudioPlayer(format);
+    wsola = new WaveformSimilarityBasedOverlapAdd(Parameters.musicDefaults(tempo,
+        format.getSampleRate()));
+    gainProcessor = new GainProcessor(startGain);
+    dispatcher = new AudioDispatcher(tarsosStream, wsola.getInputBufferSize(), wsola.getOverlap());
+    
+    // skipProcessor makes sure that the player skips until the desired point in time.
+    // After that, we set our processor state to READY, so this.play can be called.
+    final TrackProcessor thisProcessor = this;
+    skipProcessor = new SkipAudioProcessor(track, new SkipAudioProcessorCallback() {
+      @Override
+      public void onFinished() {
+        thisProcessor.setState(PlayerState.READY);
+      }
+    });
+
+    // Setup the entire dispatcher chain
+    wsola.setDispatcher(dispatcher);
+    dispatcher.addAudioProcessor(wsola);
+    dispatcher.addAudioProcessor(skipProcessor);
+    dispatcher.addAudioProcessor(gainProcessor);
+    dispatcher.addAudioProcessor(audioPlayer);
+    Thread thread = new Thread(dispatcher);
+    thread.start();
+  }
+  
+  public PlayerState getState() {
+    return this.state;
+  }
+  
   private void setState(PlayerState state) {
+    log.info("TrackProcessor #" + this.hashCode() + " state changed: " + state.toString());
     this.state = state;
   }
 
   public static enum PlayerState {
-    NO_FILE_LOADED, FILE_LOADED, PLAYING, PAUSED, STOPPED
+    NO_FILE_LOADED, FILE_LOADED, READY, PLAYING, PAUSED, STOPPED
   }
 }
