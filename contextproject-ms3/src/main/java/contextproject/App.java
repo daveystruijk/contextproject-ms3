@@ -5,6 +5,7 @@ import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.EnergyLevelProcessor;
+import contextproject.audio.OnsetProcessor;
 import contextproject.audio.PlayerService;
 import contextproject.controllers.CliController;
 import contextproject.controllers.WindowController;
@@ -55,6 +56,22 @@ public class App extends Application {
   public static void main(String[] args) {
     Attributes attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(44100);
+    
+    OnsetProcessor processor = new OnsetProcessor(attributes);
+    processor.dingen(new Track("C:/Users/Emiel/Documents/Smoothie/Endymion - Weekend Warriors.mp3"));
+    
+    
+    
+    
+//    EnergyLevelProcessor processor = new EnergyLevelProcessor(attributes);
+//    try {
+//      processor.detect(new Track("C:/Users/Emiel/Documents/Smoothie/Endymion - Weekend Warriors.mp3"));
+//    } catch (EncoderException | LineUnavailableException e) {
+//      // TODO Auto-generated catch block
+//      e.printStackTrace();
+//    }
+    
+    
     boolean gui = true;
     if (gui == true) {
       launch(args);

@@ -22,6 +22,8 @@ public class EnergyLevelProcessor implements AudioProcessor {
   private Attributes attributes;
   private AudioFormat format;
   private ArrayList<Double> energyLevels;
+  private float oneBeatInSeconds;
+  public int counter = 0;
 
   // Audio Processing
   private AudioInputStream inputStream;
@@ -39,6 +41,7 @@ public class EnergyLevelProcessor implements AudioProcessor {
     } catch (EncoderException e) {
       e.printStackTrace();
     }
+    energyLevels = new ArrayList<Double>();
   }
   
   /**
@@ -52,25 +55,28 @@ public class EnergyLevelProcessor implements AudioProcessor {
     tarsosStream = new JVMAudioInputStream(inputStream);
     
     float msPerBeat = (float) (60.0f / track.getBpm());
-    float fourBarsInSeconds = msPerBeat * 16;
-    energyLevels = new ArrayList<Double>();
-    System.out.println(fourBarsInSeconds);
+    oneBeatInSeconds = msPerBeat;
     
-    dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * fourBarsInSeconds), 0);
+    System.out.println(oneBeatInSeconds);
+    
+    dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * oneBeatInSeconds), 0);
   
     dispatcher.addAudioProcessor(this);
     dispatcher.run();
+    
   }
 
   @Override
   public boolean process(AudioEvent audioEvent) {
+    counter ++;
+    System.out.println(audioEvent.getRMS() + " at time " + oneBeatInSeconds*counter);
     energyLevels.add(audioEvent.getRMS());
     return false;
   }
 
   @Override
   public void processingFinished() {
-
+    energyLevels = new ArrayList<Double>();
   }
   
   /**
@@ -85,5 +91,9 @@ public class EnergyLevelProcessor implements AudioProcessor {
       counter++;
     }
     return sum / counter;
+  }
+  
+  public void test() {
+ //   Event event = new Event();
   }
 }

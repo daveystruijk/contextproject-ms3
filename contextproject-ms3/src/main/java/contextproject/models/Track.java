@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Track implements Serializable {
@@ -28,6 +29,7 @@ public class Track implements Serializable {
   private double bpm;
   private Key key;
   private BeatGrid beatGrid;
+  private ArrayList<Float> energyLevels;
 
   /**
    * Constructor of a track with extended information from library . The hashtable could contain the
@@ -320,6 +322,14 @@ public class Track implements Serializable {
    */
   public BeatGrid getBeatGrid() {
     return beatGrid;
+  }
+  
+  public ArrayList<Float> getEnergyLevels() {
+    return energyLevels;
+  }
+  
+  public void setEnergyLevels(ArrayList<Float> el) {
+    energyLevels = el;
   }
 
   public String toString() {
