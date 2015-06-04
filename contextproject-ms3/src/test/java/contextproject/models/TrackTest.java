@@ -125,6 +125,7 @@ public class TrackTest {
       Track track = new Track(resourcePath.toString());
 
       track.createBeatGrid(2, 5, 11, 13, 1);
+      track.analyzeTrack();
 
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");
