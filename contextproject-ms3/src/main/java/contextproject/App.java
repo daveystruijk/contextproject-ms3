@@ -21,6 +21,8 @@ import contextproject.sorters.PlaylistSorter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
@@ -30,9 +32,11 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -45,6 +49,9 @@ public class App extends Application {
 
   private static Library library;
   private boolean empty = false;
+  private int screenWidth;
+  private int screenHeight;
+  private static Scene scene;
 
   @FXML
   private static WindowController controller;
@@ -71,11 +78,15 @@ public class App extends Application {
     Parent root = (Parent) loader.load();
     final WindowController controller = (WindowController) loader.getController();
     App.controller = controller;
-
-    Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Demo Sprint 3");
+    
+    Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+    screenWidth = (int) screen.getWidth();
+    screenHeight = (int) screen.getHeight();
+    Scene scene = new Scene(root, screenWidth, screenHeight);
+    stage.setTitle("dj shrubberyrobber");
     stage.setScene(scene);
     stage.show();
+    App.scene = scene;
 
     try {
       LibraryLoader libraryLoader = new LibraryLoader("library.xml");
@@ -115,14 +126,18 @@ public class App extends Application {
       Playlist playlist = folderLoader.load();
       PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
       Playlist mixablePlaylist = sorter.sort(playlist);
-      controller.setEverything(mixablePlaylist, playlistname);
+      controller.setEverything(mixablePlaylist, playlistname,scene);
     } else {
-      controller.setLibrary(library);
+      controller.setLibrary(library,scene);
     }
   }
 
   public static WindowController getController() {
     return controller;
+  }
+  
+  public static Scene getScene(){
+    return scene;
   }
 
   /**
