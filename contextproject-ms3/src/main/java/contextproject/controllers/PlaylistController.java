@@ -44,7 +44,7 @@ public class PlaylistController {
     } else {
       nxtitle = playlist.get(1).getTitle();
     }
-    playerControlsController.update(curtitle,nxtitle);
+    this.playerControlsController.update(curtitle,nxtitle);
 
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
@@ -60,7 +60,7 @@ public class PlaylistController {
             nxtitle = playlist.get(playlist.indexOf(curtrack) + 1).getTitle();
           }
           PlayerService.getInstance().transition();
-          playerControlsController.update(curtrack,nxtitle);
+          playerControlsController.update(curtitle,nxtitle);
         }
       }
     });

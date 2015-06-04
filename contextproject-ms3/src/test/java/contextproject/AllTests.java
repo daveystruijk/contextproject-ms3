@@ -1,9 +1,14 @@
 package contextproject;
 
+import contextproject.audio.MixerProcessorTest;
 import contextproject.audio.PlayerServiceTest;
+import contextproject.controllers.LibraryControllerTest;
+import contextproject.controllers.PlayerControlsControllerTest;
 import contextproject.controllers.PlaylistControllerTest;
+import contextproject.controllers.WindowControllerTest;
 import contextproject.formats.M3UBuilderTest;
 import contextproject.formats.XmlExportTest;
+import contextproject.helpers.FileNameTest;
 import contextproject.helpers.PlaylistNameTest;
 import contextproject.helpers.StackTraceTest;
 import contextproject.helpers.TrackCompatibilityTest;
@@ -14,6 +19,7 @@ import contextproject.models.BeatRangeTest;
 import contextproject.models.KeyTest;
 import contextproject.models.LibraryTest;
 import contextproject.models.PropertyTest;
+import contextproject.models.TrackPropertyTest;
 import contextproject.models.TrackTest;
 import contextproject.sorters.GraphTest;
 import contextproject.sorters.GreedyPlaylistSorterTest;
@@ -25,12 +31,41 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ M3UBuilderTest.class, TrackCompatibilityTest.class, FolderLoaderTest.class,
-    BeatGridTest.class, KeyTest.class, TrackTest.class, AppTest.class, BeatRangeTest.class,
-    GraphTest.class, GreedyPlaylistSorterTest.class, TrackNodeTest.class, TrackTreeTest.class,
-    M3UBuilderTest.class, LibraryLoaderTest.class, XmlExportTest.class,
-    PlaylistControllerTest.class, M3UBuilderTest.class, PlaylistNameTest.class,
-    StackTraceTest.class, PropertyTest.class, PlayerServiceTest.class, LibraryTest.class })
+@SuiteClasses({ 
+    //main package.
+    AppTest.class,
+    //audio package.
+    MixerProcessorTest.class,
+    PlayerServiceTest.class,
+    //controllers package.
+    LibraryControllerTest.class,
+    PlayerControlsControllerTest.class,
+    PlaylistControllerTest.class,
+    WindowControllerTest.class,
+    //formats package.
+    M3UBuilderTest.class,
+    XmlExportTest.class,
+    //helpers package.
+    FileNameTest.class,
+    PlaylistNameTest.class,
+    StackTraceTest.class,
+    TrackCompatibilityTest.class,
+    //loaders package.
+    FolderLoaderTest.class,
+    LibraryLoaderTest.class,
+    //models package.
+    BeatGridTest.class,
+    BeatRangeTest.class,
+    KeyTest.class,
+    LibraryTest.class,
+    PropertyTest.class,
+    TrackPropertyTest.class,
+    TrackTest.class,
+    //sorters package.
+    GraphTest.class,
+    GreedyPlaylistSorterTest.class,
+    TrackNodeTest.class,
+    TrackTreeTest.class })
 public class AllTests {
 
 }

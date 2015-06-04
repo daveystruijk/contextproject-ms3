@@ -10,7 +10,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Hashtable;
 
 public class TrackPropertyTest {
 
@@ -28,7 +27,7 @@ public class TrackPropertyTest {
   public void setUp() {
     try {
       resourcePath = Paths.get(resourceUrl.toURI());
-      testTrack = new Track(resourcePath.toString(), new Hashtable<String, String>());
+      testTrack = new Track(resourcePath.toString());
 
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");

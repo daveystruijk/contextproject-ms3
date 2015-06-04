@@ -44,8 +44,8 @@ public class EnergyLevelProcessor implements AudioProcessor {
   /**
    * Detector of the energy.
    * @param track track to get energy from.
-   * @throws EncoderException
-   * @throws LineUnavailableException
+   * @throws EncoderException encoder exception.
+   * @throws LineUnavailableException Line unavailable exception.
    */
   public void detect(Track track) throws EncoderException, LineUnavailableException {
     inputStream = Streamer.stream(track.getPath(), attributes);
