@@ -85,12 +85,12 @@ public class Track implements Serializable {
    * @param firstBeat
    *          first beat time.
    */
-  public void createBeatGrid(int startBeatIntro, int introBeatLength, int startBeatOurto,
+  public void createBeatGrid(int startBeatIntro, int introBeatLength, int startBeatOutro,
       int outroBeatLength, long firstBeat) {
     if (startBeatIntro > 0 && introBeatLength >= 0
-        && startBeatIntro + introBeatLength < startBeatOurto && outroBeatLength >= 0) {
+        && startBeatIntro + introBeatLength < startBeatOutro && outroBeatLength >= 0) {
       this.beatGrid = new BeatGrid(this.length, this.bpm, firstBeat, startBeatIntro,
-          introBeatLength, startBeatOurto, outroBeatLength);
+          introBeatLength, startBeatOutro, outroBeatLength);
     } else {
       log.warn("The beatgrid information is corrupt in: " + absolutePath);
     }

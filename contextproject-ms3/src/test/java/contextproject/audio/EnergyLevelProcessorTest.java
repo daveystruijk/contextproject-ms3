@@ -32,5 +32,4 @@ public class EnergyLevelProcessorTest {
   public void constTest() {
     assertNotEquals(new EnergyLevelProcessor(mockAttributes), energyProcessor);
   }
-
 }

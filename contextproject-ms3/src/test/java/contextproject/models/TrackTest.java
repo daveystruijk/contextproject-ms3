@@ -80,7 +80,6 @@ public class TrackTest {
     assertFalse(track1.equals(key));
   }
 
-
   @Test
   public void setTest() {
 
@@ -116,4 +115,48 @@ public class TrackTest {
     }
   }
 
+  @Test
+  public void testBeatGridCreation() {
+    URL resourceUrl = getClass().getResource("/beep.mp3");
+    Path resourcePath;
+
+    try {
+      resourcePath = Paths.get(resourceUrl.toURI());
+      Track track = new Track(resourcePath.toString());
+
+      track.createBeatGrid(2, 5, 11, 13, 1);
+
+    } catch (URISyntaxException e) {
+      fail("file wans't read correctly");
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testException() {
+    URL resourceUrl = getClass().getResource("/beep.mp3");
+    Path resourcePath;
+
+    try {
+      resourcePath = Paths.get(resourceUrl.toURI());
+      Track track = new Track(resourcePath.toString());
+      track.setAlbum("album");
+      track.setArtist("artist");
+      track.setBpm(60);
+      track.setLength(100);
+      track.setPath("path");
+      track.setTitle("Title");
+
+      BeatGrid bg = new BeatGrid((long) 100, 60, 5, 10, 10, 90, 10);
+      Key newKey = new Key("10B");
+
+      track.setBeatGrid(bg);
+      track.setKey(newKey);
+      track.createBeatGrid(10, 1, 11, 2, 1);
+
+    } catch (URISyntaxException e) {
+      fail("file wans't read correctly");
+      e.printStackTrace();
+    }
+  }
 }
