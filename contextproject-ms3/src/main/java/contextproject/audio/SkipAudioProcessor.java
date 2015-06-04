@@ -22,10 +22,10 @@ public class SkipAudioProcessor implements AudioProcessor {
    * the rest of the dispatcher chain until the desired point is reached.
    * 
    */
-  public SkipAudioProcessor(Track track, SkipAudioProcessorCallback callback) {
+  public SkipAudioProcessor(double secondsToSkip, SkipAudioProcessorCallback callback) {
     // TODO: get starting point based on track beatgrid
     this.callback = callback;
-    this.secondsToSkip = (60.0 / track.getBpm()) * 64;
+    this.secondsToSkip = secondsToSkip;
   }
   
   @Override

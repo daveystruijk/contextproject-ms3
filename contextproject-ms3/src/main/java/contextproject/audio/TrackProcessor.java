@@ -1,6 +1,8 @@
 package contextproject.audio;
 
 import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.AudioEvent;
+import be.tarsos.dsp.AudioProcessor;
 import be.tarsos.dsp.GainProcessor;
 import be.tarsos.dsp.WaveformSimilarityBasedOverlapAdd;
 import be.tarsos.dsp.WaveformSimilarityBasedOverlapAdd.Parameters;
@@ -17,13 +19,18 @@ import contextproject.models.Track;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
-public class TrackProcessor {
+public class TrackProcessor implements AudioProcessor {
 
   private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
+  
+  private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
   
   // State
   private PlayerState state;
@@ -62,7 +69,8 @@ public class TrackProcessor {
   /**
    * Loads the Track that is specified.
    */
-  public void load(Track track, double startGain, double startBpm) throws EncoderException, LineUnavailableException{
+  public void load(Track track, double startGain, double startBpm) throws EncoderException,
+      LineUnavailableException {
     if (state != PlayerState.NO_FILE_LOADED) {
       this.unload();
     }
@@ -88,13 +96,6 @@ public class TrackProcessor {
   
   /**
    * Play the current track.
-   * 
-   * @param startGain
-   *          . Given start Track.
-   * @throws EncoderException. Tarsos
-   *           Encode exception.
-   * @throws LineUnavailableException. Exception
-   *           in the audio stream!
    */
   public void play() {
     if (state != PlayerState.READY) {
@@ -134,7 +135,8 @@ public class TrackProcessor {
     // skipProcessor makes sure that the player skips until the desired point in time.
     // After that, we set our processor state to READY, so this.play can be called.
     final TrackProcessor thisProcessor = this;
-    skipProcessor = new SkipAudioProcessor(track, new SkipAudioProcessorCallback() {
+    double secondsToSkip = (60.0 / track.getBpm()) * 64;
+    skipProcessor = new SkipAudioProcessor(secondsToSkip, new SkipAudioProcessorCallback() {
       @Override
       public void onFinished() {
         thisProcessor.setState(PlayerState.READY);
@@ -142,6 +144,7 @@ public class TrackProcessor {
     });
 
     // Setup the entire dispatcher chain
+    dispatcher.addAudioProcessor(this);
     wsola.setDispatcher(dispatcher);
     dispatcher.addAudioProcessor(wsola);
     dispatcher.addAudioProcessor(skipProcessor);
@@ -151,16 +154,39 @@ public class TrackProcessor {
     thread.start();
   }
   
+  public void addPropertyChangeListener(PropertyChangeListener listener) {
+    this.pcs.addPropertyChangeListener(listener);
+  }
+  
+  public void removePropertyChangeListener(PropertyChangeListener listener) {
+    this.pcs.removePropertyChangeListener(listener);
+  }
+  
   public PlayerState getState() {
     return this.state;
   }
   
   private void setState(PlayerState state) {
-    log.info("TrackProcessor #" + this.hashCode() + " state changed: " + state.toString());
+    PlayerState oldState = state;
     this.state = state;
+    this.pcs.firePropertyChange("state", oldState, state);
+    log.info("TrackProcessor #" + this.hashCode() + " state changed: " + state.toString());
   }
 
   public static enum PlayerState {
     NO_FILE_LOADED, FILE_LOADED, READY, PLAYING, PAUSED, STOPPED
+  }
+
+  @Override
+  public boolean process(AudioEvent audioEvent) {
+    this.currentTime = audioEvent.getTimeStamp();
+    
+    
+    
+    return true;
+  }
+
+  @Override
+  public void processingFinished() {
   }
 }

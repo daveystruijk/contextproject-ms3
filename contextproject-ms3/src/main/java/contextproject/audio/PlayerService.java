@@ -11,6 +11,9 @@ import contextproject.models.Track;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 import javax.sound.sampled.LineUnavailableException;
 
 public class PlayerService {
@@ -49,6 +52,8 @@ public class PlayerService {
     } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }
+    
+    // Wait for track processor to be ready
     while (currentProcessor.getState() != PlayerState.READY) {
       try {
         Thread.sleep(10);
@@ -56,6 +61,7 @@ public class PlayerService {
         e.printStackTrace();
       }
     }
+    
     currentProcessor.play();
   }
   
@@ -93,12 +99,6 @@ public class PlayerService {
     
     currentProcessor.unload();
     currentProcessor = nextProcessor;
-
-    try {
-      airhornProcessor.play();
-    } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
-    }
   }
   
   public Track getCurrentTrack() {
