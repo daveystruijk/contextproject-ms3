@@ -8,43 +8,56 @@ import java.util.ArrayList;
 
 public class GreedyPlaylistSorter implements PlaylistSorter {
 
-  @Override
-  public Playlist sort(Playlist playlist) {
-    ArrayList<Track> addedTracks = new ArrayList<Track>();
-    Playlist mixablePlaylist = new Playlist();
+  private ArrayList<Track> addedTracks;
+  private Playlist mixablePlaylist;
+  private Track currentTrack;
+  private double score;
+  private double bestScore;
+  private Track bestMatch;
 
-    Track currentTrack = playlist.get(0);
+  /**
+   * Sets up the playlist to be sorted and adds the first Track to the mix.
+   */
+  public void setUpPlaylist(Playlist playlist) {
+    addedTracks = new ArrayList<Track>();
+    mixablePlaylist = new Playlist();
+    currentTrack = playlist.get(0);
     mixablePlaylist.add(currentTrack);
-    while (currentTrack != null) {
-      addedTracks.add(currentTrack);
-      Track bestMatch = null;
-      double bestScore = 0.0f;
-      for (int j = 1; j < playlist.size(); j++) {
-        if (currentTrack != playlist.get(j)) {
-          double score = TrackCompatibility.getScore(currentTrack, playlist.get(j));
-          if (score > bestScore && !addedTracks.contains(playlist.get(j))) {
-            bestScore = score;
-            bestMatch = playlist.get(j);
-          }
+  }
+
+  /**
+   * This is the portion of the algorithm that iterates over the collection of tracks. They are also
+   * matched.
+   */
+  public void match(Playlist playlist) {
+    for (int j = 1; j < playlist.size(); j++) {
+      if (currentTrack != playlist.get(j)) {
+        score = TrackCompatibility.getScore(currentTrack, playlist.get(j));
+        if (score > bestScore && !addedTracks.contains(playlist.get(j))) {
+          bestScore = score;
+          bestMatch = playlist.get(j);
         }
       }
+    }
+  }
+
+  @Override
+  public Playlist sort(Playlist playlist) {
+
+    setUpPlaylist(playlist);
+    while (currentTrack != null) {
+      addedTracks.add(currentTrack);
+      bestMatch = null;
+      bestScore = 0.0f;
+      match(playlist);
       if (bestMatch == null) {
         break;
       }
-
-      printTrack(currentTrack);
-      printTrack(bestMatch);
-      System.out.println(bestScore);
 
       mixablePlaylist.add(bestMatch);
       currentTrack = bestMatch;
     }
 
     return mixablePlaylist;
-  }
-
-  public void printTrack(Track track) {
-    System.out.println("\n" + track.getArtist() + " - " + track.getTitle() + " | "
-        + track.getKey().getNormalizedKeyString() + ", " + track.getBpm() + "\n");
   }
 }

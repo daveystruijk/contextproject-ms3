@@ -24,7 +24,6 @@ public class WindowControllerTest extends ApplicationTest {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
 
     Parent root = (Parent) loader.load();
-    final WindowController controller = (WindowController) loader.getController();
 
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Window Test!");

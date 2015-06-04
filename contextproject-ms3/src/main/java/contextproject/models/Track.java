@@ -57,16 +57,16 @@ public class Track implements Serializable {
       tag = song.getID3v2Tag();
 
     } catch (IOException e) {
-      log.error("There was a IO exception with file: " + absolutePath);
+      log.error("There was an IO exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (TagException e) {
       log.error("There was a Tag exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (ReadOnlyFileException e) {
-      log.error("There was a read only file exception with file: " + absolutePath);
+      log.error("There was a Read-Only file exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (InvalidAudioFrameException e) {
-      log.error("There was a invallid audio frame exception with file: " + absolutePath);
+      log.error("There was an invalid audio frame exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     }
   }
@@ -85,12 +85,12 @@ public class Track implements Serializable {
    * @param firstBeat
    *          first beat time.
    */
-  public void createBeatGrid(int startBeatIntro, int introBeatLength, int startBeatOurto,
+  public void createBeatGrid(int startBeatIntro, int introBeatLength, int startBeatOutro,
       int outroBeatLength, long firstBeat) {
     if (startBeatIntro > 0 && introBeatLength >= 0
-        && startBeatIntro + introBeatLength < startBeatOurto && outroBeatLength >= 0) {
+        && startBeatIntro + introBeatLength < startBeatOutro && outroBeatLength >= 0) {
       this.beatGrid = new BeatGrid(this.length, this.bpm, firstBeat, startBeatIntro,
-          introBeatLength, startBeatOurto, outroBeatLength);
+          introBeatLength, startBeatOutro, outroBeatLength);
     } else {
       log.warn("The beatgrid information is corrupt in: " + absolutePath);
     }
