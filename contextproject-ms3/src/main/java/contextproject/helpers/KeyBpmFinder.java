@@ -36,22 +36,22 @@ public class KeyBpmFinder {
       mp3.setTag(tag);
       mp3.commit();
     } catch (IOException e) {
-      log.error("There was a IO exception with file: " + absolutePath);
+      log.error("There was an IO exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (TagException e) {
       log.error("There was a Tag exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (ReadOnlyFileException e) {
-      log.error("There was a read only file exception with file: " + absolutePath);
+      log.error("There was a Read Only file exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (InvalidAudioFrameException e) {
-      log.error("There was a invallid audio frame exception with file: " + absolutePath);
+      log.error("There was an invalid audio frame exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (CannotWriteException e) {
       log.error("There was a write exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (InterruptedException e) {
-      log.error("There was a interrupted process exception with file: " + absolutePath);
+      log.error("There was an interrupted process exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     }
 
