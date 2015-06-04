@@ -7,9 +7,8 @@ import org.junit.Test;
 public class LibraryControllerTest {
 
   @Test
-  public void test() {
+  public void constructTest() {
     LibraryController newLibrary = new LibraryController();
     assertNotEquals(newLibrary, null);
   }
-
 }

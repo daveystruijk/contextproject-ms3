@@ -13,10 +13,7 @@ public class KeyTest {
   public void keyNotExistTest() {
     new Key(null);
   }
-  
-  /**
-   * test for situation with null key.
-   */
+
   @Test
   public void nullStartTest() {
     Key key = new Key();

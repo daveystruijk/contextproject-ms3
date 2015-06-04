@@ -37,5 +37,4 @@ public class GreedyPlaylistSorterTest {
     GreedyPlaylistSorter greedySort = new GreedyPlaylistSorter();
     assertEquals(greedySort.sort(playlist).size(), 2);
   }
-
 }

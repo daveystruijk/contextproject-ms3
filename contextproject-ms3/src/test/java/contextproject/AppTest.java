@@ -1,30 +1,34 @@
 package contextproject;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
+import contextproject.App;
+
+import org.junit.Test;
+import org.testfx.framework.junit.ApplicationTest;
+
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest {
-
-  private Stage stage = Mockito.mock(Stage.class);
-  private App dummyApp = Mockito.mock(App.class);
-
-  @Before
-  public void setUp() throws Exception {
-
-    dummyApp.start(stage);
-  }
+public class AppTest extends ApplicationTest {
 
   @Test
-  public void appTest() throws Exception {
-
-    Mockito.verify(dummyApp).start(stage);
-
+  public void appSetup() {
+    App ap = new App();
+    assertNotEquals(App.getController(), null);
+    assertNotEquals(ap, null);
   }
 
+  @Override
+  public void start(Stage stage) throws Exception {
+    // TODO Auto-generated method stub
+    App ap = new App();
+    ap.start(stage);
+
+  }
+  
 }
