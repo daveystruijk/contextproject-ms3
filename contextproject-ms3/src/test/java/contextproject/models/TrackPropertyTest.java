@@ -28,7 +28,7 @@ public class TrackPropertyTest {
   public void setUp() {
     try {
       resourcePath = Paths.get(resourceUrl.toURI());
-      testTrack = new Track(resourcePath.toString(), new Hashtable<String, String>());
+      testTrack = new Track(resourcePath.toString());
 
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");

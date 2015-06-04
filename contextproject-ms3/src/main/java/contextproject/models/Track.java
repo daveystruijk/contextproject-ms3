@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Hashtable;
 
 public class Track implements Serializable {
 
@@ -28,27 +27,6 @@ public class Track implements Serializable {
   private double bpm;
   private Key key;
   private BeatGrid beatGrid;
-
-  /**
-   * Constructor of a track with extended information from library . The hashtable could contain the
-   * following keys (all values should be strings that will be parsed later):
-   * 
-   * <p>
-   * String title, String artist, String album, long length, double bpm, String key, long firstBeat,
-   * int beatIntroStart, int beatsIntroLength, int beatOutroStart, int beatsOutroLength
-   * 
-   * @param abPath
-   *          Path of the mp3 file
-   * @param info
-   *          Hashtable with extended information
-   */
-  public Track(String abPath, Hashtable<String, String> info) {
-
-    this.absolutePath = abPath;
-    createSong();
-    extractInfo(info);
-    getMetadata();
-  }
 
   /**
    * Constructor without arguments.
@@ -84,61 +62,10 @@ public class Track implements Serializable {
     }
   }
 
-  private void extractInfo(Hashtable<String, String> info) {
-
-    this.title = info.get("title");
-    this.artist = info.get("artist");
-    this.album = info.get("album");
-
-    try {
-      this.length = Long.parseLong(info.get("length"));
-    } catch (NumberFormatException e) {
-      this.length = song.getLengthInMilliseconds();
-    }
-
-    try {
-      this.bpm = Double.parseDouble((info.get("bpm")));
-    } catch (NullPointerException | NumberFormatException f) {
-      this.bpm = 0.0;
-    }
-
-    if (info.get("key") != null) {
-      this.key = new Key(info.get("key"));
-    }
-
-    getMetadata();
-
-    int startBeatIntro;
-    int introBeatLength;
-    int startBeatOurto;
-    int outroBeatLength;
-    long firstBeat;
-
-    try {
-      startBeatIntro = Integer.parseInt(info.get("startBeatIntro"));
-      introBeatLength = Integer.parseInt(info.get("introBeatLength"));
-    } catch (NumberFormatException e) {
-      startBeatIntro = 0;
-      introBeatLength = 0;
-    }
-
-    try {
-      startBeatOurto = Integer.parseInt(info.get("startBeatOutro"));
-      outroBeatLength = Integer.parseInt(info.get("outroBeatLength"));
-    } catch (NumberFormatException e) {
-      startBeatOurto = 0;
-      outroBeatLength = 0;
-    }
-
-    try {
-      firstBeat = Long.parseLong(info.get("firstBeat"));
-    } catch (NumberFormatException e) {
-      firstBeat = 0;
-    }
-
+  public void createBeatGrid(int startBeatIntro, int introBeatLength, int startBeatOurto,
+      int outroBeatLength, long firstBeat) {
     this.beatGrid = new BeatGrid(this.length, this.bpm, firstBeat, startBeatIntro, introBeatLength,
         startBeatOurto, outroBeatLength);
-
   }
 
   /**

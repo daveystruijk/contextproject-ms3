@@ -31,7 +31,7 @@ public class PlaylistControllerTest {
     Path resourcePath;
     try {
       resourcePath = Paths.get(resourceUrl.toURI());
-      track = new Track(resourcePath.toString(), new Hashtable<String, String>());
+      track = new Track(resourcePath.toString());
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");
       e.printStackTrace();
