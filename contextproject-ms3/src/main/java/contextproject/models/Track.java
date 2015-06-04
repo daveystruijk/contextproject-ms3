@@ -1,9 +1,5 @@
 package contextproject.models;
 
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
-
 import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
 
@@ -25,7 +21,6 @@ public class Track implements Serializable {
 
   private static Logger log = LogManager.getLogger(Track.class.getName());
 
-  private Mp3File song;
   private String title;
   private String artist;
   private String album;
@@ -34,7 +29,7 @@ public class Track implements Serializable {
   private double bpm;
   private Key key;
   private BeatGrid beatGrid;
-  private MP3File songForBpmKey;
+  private MP3File song;
   private AbstractID3v2Tag tag;
 
   /**
@@ -53,45 +48,42 @@ public class Track implements Serializable {
   public Track(String abPath) {
     this.absolutePath = abPath;
     createSong();
-    analyzeTrack();
     getMetadata();
   }
 
   private void createSong() {
     try {
-      song = new Mp3File(absolutePath);
-      songForBpmKey = new MP3File(absolutePath);
-      tag = songForBpmKey.getID3v2Tag();
-      
-      
-    } catch (UnsupportedTagException e) {
-      log.error("There was a Unsupported tag exception with file:" + absolutePath);
-      log.trace(StackTrace.stackTrace(e));
-    } catch (InvalidDataException e) {
-      log.error("There was a Invalid data exception with file:" + absolutePath);
-      log.trace(StackTrace.stackTrace(e));
+      song = new MP3File(absolutePath);
+      tag = song.getID3v2Tag();
+
     } catch (IOException e) {
-      log.error("There was a IO exception with file:" + absolutePath);
+      log.error("There was a IO exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     } catch (TagException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      log.error("There was a Tag exception with file: " + absolutePath);
+      log.trace(StackTrace.stackTrace(e));
     } catch (ReadOnlyFileException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      log.error("There was a read only file exception with file: " + absolutePath);
+      log.trace(StackTrace.stackTrace(e));
     } catch (InvalidAudioFrameException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      log.error("There was a invallid audio frame exception with file: " + absolutePath);
+      log.trace(StackTrace.stackTrace(e));
     }
   }
 
   /**
    * Create beatgrid.
-   * @param startBeatIntro  start beat of intro.
-   * @param introBeatLength length of intro.
-   * @param startBeatOurto start beat of outro.
-   * @param outroBeatLength length of outro.
-   * @param firstBeat first beat time.
+   * 
+   * @param startBeatIntro
+   *          start beat of intro.
+   * @param introBeatLength
+   *          length of intro.
+   * @param startBeatOurto
+   *          start beat of outro.
+   * @param outroBeatLength
+   *          length of outro.
+   * @param firstBeat
+   *          first beat time.
    */
   public void createBeatGrid(int startBeatIntro, int introBeatLength, int startBeatOurto,
       int outroBeatLength, long firstBeat) {
@@ -100,51 +92,57 @@ public class Track implements Serializable {
       this.beatGrid = new BeatGrid(this.length, this.bpm, firstBeat, startBeatIntro,
           introBeatLength, startBeatOurto, outroBeatLength);
     } else {
-      log.warn("The beatgrid information is corrupt in: " + song.getFilename());
+      log.warn("The beatgrid information is corrupt in: " + absolutePath);
     }
   }
 
-  public void analyzeTrack(){
-    KeyBpmFinder k = new KeyBpmFinder();
-    k.findKeyBpm(absolutePath);
-    System.out.println("KEY: " + tag.getFirst(FieldKey.KEY) + "   BPM: " + tag.getFirst(FieldKey.BPM) + absolutePath);
-    try {
-      songForBpmKey = new MP3File(absolutePath);
-    } catch (IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    tag = songForBpmKey.getID3v2Tag();
-    
-    System.out.println("KEY: " + tag.getFirst(FieldKey.KEY) + "   BPM: " + tag.getFirst(FieldKey.BPM) + absolutePath);
+  /**
+   * Analyze a track for key and bpm.
+   */
+  public void analyzeTrack() {
+    KeyBpmFinder keyBpm = new KeyBpmFinder();
+    keyBpm.findKeyBpm(absolutePath);
+    createSong();
+    log.info("KEY: " + tag.getFirst(FieldKey.KEY) + "   BPM: " + tag.getFirst(FieldKey.BPM)
+        + absolutePath);
   }
-  
-  
+
   /**
    * get information from Id3Tag.
    */
   private void getMetadata() {
-    if (song.hasId3v2Tag()) {
-      if (title == null) {
-        title = song.getId3v2Tag().getTitle();
-      }
-      if (artist == null) {
-        artist = song.getId3v2Tag().getArtist();
-      }
-      if (album == null) {
-        album = song.getId3v2Tag().getAlbum();
-      }
-      if (bpm == 0) {
-        bpm = song.getId3v2Tag().getBPM();
-      }
+    if (title == null) {
+      title = tag.getFirst(FieldKey.TITLE);
+    }
+    if (artist == null) {
+      artist = tag.getFirst(FieldKey.ARTIST);
+    }
+    if (album == null) {
+      album = tag.getFirst(FieldKey.ALBUM);
+    }
+    if (bpm == 0) {
       try {
-        
-        key = new Key(song.getId3v2Tag().getKey());
-      } catch (IllegalArgumentException e) {
-        log.warn("Could not find key information in: " + song.getFilename());
+        bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
+      } catch (NumberFormatException e) {
+        analyzeTrack();
+        try {
+          bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
+        } catch (NumberFormatException f) {
+          log.error("There was no bpm information in file: " + absolutePath);
+          log.trace(StackTrace.stackTrace(f));
+        }
       }
-    } else {
-      log.warn("Could not find Id3v2 information in: " + song.getFilename());
+    }
+    try {
+      key = new Key(tag.getFirst(FieldKey.KEY));
+    } catch (IllegalArgumentException e) {
+      analyzeTrack();
+      try {
+        key = new Key(tag.getFirst(FieldKey.KEY));
+      } catch (IllegalArgumentException f) {
+        log.error("There was no bpm information in file: " + absolutePath);
+        log.trace(StackTrace.stackTrace(f));
+      }
     }
   }
 
