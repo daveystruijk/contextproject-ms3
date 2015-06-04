@@ -21,9 +21,10 @@ public class AppTest extends ApplicationTest {
   }
 
   @Override
-  public void start(Stage arg0) throws Exception {
+  public void start(Stage stage) throws Exception {
     // TODO Auto-generated method stub
-
+    App ap = new App();
+    ap.start(stage);
   }
 
 }
