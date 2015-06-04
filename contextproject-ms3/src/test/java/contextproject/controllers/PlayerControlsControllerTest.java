@@ -28,14 +28,15 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     final PlayerControlsController controller = (PlayerControlsController) loader.getController();
 
     Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Demo Sprint 3");
+    stage.setTitle("Test for Pressing Buttons");
     stage.setScene(scene);
     stage.show();
   }
 
   @Test
   public void clickButtonTest() {
-    clickOn("#playButton").clickOn("#pauseButton");
+    clickOn("#playButton");
+    clickOn("#pauseButton");
   }
 
 }

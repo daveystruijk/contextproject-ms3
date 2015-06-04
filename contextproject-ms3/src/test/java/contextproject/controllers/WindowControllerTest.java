@@ -27,7 +27,7 @@ public class WindowControllerTest extends ApplicationTest {
     final WindowController controller = (WindowController) loader.getController();
 
     Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Demo Sprint 3");
+    stage.setTitle("Window Test!");
     stage.setScene(scene);
     stage.show();
   }
