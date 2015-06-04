@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 before_install:
   - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xfvb start"
+  - "sh -e /etc/init.d/xvfb start"
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout $TRAVIS_BRANCH && echo \"OCTOPULL_SHA=$(git rev-parse HEAD)\"; true"
   - cd contextproject-ms3
   - wget http://0110.be/releases/TarsosDSP/TarsosDSP-2.2/TarsosDSP-2.2.jar
