@@ -8,6 +8,7 @@ import contextproject.App;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -18,7 +19,7 @@ public class AppTest extends ApplicationTest {
   @Test
   public void appSetup() {
     App ap = new App();
-    assertEquals(App.getController(), null);
+    assertNotEquals(App.getController(), null);
     assertNotEquals(ap, null);
   }
 
@@ -26,6 +27,8 @@ public class AppTest extends ApplicationTest {
   public void start(Stage stage) throws Exception {
     // TODO Auto-generated method stub
     App ap = new App();
-   // ap.start(stage);
+    ap.start(stage);
+
   }
+  
 }
