@@ -58,7 +58,7 @@ public class App extends Application {
     attributes.setSamplingRate(44100);
     
     OnsetProcessor processor = new OnsetProcessor(attributes);
-    processor.dingen(new Track("C:/Users/Emiel/Documents/Smoothie/Endymion - Weekend Warriors.mp3"));
+    processor.dingen(new Track("C:/Users/Emiel/Documents/Smoothie/11 - Final Masquerade.mp3"));
     
     
     

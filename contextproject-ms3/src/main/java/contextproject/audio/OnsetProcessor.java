@@ -49,17 +49,17 @@ public class OnsetProcessor implements OnsetHandler {
     onsetDetector = new ComplexOnsetDetector(bufferSize, threshold, 0.07, -60);
     onsetDetector.setHandler(this);
     dispatcher.run();
-    
+
     try {
       Field field = ComplexOnsetDetector.class.getDeclaredField("lastOnset");
       field.setAccessible(true);
       Object value = field.get(onsetDetector);
-      System.out.println(value.toString());
-    } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-      // TODO Auto-generated catch block
+      System.out.println(value);
+    } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
+        | IllegalAccessException e) {
       e.printStackTrace();
     }
-    
+
   }
 
   @Override
