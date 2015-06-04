@@ -1,5 +1,6 @@
 package contextproject;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
@@ -18,6 +19,7 @@ public class AppTest extends ApplicationTest {
 
     App ap = new App();
     assertNotEquals(ap, null);
+    assertNotEquals(App.getController(), null);
 
   }
 
@@ -25,8 +27,12 @@ public class AppTest extends ApplicationTest {
   public void start(Stage stage) throws Exception {
     // TODO Auto-generated method stub
     App ap = new App();
-    ap.lookatThis(stage);
+    ap.start(stage);
 
   }
 
+  @Test
+  public void closeTest() {
+    clickOn("#menu");
+  }
 }
