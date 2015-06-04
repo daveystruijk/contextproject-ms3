@@ -11,11 +11,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Hashtable;
 
 public class TrackTest {
-
-  private static final double DELTA = 1e-15;
 
   @Test
   public void trackConstructorTest() {

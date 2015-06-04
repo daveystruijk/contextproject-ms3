@@ -62,10 +62,23 @@ public class Track implements Serializable {
     }
   }
 
+  /**
+   * Create beatgrid.
+   * @param startBeatIntro  start beat of intro.
+   * @param introBeatLength length of intro.
+   * @param startBeatOurto start beat of outro.
+   * @param outroBeatLength length of outro.
+   * @param firstBeat first beat time.
+   */
   public void createBeatGrid(int startBeatIntro, int introBeatLength, int startBeatOurto,
       int outroBeatLength, long firstBeat) {
-    this.beatGrid = new BeatGrid(this.length, this.bpm, firstBeat, startBeatIntro, introBeatLength,
-        startBeatOurto, outroBeatLength);
+    if (startBeatIntro > 0 && introBeatLength >= 0
+        && startBeatIntro + introBeatLength < startBeatOurto && outroBeatLength >= 0) {
+      this.beatGrid = new BeatGrid(this.length, this.bpm, firstBeat, startBeatIntro,
+          introBeatLength, startBeatOurto, outroBeatLength);
+    } else {
+      log.warn("The beatgrid information is corrupt in: " + song.getFilename());
+    }
   }
 
   /**
