@@ -125,6 +125,11 @@ public class App extends Application {
     return controller;
   }
 
+  public int lookatThis(Stage stage) throws Exception {
+    this.start(stage);
+    return 1;
+  }
+
   /**
    * sets the library to be exported to library.xml.
    * 
