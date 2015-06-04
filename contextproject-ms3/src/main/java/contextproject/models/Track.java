@@ -4,10 +4,17 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
+import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.audio.mp3.MP3File;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.TagException;
+import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,6 +34,8 @@ public class Track implements Serializable {
   private double bpm;
   private Key key;
   private BeatGrid beatGrid;
+  private MP3File songForBpmKey;
+  private AbstractID3v2Tag tag;
 
   /**
    * Constructor without arguments.
@@ -44,12 +53,17 @@ public class Track implements Serializable {
   public Track(String abPath) {
     this.absolutePath = abPath;
     createSong();
+    analyzeTrack();
     getMetadata();
   }
 
   private void createSong() {
     try {
       song = new Mp3File(absolutePath);
+      songForBpmKey = new MP3File(absolutePath);
+      tag = songForBpmKey.getID3v2Tag();
+      
+      
     } catch (UnsupportedTagException e) {
       log.error("There was a Unsupported tag exception with file:" + absolutePath);
       log.trace(StackTrace.stackTrace(e));
@@ -59,6 +73,15 @@ public class Track implements Serializable {
     } catch (IOException e) {
       log.error("There was a IO exception with file:" + absolutePath);
       log.trace(StackTrace.stackTrace(e));
+    } catch (TagException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (ReadOnlyFileException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (InvalidAudioFrameException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 
@@ -81,6 +104,22 @@ public class Track implements Serializable {
     }
   }
 
+  public void analyzeTrack(){
+    KeyBpmFinder k = new KeyBpmFinder();
+    k.findKeyBpm(absolutePath);
+    System.out.println("KEY: " + tag.getFirst(FieldKey.KEY) + "   BPM: " + tag.getFirst(FieldKey.BPM) + absolutePath);
+    try {
+      songForBpmKey = new MP3File(absolutePath);
+    } catch (IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    tag = songForBpmKey.getID3v2Tag();
+    
+    System.out.println("KEY: " + tag.getFirst(FieldKey.KEY) + "   BPM: " + tag.getFirst(FieldKey.BPM) + absolutePath);
+  }
+  
+  
   /**
    * get information from Id3Tag.
    */
@@ -99,6 +138,7 @@ public class Track implements Serializable {
         bpm = song.getId3v2Tag().getBPM();
       }
       try {
+        
         key = new Key(song.getId3v2Tag().getKey());
       } catch (IllegalArgumentException e) {
         log.warn("Could not find key information in: " + song.getFilename());
