@@ -31,9 +31,4 @@ public class WindowControllerTest extends ApplicationTest {
     stage.setScene(scene);
     stage.show();
   }
-
-  @Test
-  public void clickTest() {
-    clickOn("#menu").clickOn("#menuItemImport");
-  }
 }
