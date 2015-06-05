@@ -2,7 +2,6 @@ package contextproject.audio;
 
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.io.jvm.JVMAudioInputStream;
-import be.tarsos.dsp.onsets.ComplexOnsetDetector;
 import be.tarsos.dsp.onsets.OnsetHandler;
 import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
@@ -28,6 +27,7 @@ public class OnsetProcessor implements OnsetHandler {
   private double threshold = 0.4;
   private int bufferSize = 512;
   private int overlap = 0;
+  private double firstOnset = 0;
 
   public OnsetProcessor(Attributes attributes) {
     this.attributes = attributes;
@@ -48,24 +48,18 @@ public class OnsetProcessor implements OnsetHandler {
     dispatcher = new AudioDispatcher(audioStream, bufferSize, overlap);
     onsetDetector = new ComplexOnsetDetector(bufferSize, threshold, 0.07, -60);
     onsetDetector.setHandler(this);
+    dispatcher.addAudioProcessor(onsetDetector);
     dispatcher.run();
-
-    try {
-      Field field = ComplexOnsetDetector.class.getDeclaredField("lastOnset");
-      field.setAccessible(true);
-      Object value = field.get(onsetDetector);
-      System.out.println(value);
-    } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
-        | IllegalAccessException e) {
-      e.printStackTrace();
-    }
-
+    firstOnset = onsetDetector.getFirstOnset();
   }
 
   @Override
   public void handleOnset(double time, double salience) {
-    System.out.println("blavla");
 
+  }
+  
+  public double getFirstOnset() {
+    return firstOnset;
   }
 
 }

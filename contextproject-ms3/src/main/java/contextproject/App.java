@@ -56,20 +56,18 @@ public class App extends Application {
   public static void main(String[] args) {
     Attributes attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(44100);
-    
+    String song = "C:/Users/Emiel/Documents/Smoothie/Endymion - Weekend Warriors.mp3";
     OnsetProcessor processor = new OnsetProcessor(attributes);
-    processor.dingen(new Track("C:/Users/Emiel/Documents/Smoothie/11 - Final Masquerade.mp3"));
+    processor.dingen(new Track(song));
+    double start = processor.getFirstOnset();
     
-    
-    
-    
-//    EnergyLevelProcessor processor = new EnergyLevelProcessor(attributes);
-//    try {
-//      processor.detect(new Track("C:/Users/Emiel/Documents/Smoothie/Endymion - Weekend Warriors.mp3"));
-//    } catch (EncoderException | LineUnavailableException e) {
-//      // TODO Auto-generated catch block
-//      e.printStackTrace();
-//    }
+    EnergyLevelProcessor energyprocessor = new EnergyLevelProcessor(attributes);
+    try {
+      energyprocessor.detect(new Track(song), start);
+    } catch (EncoderException | LineUnavailableException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     
     
     boolean gui = true;

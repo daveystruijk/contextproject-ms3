@@ -9,6 +9,7 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.models.Track;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class EnergyLevelProcessor implements AudioProcessor {
   private AudioInputStream inputStream;
   private TarsosDSPAudioInputStream tarsosStream;
   private AudioDispatcher dispatcher;
+  private SkipAudioProcessor skipProcessor;
   
   /**
    * Constructor of the processor.
@@ -50,7 +52,7 @@ public class EnergyLevelProcessor implements AudioProcessor {
    * @throws EncoderException
    * @throws LineUnavailableException
    */
-  public void detect(Track track) throws EncoderException, LineUnavailableException {
+  public void detect(Track track, double start) throws EncoderException, LineUnavailableException {
     inputStream = Streamer.stream(track.getPath(), attributes);
     tarsosStream = new JVMAudioInputStream(inputStream);
     
@@ -60,7 +62,16 @@ public class EnergyLevelProcessor implements AudioProcessor {
     System.out.println(oneBeatInSeconds);
     
     dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * oneBeatInSeconds), 0);
-  
+//    final EnergyLevelProcessor elp = this;
+    skipProcessor = new SkipAudioProcessor(start, new SkipAudioProcessorCallback() {
+      
+      @Override
+      public void onFinished() {
+        skipProcessor.stop();
+        
+      }
+    });
+    dispatcher.addAudioProcessor(skipProcessor);
     dispatcher.addAudioProcessor(this);
     dispatcher.run();
     
