@@ -76,7 +76,7 @@ public class TrackTest {
   @Test
   public void differentObjectEqualsTest() {
     Track track1 = new Track();
-    Key key = new Key();
+    MusicalKey key = new MusicalKey();
     assertFalse(track1.equals(key));
   }
 
@@ -97,7 +97,7 @@ public class TrackTest {
       track.setTitle("Title");
 
       BeatGrid bg = new BeatGrid((long) 100, 60, 5, 10, 10, 90, 10);
-      Key newKey = new Key("10B");
+      MusicalKey newKey = new MusicalKey("10B");
 
       track.setBeatGrid(bg);
       track.setKey(newKey);
@@ -149,7 +149,7 @@ public class TrackTest {
       track.setTitle("Title");
 
       BeatGrid bg = new BeatGrid((long) 100, 60, 5, 10, 10, 90, 10);
-      Key newKey = new Key("10B");
+      MusicalKey newKey = new MusicalKey("10B");
 
       track.setBeatGrid(bg);
       track.setKey(newKey);
