@@ -16,6 +16,12 @@
 
 	<repositories>
 		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+
+
+		<repository>
 			<id>maven-central-repo</id>
 			<url>http://repo1.maven.org/maven2</url>
 			<snapshots>
@@ -24,18 +30,13 @@
 		</repository>
 	</repositories>
 
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.mpatric</groupId>
-			<artifactId>mp3agic</artifactId>
-			<version>0.8.3</version>
 		</dependency>
 
 		<dependency>
@@ -86,9 +87,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.googlecode.jctree</groupId>
-			<artifactId>jctree</artifactId>
-			<version>2.0.0</version>
+			<groupId>org.bitbucket.ijabz</groupId>
+			<artifactId>jaudiotagger</artifactId>
+			<version>Version2_2_2</version>
 		</dependency>
 
 		<dependency>

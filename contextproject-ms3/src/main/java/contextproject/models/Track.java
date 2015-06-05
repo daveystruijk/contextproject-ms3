@@ -1,17 +1,19 @@
 package contextproject.models;
 
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
-
+import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.audio.mp3.MP3File;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.TagException;
+import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Hashtable;
 
 public class Track implements Serializable {
 
@@ -19,7 +21,6 @@ public class Track implements Serializable {
 
   private static Logger log = LogManager.getLogger(Track.class.getName());
 
-  private Mp3File song;
   private String title;
   private String artist;
   private String album;
@@ -28,27 +29,8 @@ public class Track implements Serializable {
   private double bpm;
   private Key key;
   private BeatGrid beatGrid;
-
-  /**
-   * Constructor of a track with extended information from library . The hashtable could contain the
-   * following keys (all values should be strings that will be parsed later):
-   * 
-   * <p>
-   * String title, String artist, String album, long length, double bpm, String key, long firstBeat,
-   * int beatIntroStart, int beatsIntroLength, int beatOutroStart, int beatsOutroLength
-   * 
-   * @param abPath
-   *          Path of the mp3 file
-   * @param info
-   *          Hashtable with extended information
-   */
-  public Track(String abPath, Hashtable<String, String> info) {
-
-    this.absolutePath = abPath;
-    createSong();
-    extractInfo(info);
-    getMetadata();
-  }
+  private MP3File song;
+  private AbstractID3v2Tag tag;
 
   /**
    * Constructor without arguments.
@@ -71,100 +53,96 @@ public class Track implements Serializable {
 
   private void createSong() {
     try {
-      song = new Mp3File(absolutePath);
-    } catch (UnsupportedTagException e) {
-      log.error("There was a Unsupported tag exception with file:" + absolutePath);
-      log.trace(StackTrace.stackTrace(e));
-    } catch (InvalidDataException e) {
-      log.error("There was a Invalid data exception with file:" + absolutePath);
-      log.trace(StackTrace.stackTrace(e));
+      song = new MP3File(absolutePath);
+      tag = song.getID3v2Tag();
+
     } catch (IOException e) {
-      log.error("There was a IO exception with file:" + absolutePath);
+      log.error("There was an IO exception with file: " + absolutePath);
+      log.trace(StackTrace.stackTrace(e));
+    } catch (TagException e) {
+      log.error("There was a Tag exception with file: " + absolutePath);
+      log.trace(StackTrace.stackTrace(e));
+    } catch (ReadOnlyFileException e) {
+      log.error("There was a Read-Only file exception with file: " + absolutePath);
+      log.trace(StackTrace.stackTrace(e));
+    } catch (InvalidAudioFrameException e) {
+      log.error("There was an invalid audio frame exception with file: " + absolutePath);
       log.trace(StackTrace.stackTrace(e));
     }
   }
 
-  private void extractInfo(Hashtable<String, String> info) {
-
-    this.title = info.get("title");
-    this.artist = info.get("artist");
-    this.album = info.get("album");
-
-    try {
-      this.length = Long.parseLong(info.get("length"));
-    } catch (NumberFormatException e) {
-      this.length = song.getLengthInMilliseconds();
+  /**
+   * Create beatgrid.
+   * 
+   * @param startBeatIntro
+   *          start beat of intro.
+   * @param introBeatLength
+   *          length of intro.
+   * @param startBeatOurto
+   *          start beat of outro.
+   * @param outroBeatLength
+   *          length of outro.
+   * @param firstBeat
+   *          first beat time.
+   */
+  public void createBeatGrid(int startBeatIntro, int introBeatLength, int startBeatOutro,
+      int outroBeatLength, long firstBeat) {
+    if (startBeatIntro > 0 && introBeatLength >= 0
+        && startBeatIntro + introBeatLength < startBeatOutro && outroBeatLength >= 0) {
+      this.beatGrid = new BeatGrid(this.length, this.bpm, firstBeat, startBeatIntro,
+          introBeatLength, startBeatOutro, outroBeatLength);
+    } else {
+      log.warn("The beatgrid information is corrupt in: " + absolutePath);
     }
+  }
 
-    try {
-      this.bpm = Double.parseDouble((info.get("bpm")));
-    } catch (NullPointerException | NumberFormatException f) {
-      this.bpm = 0.0;
-    }
-
-    if (info.get("key") != null) {
-      this.key = new Key(info.get("key"));
-    }
-
-    getMetadata();
-
-    int startBeatIntro;
-    int introBeatLength;
-    int startBeatOurto;
-    int outroBeatLength;
-    long firstBeat;
-
-    try {
-      startBeatIntro = Integer.parseInt(info.get("startBeatIntro"));
-      introBeatLength = Integer.parseInt(info.get("introBeatLength"));
-    } catch (NumberFormatException e) {
-      startBeatIntro = 0;
-      introBeatLength = 0;
-    }
-
-    try {
-      startBeatOurto = Integer.parseInt(info.get("startBeatOutro"));
-      outroBeatLength = Integer.parseInt(info.get("outroBeatLength"));
-    } catch (NumberFormatException e) {
-      startBeatOurto = 0;
-      outroBeatLength = 0;
-    }
-
-    try {
-      firstBeat = Long.parseLong(info.get("firstBeat"));
-    } catch (NumberFormatException e) {
-      firstBeat = 0;
-    }
-
-    this.beatGrid = new BeatGrid(this.length, this.bpm, firstBeat, startBeatIntro, introBeatLength,
-        startBeatOurto, outroBeatLength);
-
+  /**
+   * Analyze a track for key and bpm.
+   */
+  public void analyzeTrack() {
+    KeyBpmFinder keyBpm = new KeyBpmFinder();
+    keyBpm.findKeyBpm(absolutePath);
+    createSong();
+    log.info("KEY: " + tag.getFirst(FieldKey.KEY) + "   BPM: " + tag.getFirst(FieldKey.BPM)
+        + absolutePath);
   }
 
   /**
    * get information from Id3Tag.
    */
   private void getMetadata() {
-    if (song.hasId3v2Tag()) {
-      if (title == null) {
-        title = song.getId3v2Tag().getTitle();
-      }
-      if (artist == null) {
-        artist = song.getId3v2Tag().getArtist();
-      }
-      if (album == null) {
-        album = song.getId3v2Tag().getAlbum();
-      }
-      if (bpm == 0) {
-        bpm = song.getId3v2Tag().getBPM();
-      }
+    if (title == null) {
+      title = tag.getFirst(FieldKey.TITLE);
+    }
+    if (artist == null) {
+      artist = tag.getFirst(FieldKey.ARTIST);
+    }
+    if (album == null) {
+      album = tag.getFirst(FieldKey.ALBUM);
+    }
+    if (bpm == 0) {
       try {
-        key = new Key(song.getId3v2Tag().getKey());
-      } catch (IllegalArgumentException e) {
-        log.warn("Could not find key information in: " + song.getFilename());
+        bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
+      } catch (NumberFormatException e) {
+        analyzeTrack();
+        try {
+          bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
+        } catch (NumberFormatException f) {
+          log.error("There was no bpm information in file: " + absolutePath);
+          log.trace(StackTrace.stackTrace(f));
+        }
       }
-    } else {
-      log.warn("Could not find Id3v2 information in: " + song.getFilename());
+    }
+    try {
+      key = new Key(tag.getFirst(FieldKey.KEY));
+    } catch (IllegalArgumentException e) {
+      analyzeTrack();
+      try {
+        key = new Key(tag.getFirst(FieldKey.KEY));
+      } catch (IllegalArgumentException f) {
+        log.error("There was no bpm information in file: " + absolutePath);
+        log.trace(StackTrace.stackTrace(f));
+      }
     }
   }
 
