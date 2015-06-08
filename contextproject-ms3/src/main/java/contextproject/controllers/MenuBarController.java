@@ -17,7 +17,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 
 public class MenuBarController {
@@ -60,15 +59,5 @@ public class MenuBarController {
     PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
     Playlist mixablePlaylist = sorter.sort(playlist);
     wincontroller.setEverything(mixablePlaylist, playlistname, scene);
-  }
-
-  @FXML
-  protected void deletePlaylistButtonAction(ActionEvent event) {
-    System.out.println("delete that bitch");
-    this.libcontroller = wincontroller.getLibraryController();
-    tableView = libcontroller.getTable();
-    String name = tableView.getSelectionModel().getSelectedItem().getName();
-    libcontroller.deleteplaylist(name);
-
   }
 }

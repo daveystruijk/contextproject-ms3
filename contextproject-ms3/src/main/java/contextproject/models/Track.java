@@ -2,21 +2,21 @@ package contextproject.models;
 
 import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
-import contextproject.helpers.TrackLength;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.audio.mp3.MP3AudioHeader;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Track implements Serializable {
 
@@ -28,6 +28,7 @@ public class Track implements Serializable {
   private String artist;
   private String album;
   private String absolutePath;
+  private double duration;
   private long length;
   private double bpm;
   private MusicalKey key;
@@ -123,19 +124,15 @@ public class Track implements Serializable {
     if (album == null) {
       album = tag.getFirst(FieldKey.ALBUM);
     }
-//    System.out.println(length);
-//    if (length > 1) {
-//      try {
-//        length = (long) TrackLength.getTrackDuration(absolutePath);
-//      } catch (UnsupportedAudioFileException e) {
-//        log.error("Unsupported audio file: " + absolutePath);
-//        log.trace(StackTrace.stackTrace(e));
-//      } catch (IOException e) {
-//        log.error("Input was not correct: " + absolutePath);
-//        log.trace(StackTrace.stackTrace(e));
-//        e.printStackTrace();
-//      }
-//    }
+    if (duration < 1) {
+      try {
+        AudioFile audioFile = AudioFileIO.read(new File(absolutePath));
+        duration = ((MP3AudioHeader)audioFile.getAudioHeader()).getPreciseTrackLength();
+      } catch (Exception e) {
+        log.error("Input was not correct: " + absolutePath);
+        log.trace(StackTrace.stackTrace(e));
+      }
+    }
     if (bpm == 0) {
       try {
         bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
@@ -201,7 +198,18 @@ public class Track implements Serializable {
   public void setPath(String path) {
     absolutePath = path;
   }
-
+  
+  /**
+   * setDuration.
+   * 
+   * @param duration
+   *            duration of song.
+   */
+  public void setDuration(double duration) {
+    this.duration = duration;
+  }
+  
+  
   /**
    * Set length of the song.
    * 
@@ -279,6 +287,9 @@ public class Track implements Serializable {
     return absolutePath;
   }
 
+  public double getDuration() {
+    return duration;
+  }
   /**
    * Long with track length.
    * 

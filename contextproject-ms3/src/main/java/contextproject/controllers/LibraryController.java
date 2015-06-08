@@ -111,15 +111,7 @@ public class LibraryController {
     App.setLibrary(library);
   }
   
-  public TableView<LibraryProperty> getTable(){
+  public TableView<LibraryProperty> getTable() {
     return tableView;
-  }
-  
-  public void deleteplaylist(String name) {
-    int index = names.indexOf(name);
-    names.remove(name);
-    lib.remove(index);
-    setAppLibrary(this.lib);
-    this.update();
   }
 }

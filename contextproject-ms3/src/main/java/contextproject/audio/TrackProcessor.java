@@ -11,7 +11,6 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
-import contextproject.helpers.AudioProgress;
 import contextproject.models.Track;
 
 import javax.sound.sampled.AudioFormat;
@@ -34,6 +33,7 @@ public class TrackProcessor {
   private WaveformSimilarityBasedOverlapAdd wsola;
   private GainProcessor gainProcessor;
   private AudioDispatcher dispatcher;
+  private Thread thread;
 
   private double tempo;
   private double currentTime;
@@ -62,8 +62,8 @@ public class TrackProcessor {
     this.tempo = 1.0;
     this.pausedAt = 0;
     this.currentTime = 0;
-    this.totalDuration = track.getLength();
-    System.out.println(totalDuration);
+    this.totalDuration = track.getDuration();
+    //track.setLength((long) totalDuration);
     setState(PlayerState.FILE_LOADED);
   }
   /**
@@ -101,7 +101,7 @@ public class TrackProcessor {
     dispatcher.addAudioProcessor(gainProcessor);
     dispatcher.addAudioProcessor(audioPlayer);
 
-    Thread thread = new Thread(dispatcher);
+    thread = new Thread(dispatcher);
     thread.start();
     setState(PlayerState.PLAYING);
   }
@@ -125,5 +125,23 @@ public class TrackProcessor {
     this.currentTime =  dispatcher.secondsProcessed();
     double progres = currentTime / totalDuration;
     return progres;
+  }
+  /**
+   * pauses the song.
+   */
+  @SuppressWarnings("deprecation")
+  public void pause() {
+    this.pausedAt = this.currentTime;
+    thread.stop();
+    setState(PlayerState.PAUSED);
+  }
+  /**
+   * resumes the song.
+   */
+  public void resume() {
+    dispatcher.skip(pausedAt);
+    thread = new Thread(dispatcher);
+    thread.start();
+    setState(PlayerState.PLAYING);
   }
 }

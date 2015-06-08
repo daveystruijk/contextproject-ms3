@@ -99,13 +99,14 @@ public class PlaylistController {
    */
   public TrackProperty setProp(Track track) {
     String title = track.getTitle();
-    if (title == null) {
+    if (title == null || title.length() < 1) {
       title = FileName.getName(track.getPath());
       track.setTitle(title);
     }
     String artist = track.getArtist();
-    if (artist == null) {
+    if (artist == null || artist.length() < 1) {
       artist = "unkown";
+      track.setArtist("unknown");
     }
     double bpm = track.getBpm();
     MusicalKey key = track.getKey();

@@ -16,14 +16,14 @@ import javafx.scene.text.Text;
 
 public class PlayerControlsController {
   @FXML
-  private Button playButton;
+  private Button pauseButton;
   @FXML
   private ProgressBar musicBar;
   @FXML
   public TextField currentTrack;
   @FXML
   public TextField nextTrack;
-  @FXML 
+  @FXML
   public Text curtext;
   @FXML
   public Text nxtext;
@@ -40,7 +40,7 @@ public class PlayerControlsController {
   private double buttonwidth;
   private double textwidth;
   private double progresswidth;
-  
+
   /**
    * . initialize the controller
    */
@@ -57,7 +57,7 @@ public class PlayerControlsController {
     nextbox.setPrefWidth(textwidth);
     nextTrack.setPrefWidth(textwidth * 0.8);
     musicBar.setPrefWidth(progresswidth);
-    
+
     currentTrack.setEditable(false);
     nextTrack.setEditable(false);
     musicBar.progressProperty().set(0);
@@ -68,30 +68,33 @@ public class PlayerControlsController {
    * Toggles the button.
    */
   public void togglePlayPause() {
-    playButton.setOnAction(new EventHandler<ActionEvent>() {
+    pauseButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        if (playButton.getId().equals("playButton")) {
-          playButton.setId("pauseButton");
-            PlayerService.getInstance().exit();;
+        if (pauseButton.getId().equals("pauseButton")) {
+          pauseButton.setId("playButton");
+          PlayerService.getInstance().pause();
         } else {
-          PlayerService.getInstance().play();
-          playButton.setId("playButton");
+          PlayerService.getInstance().resume();
+          pauseButton.setId("pauseButton");
         }
       }
     });
   }
-  
+
   /**
    * Updates the statusbar.
-   * @param curtitle current title.
-   * @param nxtitle next title.
+   * 
+   * @param curtitle
+   *          current title.
+   * @param nxtitle
+   *          next title.
    */
   public void update(Track curtitle, String nxtitle) {
     currentTrack.setText(curtitle.getTitle());
     nextTrack.setText(nxtitle);
   }
-  
+
   public void setProgres(double prog) {
     musicBar.progressProperty().set(prog);
   }
