@@ -1,7 +1,5 @@
 package contextproject.audio;
 
-import contextproject.models.Track;
-
 import static org.junit.Assert.assertNotEquals;
 
 import be.tarsos.transcoder.Attributes;
@@ -9,8 +7,6 @@ import be.tarsos.transcoder.Attributes;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import javax.sound.sampled.LineUnavailableException;
 
 public class EnergyLevelProcessorTest {
 

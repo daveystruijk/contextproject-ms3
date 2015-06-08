@@ -24,6 +24,7 @@ public class MaxFlow {
   private Double bestAverage;
   private int bestCountNonZero;
   private ArrayList<WeightedEdge> done;
+  private static EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp;
 
   /**
    * Constructor for a MaxFlow calculator.
@@ -72,8 +73,7 @@ public class MaxFlow {
             graph.removeEdge(edge1); // remove the edges directly from source to sink
             graph.removeEdge(edge2);
 
-            EdmondsKarpMaximumFlow<Track, WeightedEdge> edmondsKarp = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(
-                graph);
+            edmondsKarp = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(graph);
             edmondsKarp.calculateMaximumFlow(source, sink); // calculate max flow
 
             graph.addEdge(source, sink, edge1);

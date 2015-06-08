@@ -78,7 +78,7 @@ public class Track implements Serializable {
    *          start beat of intro.
    * @param introBeatLength
    *          length of intro.
-   * @param startBeatOurto
+   * @param startBeatOutro
    *          start beat of outro.
    * @param outroBeatLength
    *          length of outro.
