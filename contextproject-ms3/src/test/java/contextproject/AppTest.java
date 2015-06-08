@@ -4,14 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
-import org.testfx.framework.junit.ApplicationTest;
-
-import javafx.stage.Stage;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest extends ApplicationTest {
+public class AppTest {
 
   @Test
   public void appTest() throws Exception {
@@ -22,9 +19,4 @@ public class AppTest extends ApplicationTest {
 
   }
 
-  @Override
-  public void start(Stage stage) throws Exception {
-    // TODO Auto-generated method stub
-    
-  }
 }
