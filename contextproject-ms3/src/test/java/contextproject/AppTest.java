@@ -31,6 +31,6 @@ public class AppTest extends ApplicationTest {
 
   @Test
   public void typeTest() {
-
+    clickOn("#playButton");
   }
 }
