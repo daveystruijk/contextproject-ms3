@@ -27,7 +27,7 @@ public class Track implements Serializable {
   private String absolutePath;
   private long length;
   private double bpm;
-  private Key key;
+  private MusicalKey key;
   private BeatGrid beatGrid;
   private MP3File song;
   private AbstractID3v2Tag tag;
@@ -78,7 +78,7 @@ public class Track implements Serializable {
    *          start beat of intro.
    * @param introBeatLength
    *          length of intro.
-   * @param startBeatOurto
+   * @param startBeatOutro
    *          start beat of outro.
    * @param outroBeatLength
    *          length of outro.
@@ -134,11 +134,11 @@ public class Track implements Serializable {
       }
     }
     try {
-      key = new Key(tag.getFirst(FieldKey.KEY));
+      key = new MusicalKey(tag.getFirst(FieldKey.KEY));
     } catch (IllegalArgumentException e) {
       analyzeTrack();
       try {
-        key = new Key(tag.getFirst(FieldKey.KEY));
+        key = new MusicalKey(tag.getFirst(FieldKey.KEY));
       } catch (IllegalArgumentException f) {
         log.error("There was no bpm information in file: " + absolutePath);
         log.trace(StackTrace.stackTrace(f));
@@ -212,7 +212,7 @@ public class Track implements Serializable {
    * @param songKey
    *          key of the song.
    */
-  public void setKey(Key songKey) {
+  public void setKey(MusicalKey songKey) {
     key = songKey;
 
   }
@@ -286,7 +286,7 @@ public class Track implements Serializable {
    * 
    * @return Key
    */
-  public Key getKey() {
+  public MusicalKey getKey() {
     return key;
 
   }

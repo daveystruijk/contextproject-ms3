@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 public class TrackPropertyTest {
 
-  private Key testKey = new Key("A");
+  private MusicalKey testKey = new MusicalKey("A");
   URL resourceUrl = getClass().getResource("/beep.mp3");
   Path resourcePath;
 
@@ -38,7 +38,7 @@ public class TrackPropertyTest {
 
   @Test
   public void keyTest() {
-    testProperty.setKey(new Key("B"));
+    testProperty.setKey(new MusicalKey("B"));
     assertEquals(testProperty.keyProperty().get(), testProperty.getKey());
   }
 

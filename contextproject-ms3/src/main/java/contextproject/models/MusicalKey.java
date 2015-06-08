@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Key implements Serializable {
+public class MusicalKey implements Serializable {
 
   private static final long serialVersionUID = -3532632476298869674L;
   private int normalizedKeyNumber;
@@ -15,7 +15,7 @@ public class Key implements Serializable {
   /**
    * Constructor without arguments.
    */
-  public Key() {
+  public MusicalKey() {
 
   }
 
@@ -25,7 +25,7 @@ public class Key implements Serializable {
    * @param keyString
    *          String key from ID3 information
    */
-  public Key(String keyString) throws IllegalArgumentException {
+  public MusicalKey(String keyString) throws IllegalArgumentException {
     if (keyString != null) {
       normalizeKey(keyString);
     } else {

@@ -2,7 +2,7 @@ package contextproject.sorters;
 
 import static org.junit.Assert.assertEquals;
 
-import contextproject.models.Key;
+import contextproject.models.MusicalKey;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
 
@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-
 
 public class TrackTreeTest {
   private Track track1;
@@ -34,25 +33,25 @@ public class TrackTreeTest {
   public void initialize() {
     track1 = new Track();
     track1.setBpm(120.0);
-    track1.setKey(new Key("11B"));
+    track1.setKey(new MusicalKey("11B"));
     track1.setPath("a");
     track1.setTitle("Track1");
 
     track2 = new Track();
     track2.setBpm(124.0);
-    track2.setKey(new Key("12B"));
+    track2.setKey(new MusicalKey("12B"));
     track2.setPath("b");
     track2.setTitle("Track2");
 
     track3 = new Track();
     track3.setBpm(128.0);
-    track3.setKey(new Key("1A"));
+    track3.setKey(new MusicalKey("1A"));
     track3.setPath("c");
     track3.setTitle("Track3");
 
     track4 = new Track();
     track4.setBpm(130.0);
-    track4.setKey(new Key("2A"));
+    track4.setKey(new MusicalKey("2A"));
     track4.setPath("d");
     track4.setTitle("Track4");
 

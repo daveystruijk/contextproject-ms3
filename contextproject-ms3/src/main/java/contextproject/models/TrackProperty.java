@@ -12,7 +12,7 @@ public class TrackProperty {
   private final StringProperty title = new SimpleStringProperty();
   private final StringProperty artist = new SimpleStringProperty();
   private final DoubleProperty bpm = new SimpleDoubleProperty();
-  private final ObjectProperty<Key> key = new SimpleObjectProperty<Key>();
+  private final ObjectProperty<MusicalKey> key = new SimpleObjectProperty<MusicalKey>();
   private final ObjectProperty<Track> track = new SimpleObjectProperty<Track>();
 
   /**
@@ -29,7 +29,7 @@ public class TrackProperty {
    * @param track
    *          the track itself, is for playability issues.
    */
-  public TrackProperty(String title, String artist, double bpm, Key key, Track track) {
+  public TrackProperty(String title, String artist, double bpm, MusicalKey key, Track track) {
     this.title.set(title);
     this.artist.set(artist);
     this.bpm.set(bpm);
@@ -73,15 +73,15 @@ public class TrackProperty {
     this.bpmProperty().set(bpm);
   }
 
-  public final ObjectProperty<Key> keyProperty() {
+  public final ObjectProperty<MusicalKey> keyProperty() {
     return this.key;
   }
 
-  public final Key getKey() {
+  public final MusicalKey getKey() {
     return this.keyProperty().get();
   }
 
-  public final void setKey(Key key) {
+  public final void setKey(MusicalKey key) {
     this.keyProperty().set(key);
   }
 
