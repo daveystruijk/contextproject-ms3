@@ -2,6 +2,7 @@ package contextproject.models;
 
 import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
+import contextproject.helpers.TrackLength;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +15,8 @@ import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Track implements Serializable {
 
@@ -120,6 +123,19 @@ public class Track implements Serializable {
     if (album == null) {
       album = tag.getFirst(FieldKey.ALBUM);
     }
+//    System.out.println(length);
+//    if (length > 1) {
+//      try {
+//        length = (long) TrackLength.getTrackDuration(absolutePath);
+//      } catch (UnsupportedAudioFileException e) {
+//        log.error("Unsupported audio file: " + absolutePath);
+//        log.trace(StackTrace.stackTrace(e));
+//      } catch (IOException e) {
+//        log.error("Input was not correct: " + absolutePath);
+//        log.trace(StackTrace.stackTrace(e));
+//        e.printStackTrace();
+//      }
+//    }
     if (bpm == 0) {
       try {
         bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));

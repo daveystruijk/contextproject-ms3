@@ -4,6 +4,7 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.helpers.AudioProgress;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
@@ -18,6 +19,8 @@ public class PlayerService {
 
   private TrackProcessor currentProcessor;
   private TrackProcessor nextProcessor;
+  private Thread currentAudioProcessor;
+  private Thread nextAudioProcessor;
 
   private Attributes attributes;
 
@@ -38,8 +41,10 @@ public class PlayerService {
   public void play() {
     currentProcessor = new TrackProcessor(attributes);
     currentProcessor.load(currentTrack);
+    currentAudioProcessor = new Thread(new AudioProgress(currentProcessor));
     try {
       currentProcessor.play(1.0);
+      currentAudioProcessor.start();
     } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }
@@ -51,8 +56,12 @@ public class PlayerService {
   public void transition() {
     nextProcessor = new TrackProcessor(attributes);
     nextProcessor.load(nextTrack);
+    nextAudioProcessor = new Thread(new AudioProgress(nextProcessor));
     try {
       nextProcessor.play(0.0);
+      currentAudioProcessor.stop();
+      currentAudioProcessor = nextAudioProcessor;
+      currentAudioProcessor.start();
     } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }

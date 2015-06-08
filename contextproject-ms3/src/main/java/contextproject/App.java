@@ -18,8 +18,6 @@ import contextproject.sorters.PlaylistSorter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
@@ -70,10 +68,9 @@ public class App extends Application {
   public void start(Stage stage) throws Exception {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
 
-    Parent root = (Parent) loader.load();
     final WindowController controller = (WindowController) loader.getController();
     App.controller = controller;
-    
+    Parent root = (Parent) loader.load();
     Rectangle2D screen = Screen.getPrimary().getVisualBounds();
     screenWidth = (int) screen.getWidth();
     screenHeight = (int) screen.getHeight();
@@ -100,12 +97,12 @@ public class App extends Application {
         if (library != null) {
           XmlExport exporter = new XmlExport("library.xml", library);
           exporter.export();
-          System.out.println(library.size());
         }
         System.exit(0);
       }
     });
     if (empty) {
+      log.trace("opening folderchooser");
       String directory = "";
       DirectoryChooser directoryChooser = new DirectoryChooser();
       File selectedDirectory = directoryChooser.showDialog(null);
@@ -115,13 +112,19 @@ public class App extends Application {
       } else {
         directory = selectedDirectory.getAbsolutePath();
       }
-
+      log.trace("folder chosen");
       FolderLoader folderLoader = new FolderLoader(directory);
+      log.trace("created folder loader");
       String playlistname = FileName.getName(directory);
+      log.trace("got filename");
       Playlist playlist = folderLoader.load();
+      log.trace("executed folderloader.load");
       PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
+      log.trace("new playlist sorter");
       Playlist mixablePlaylist = sorter.sort(playlist);
+      log.trace("sorted playlist");
       controller.setEverything(mixablePlaylist, playlistname,scene);
+      log.trace("set everything");
     } else {
       controller.setLibrary(library,scene);
     }
@@ -131,7 +134,7 @@ public class App extends Application {
     return controller;
   }
   
-  public static Scene getScene(){
+  public static Scene getScene() {
     return scene;
   }
 

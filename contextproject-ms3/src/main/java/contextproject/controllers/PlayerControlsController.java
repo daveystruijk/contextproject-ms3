@@ -3,8 +3,6 @@ package contextproject.controllers;
 import contextproject.audio.PlayerService;
 import contextproject.models.Track;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -39,7 +37,6 @@ public class PlayerControlsController {
   public HBox curbox;
   @FXML
   public HBox nextbox;
-  private Track curtrack;
   private double buttonwidth;
   private double textwidth;
   private double progresswidth;
@@ -63,19 +60,8 @@ public class PlayerControlsController {
     
     currentTrack.setEditable(false);
     nextTrack.setEditable(false);
+    musicBar.progressProperty().set(0);
     togglePlayPause();
-    musicBar.progressProperty().set(0.55);
-    musicBar.progressProperty().addListener(new ChangeListener<Number>() {
-
-      @Override
-      public void changed(ObservableValue<? extends Number> observeValue,
-          Number oldValue, Number newValue) {
-        double length = (double) curtrack.getLength();
-        double progress = newValue.doubleValue() / length;
-        musicBar.progressProperty().set(progress);
-        
-      }
-    });
   }
 
   /**
@@ -102,8 +88,11 @@ public class PlayerControlsController {
    * @param nxtitle next title.
    */
   public void update(Track curtitle, String nxtitle) {
-    this.curtrack = curtitle;
     currentTrack.setText(curtitle.getTitle());
     nextTrack.setText(nxtitle);
+  }
+  
+  public void setProgres(double prog) {
+    musicBar.progressProperty().set(prog);
   }
 }

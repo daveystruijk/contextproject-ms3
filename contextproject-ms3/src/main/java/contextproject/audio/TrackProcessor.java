@@ -11,6 +11,7 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.helpers.AudioProgress;
 import contextproject.models.Track;
 
 import javax.sound.sampled.AudioFormat;
@@ -62,6 +63,7 @@ public class TrackProcessor {
     this.pausedAt = 0;
     this.currentTime = 0;
     this.totalDuration = track.getLength();
+    System.out.println(totalDuration);
     setState(PlayerState.FILE_LOADED);
   }
   /**
@@ -114,5 +116,14 @@ public class TrackProcessor {
 
   public static enum PlayerState {
     NO_FILE_LOADED, FILE_LOADED, PLAYING, PAUSED, STOPPED
+  }
+   /**
+    * get the progres of the song.
+    * @return the progres in %.
+    */
+  public double getProgress() { 
+    this.currentTime =  dispatcher.secondsProcessed();
+    double progres = currentTime / totalDuration;
+    return progres;
   }
 }

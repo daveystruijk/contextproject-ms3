@@ -55,4 +55,8 @@ public class WindowController {
   public LibraryController getLibraryController() {
     return libraryController;
   }
+  
+  public PlayerControlsController getPlayerControlsController() {
+    return playerControlsController;
+  }
 }
