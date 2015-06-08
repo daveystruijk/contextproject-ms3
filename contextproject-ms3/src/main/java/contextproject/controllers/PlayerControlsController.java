@@ -60,24 +60,6 @@ public class PlayerControlsController {
     nextbox.setPrefWidth(textwidth);
     nextTrack.setPrefWidth(textwidth * 0.8);
     musicBar.setPrefWidth(progresswidth);
-//    buttonbox1.setPrefWidth(buttonwidth);
-//    buttonbox1.prefWidthProperty().set(buttonwidth);
-//    buttonbox2.setPrefWidth(buttonwidth);
-//    //buttonbox1.prefWidthProperty().setValue(v);
-//    buttonbox1.prefWidthProperty().bind(scene.widthProperty());
-//    buttonbox1.prefWidthProperty().addListener(new ChangeListener<Number>() {
-//      
-//      @Override
-//      public void changed(ObservableValue<? extends Number> ov, Number oldValue, 
-//    Number newValue) {
-//        buttonwidth = newValue.doubleValue() * 0.2;
-//        buttonbox1.setPrefWidth(buttonwidth);
-//        buttonbox1.prefWidthProperty().set(buttonwidth);
-//        buttonbox1.setMinWidth(buttonwidth);
-//        buttonbox2.setPrefWidth(buttonwidth);
-//        buttonbox2.prefWidthProperty().set(buttonwidth);
-//      }
-//    });
     
     currentTrack.setEditable(false);
     nextTrack.setEditable(false);
@@ -113,11 +95,11 @@ public class PlayerControlsController {
       }
     });
   }
+  
   /**
-   * updates the statusbar.
-   * 
-   * @param title
-   *          the title of the current song.
+   * Updates the statusbar.
+   * @param curtitle current title.
+   * @param nxtitle next title.
    */
   public void update(Track curtitle, String nxtitle) {
     this.curtrack = curtitle;

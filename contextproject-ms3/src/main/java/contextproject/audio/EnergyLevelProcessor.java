@@ -27,10 +27,12 @@ public class EnergyLevelProcessor implements AudioProcessor {
   private AudioInputStream inputStream;
   private TarsosDSPAudioInputStream tarsosStream;
   private AudioDispatcher dispatcher;
-  
+
   /**
    * Constructor of the processor.
-   * @param attributes of the song.
+   * 
+   * @param attributes
+   *          of the song.
    */
   public EnergyLevelProcessor(Attributes attributes) {
     try {
@@ -40,24 +42,28 @@ public class EnergyLevelProcessor implements AudioProcessor {
       e.printStackTrace();
     }
   }
-  
+
   /**
    * Detector of the energy.
-   * @param track track to get energy from.
+   * 
+   * @param track
+   *          track to get energy from.
    * @throws EncoderException
+   *           encoder exception.
    * @throws LineUnavailableException
+   *           Line unavailable exception.
    */
   public void detect(Track track) throws EncoderException, LineUnavailableException {
     inputStream = Streamer.stream(track.getPath(), attributes);
     tarsosStream = new JVMAudioInputStream(inputStream);
-    
+
     float msPerBeat = (float) (60.0f / track.getBpm());
     float fourBarsInSeconds = msPerBeat * 16;
     energyLevels = new ArrayList<Double>();
     System.out.println(fourBarsInSeconds);
-    
+
     dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * fourBarsInSeconds), 0);
-  
+
     dispatcher.addAudioProcessor(this);
     dispatcher.run();
   }
@@ -72,9 +78,10 @@ public class EnergyLevelProcessor implements AudioProcessor {
   public void processingFinished() {
 
   }
-  
+
   /**
    * Get the average energy of a song.
+   * 
    * @return average energy
    */
   public double getAverageEnergy() {

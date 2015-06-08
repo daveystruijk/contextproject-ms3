@@ -2,7 +2,7 @@ package contextproject.controllers;
 
 import contextproject.audio.PlayerService;
 import contextproject.helpers.FileName;
-import contextproject.models.Key;
+import contextproject.models.MusicalKey;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
 import contextproject.models.TrackProperty;
@@ -38,14 +38,14 @@ public class PlaylistController {
     this.playerControlsController = playerControlsController;
     PlayerService.getInstance().setCurrentTrack(playlist.get(0));
     PlayerService.getInstance().play();
-    Track curtitle = playlist.get(0);
+    final Track curtitle = playlist.get(0);
     String nxtitle;
-    if (1 > playlist.size() - 1) { 
+    if (1 > playlist.size() - 1) {
       nxtitle = "none";
     } else {
       nxtitle = playlist.get(1).getTitle();
     }
-    playerControlsController.update(curtitle,nxtitle);
+    this.playerControlsController.update(curtitle, nxtitle);
 
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
@@ -61,7 +61,7 @@ public class PlaylistController {
             nxtitle = playlist.get(playlist.indexOf(curtrack) + 1).getTitle();
           }
           PlayerService.getInstance().transition();
-          playerControlsController.update(curtrack,nxtitle);
+          playerControlsController.update(curtitle, nxtitle);
         }
       }
     });
@@ -108,7 +108,7 @@ public class PlaylistController {
       artist = "unkown";
     }
     double bpm = track.getBpm();
-    Key key = track.getKey();
+    MusicalKey key = track.getKey();
     TrackProperty prop = new TrackProperty(title, artist, bpm, key, track);
     return prop;
   }

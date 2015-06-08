@@ -2,7 +2,7 @@ package contextproject.sorters;
 
 import static org.junit.Assert.assertEquals;
 
-import contextproject.models.Key;
+import contextproject.models.MusicalKey;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
 
@@ -25,17 +25,17 @@ public class GraphTest {
     playlist = new Playlist();
     track1 = new Track();
     track1.setBpm(120.0);
-    track1.setKey(new Key("11B"));
+    track1.setKey(new MusicalKey("11B"));
     track1.setPath("a");
 
     track2 = new Track();
     track2.setBpm(124.0);
-    track2.setKey(new Key("12B"));
+    track2.setKey(new MusicalKey("12B"));
     track2.setPath("b");
 
     track3 = new Track();
     track3.setBpm(128.0);
-    track3.setKey(new Key("1A"));
+    track3.setKey(new MusicalKey("1A"));
     track3.setPath("c");
 
     playlist.add(track1);
@@ -56,18 +56,17 @@ public class GraphTest {
     assertEquals(track2, graph.getEdge(track3, track2).getEdgeTarget());
     assertEquals(6, graph.edgeSet().size());
   }
-  
+
   @Test
   public void convertScoreTest() {
     assertEquals(12, (int) graph.getEdgeWeight(graph.getEdge(track1, track2))); // (1-(11/12))^-1
   }
-  
+
   @Test
   public void toStringTest() {
     String test = "Vertices:" + graph.vertexSet().toString() + "\n" + "edges:"
-        + graph.edgeSet().toString() + "\n" + "size of vertices: "
-        + graph.vertexSet().size() + "\n" + "size of edges: "
-        + graph.edgeSet().size();
+        + graph.edgeSet().toString() + "\n" + "size of vertices: " + graph.vertexSet().size()
+        + "\n" + "size of edges: " + graph.edgeSet().size();
     assertEquals(test, graph.toString());
   }
 

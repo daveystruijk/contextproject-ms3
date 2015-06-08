@@ -14,7 +14,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Hashtable;
 
 public class PlaylistControllerTest {
 
@@ -31,7 +30,7 @@ public class PlaylistControllerTest {
     Path resourcePath;
     try {
       resourcePath = Paths.get(resourceUrl.toURI());
-      track = new Track(resourcePath.toString(), new Hashtable<String, String>());
+      track = new Track(resourcePath.toString());
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");
       e.printStackTrace();

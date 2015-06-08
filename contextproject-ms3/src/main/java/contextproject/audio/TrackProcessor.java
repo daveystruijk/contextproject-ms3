@@ -61,7 +61,7 @@ public class TrackProcessor {
     this.tempo = 1.0;
     this.pausedAt = 0;
     this.currentTime = 0;
-
+    this.totalDuration = track.getLength();
     setState(PlayerState.FILE_LOADED);
   }
   /**

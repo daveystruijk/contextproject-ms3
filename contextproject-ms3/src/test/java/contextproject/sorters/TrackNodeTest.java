@@ -2,7 +2,7 @@ package contextproject.sorters;
 
 import static org.junit.Assert.assertEquals;
 
-import contextproject.models.Key;
+import contextproject.models.MusicalKey;
 import contextproject.models.Track;
 
 import org.junit.Before;
@@ -24,18 +24,18 @@ public class TrackNodeTest {
   public void initialize() {
     track1 = new Track();
     track1.setBpm(120.0);
-    track1.setKey(new Key("11B"));
+    track1.setKey(new MusicalKey("11B"));
     track1.setPath("a");
     track1.setTitle("succesful test");
 
     track2 = new Track();
     track2.setBpm(124.0);
-    track2.setKey(new Key("12B"));
+    track2.setKey(new MusicalKey("12B"));
     track2.setPath("b");
 
     track3 = new Track();
     track3.setBpm(128.0);
-    track3.setKey(new Key("1A"));
+    track3.setKey(new MusicalKey("1A"));
     track3.setPath("c");
 
     tracknode1 = new TrackNode(track1);
