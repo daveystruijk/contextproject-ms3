@@ -95,6 +95,10 @@ public class ComplexOnsetDetector implements AudioProcessor, OnsetDetector{
    */
   private double firstOnset;
   
+  /**
+   * Boolean to detect the first onset.
+   * Set to false if it is detected.
+   */
   private boolean firstBoolean = true;
   
   /**
@@ -134,7 +138,9 @@ public class ComplexOnsetDetector implements AudioProcessor, OnsetDetector{
 
   @Override
   public boolean process(AudioEvent audioEvent) {
-    onsetDetection(audioEvent);
+    if(firstBoolean) {
+      onsetDetection(audioEvent);
+    }
     return true;
   }
   
@@ -180,10 +186,10 @@ public class ComplexOnsetDetector implements AudioProcessor, OnsetDetector{
         }
       }
     }
-    if(firstBoolean  && lastOnset != 0) {
+    if(firstBoolean  && isOnset) {
       firstOnset = lastOnset;
       firstBoolean = false;
-      System.out.println(firstOnset);
+      System.out.println(firstOnset + " first onset");
     }
   }
   

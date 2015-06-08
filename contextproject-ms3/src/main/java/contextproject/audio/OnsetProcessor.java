@@ -9,12 +9,10 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.models.Track;
 
-import java.lang.reflect.Field;
-
 import javax.sound.sampled.AudioInputStream;
 
 /**
- * Detect the onset.
+ * Detect the first onset of a song.
  *
  */
 public class OnsetProcessor implements OnsetHandler {
@@ -33,7 +31,12 @@ public class OnsetProcessor implements OnsetHandler {
     this.attributes = attributes;
   }
 
-  public void dingen(Track track) {
+  /** 
+   * Detection of the onset.
+   * Uses the complex onset detector to compute. 
+   * @param track
+   */
+  public void detectOnset(Track track) {
 
     if (dispatcher != null) {
       dispatcher.stop();
@@ -44,6 +47,7 @@ public class OnsetProcessor implements OnsetHandler {
     } catch (EncoderException e) {
       e.printStackTrace();
     }
+    
     final JVMAudioInputStream audioStream = new JVMAudioInputStream(stream);
     dispatcher = new AudioDispatcher(audioStream, bufferSize, overlap);
     onsetDetector = new ComplexOnsetDetector(bufferSize, threshold, 0.07, -60);
@@ -58,6 +62,10 @@ public class OnsetProcessor implements OnsetHandler {
 
   }
   
+  /**
+   * Getter of the first onset of a song.
+   * @return onset of song.
+   */
   public double getFirstOnset() {
     return firstOnset;
   }

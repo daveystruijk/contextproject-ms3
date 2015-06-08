@@ -23,18 +23,21 @@ public class EnergyLevelProcessor implements AudioProcessor {
   private Attributes attributes;
   private AudioFormat format;
   private ArrayList<Double> energyLevels;
-  private float oneBeatInSeconds;
+  private float oneBarInSeconds;
   public int counter = 0;
+  public double onset;
 
   // Audio Processing
   private AudioInputStream inputStream;
   private TarsosDSPAudioInputStream tarsosStream;
   private AudioDispatcher dispatcher;
   private SkipAudioProcessor skipProcessor;
-  
+
   /**
    * Constructor of the processor.
-   * @param attributes of the song.
+   * 
+   * @param attributes
+   *          of the song.
    */
   public EnergyLevelProcessor(Attributes attributes) {
     try {
@@ -45,42 +48,43 @@ public class EnergyLevelProcessor implements AudioProcessor {
     }
     energyLevels = new ArrayList<Double>();
   }
-  
+
   /**
    * Detector of the energy.
-   * @param track track to get energy from.
+   * 
+   * @param track
+   *          track to get energy from.
    * @throws EncoderException
    * @throws LineUnavailableException
    */
   public void detect(Track track, double start) throws EncoderException, LineUnavailableException {
     inputStream = Streamer.stream(track.getPath(), attributes);
     tarsosStream = new JVMAudioInputStream(inputStream);
-    
+
     float msPerBeat = (float) (60.0f / track.getBpm());
-    oneBeatInSeconds = msPerBeat;
-    
-    System.out.println(oneBeatInSeconds);
-    
-    dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * oneBeatInSeconds), 0);
-//    final EnergyLevelProcessor elp = this;
-    skipProcessor = new SkipAudioProcessor(start, new SkipAudioProcessorCallback() {
-      
+    oneBarInSeconds = msPerBeat * 4;
+
+    System.out.println(oneBarInSeconds + " time per beat");
+
+    dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * oneBarInSeconds), 0);
+    skipProcessor = new SkipAudioProcessor(start - oneBarInSeconds, new SkipAudioProcessorCallback() {
+
       @Override
       public void onFinished() {
         skipProcessor.stop();
-        
+
       }
     });
     dispatcher.addAudioProcessor(skipProcessor);
     dispatcher.addAudioProcessor(this);
     dispatcher.run();
-    
+
   }
 
   @Override
   public boolean process(AudioEvent audioEvent) {
-    counter ++;
-    System.out.println(audioEvent.getRMS() + " at time " + oneBeatInSeconds*counter);
+    counter++;
+    System.out.println(audioEvent.getRMS() + " at time " + oneBarInSeconds * counter);
     energyLevels.add(audioEvent.getRMS());
     return false;
   }
@@ -89,9 +93,10 @@ public class EnergyLevelProcessor implements AudioProcessor {
   public void processingFinished() {
     energyLevels = new ArrayList<Double>();
   }
-  
+
   /**
    * Get the average energy of a song.
+   * 
    * @return average energy
    */
   public double getAverageEnergy() {
@@ -103,8 +108,8 @@ public class EnergyLevelProcessor implements AudioProcessor {
     }
     return sum / counter;
   }
-  
+
   public void test() {
- //   Event event = new Event();
+    // Event event = new Event();
   }
 }

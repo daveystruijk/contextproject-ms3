@@ -56,9 +56,9 @@ public class App extends Application {
   public static void main(String[] args) {
     Attributes attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(44100);
-    String song = "C:/Users/Emiel/Documents/Smoothie/Endymion - Weekend Warriors.mp3";
+    String song = "C:/Users/Emiel/Documents/Smoothie/02 - Living in the Moment.mp3";
     OnsetProcessor processor = new OnsetProcessor(attributes);
-    processor.dingen(new Track(song));
+    processor.detectOnset(new Track(song));
     double start = processor.getFirstOnset();
     
     EnergyLevelProcessor energyprocessor = new EnergyLevelProcessor(attributes);
