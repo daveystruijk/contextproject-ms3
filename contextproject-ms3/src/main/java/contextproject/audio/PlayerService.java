@@ -83,11 +83,12 @@ public class PlayerService {
    * If the track is not prepared for transition yet, this method will throw an exception.
    */
   public void transitionIntoNextTrack() {
+    nextProcessor.setGain(0.0);
     nextProcessor.play();
     
     // TODO: Add support for multiple transition types
     // Basically, this block should be an interchangeable method 
-    /*for (int i = 0; i < 30; i++) {
+    for (int i = 0; i < 30; i++) {
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {
@@ -95,9 +96,14 @@ public class PlayerService {
       }
       currentProcessor.setGain(1.0 - (i / 30.0));
       nextProcessor.setGain((double) i / 30.0);
-    }*/
+    }
     
     currentProcessor.unload();
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     currentProcessor = nextProcessor;
   }
   
