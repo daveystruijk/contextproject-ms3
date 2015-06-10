@@ -14,14 +14,12 @@ import contextproject.models.Track;
 
 import java.util.ArrayList;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class EnergyLevelProcessor implements AudioProcessor {
   // Data
   private Attributes attributes;
-  private AudioFormat format;
   private ArrayList<Double> energyLevels;
   private float oneBarInSeconds;
   public int counter = 0;
@@ -40,12 +38,7 @@ public class EnergyLevelProcessor implements AudioProcessor {
    *          of the song.
    */
   public EnergyLevelProcessor(Attributes attributes) {
-    try {
-      this.attributes = attributes;
-      this.format = Streamer.streamAudioFormat(attributes);
-    } catch (EncoderException e) {
-      e.printStackTrace();
-    }
+    this.attributes = attributes;
     energyLevels = new ArrayList<Double>();
   }
 
@@ -69,11 +62,14 @@ public class EnergyLevelProcessor implements AudioProcessor {
     System.out.println(oneBarInSeconds + " time per beat");
 
     dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * oneBarInSeconds), 0);
-    skipProcessor = new SkipAudioProcessor(start - oneBarInSeconds, new SkipAudioProcessorCallback() {
+    skipProcessor = new SkipAudioProcessor(start - oneBarInSeconds, false, new SkipAudioProcessorCallback() {
 
       @Override
       public void onFinished() {
-        skipProcessor.stop();
+        synchronized (skipProcessor) {
+          skipProcessor.notify();
+        }
+
 
       }
     });

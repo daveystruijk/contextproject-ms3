@@ -3,14 +3,12 @@ package contextproject.audio;
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.AudioProcessor;
 
-import contextproject.models.Track;
-
 public class SkipAudioProcessor implements AudioProcessor {
   
   private double secondsToSkip;
   private SkipAudioProcessorCallback callback;
-  private boolean hasFinished;
   private boolean stopped = false;
+  private boolean waitForNotify;
 
   public interface SkipAudioProcessorCallback {
     public void onFinished();
@@ -22,8 +20,9 @@ public class SkipAudioProcessor implements AudioProcessor {
    * the rest of the dispatcher chain until the desired point is reached.
    * 
    */
-  public SkipAudioProcessor(double secondsToSkip, SkipAudioProcessorCallback callback) {
+  public SkipAudioProcessor(double secondsToSkip, boolean waitForNotify, SkipAudioProcessorCallback callback) {
     // TODO: get starting point based on track beatgrid
+    this.waitForNotify = waitForNotify;
     this.callback = callback;
     this.secondsToSkip = secondsToSkip;
   }
@@ -34,24 +33,29 @@ public class SkipAudioProcessor implements AudioProcessor {
       return true;
     }
     
+    // If the desired point is reached,
+    // stop the dispatcher thread from continuing any further.
     if (audioEvent.getTimeStamp() > secondsToSkip) {
-      // Stop the stream from continuing any further
-      audioEvent.setBytesProcessed(0);
-      // Notify the calling class if we haven't yet
-      if (!hasFinished) {
-        callback.onFinished();
-        hasFinished = true;
+      callback.onFinished();
+      stopped = true;
+      if(waitForNotify) {
+        blockThread();
       }
-      return false;
-    } else {
-      return false;
+    }
+    
+    return false;
+  }
+  
+  public void blockThread() {
+    try {
+      synchronized (this) {
+        wait();
+      }
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
   
-  public void stop() {
-    this.stopped = true;
-  }
-
   @Override
   public void processingFinished() {
     
