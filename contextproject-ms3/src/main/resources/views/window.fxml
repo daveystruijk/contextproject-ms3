@@ -12,11 +12,7 @@
     <URL value="@../stylesheets/window.css" />
   </stylesheets>
   <top>
-    <GridPane>
-      <!--Mark-up for the menu bar. -->
-      <fx:include fx:id="menuBar" source="menu_bar.fxml"
-        GridPane.rowIndex="0" />
-    </GridPane>
+      <fx:include fx:id="menuBar" source="menu_bar.fxml"/>
   </top>
   <left>
     <fx:include fx:id="library" source="library.fxml" />

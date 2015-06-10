@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -33,11 +34,11 @@ public class PlaylistController {
   /**
    * Setup events on the tableView items.
    */
-  public void begin(final PlayerControlsController playerControlsController) {
+  public void begin(final PlayerControlsController playerControlsController, Scene scene) {
     this.playerControlsController = playerControlsController;
     PlayerService.getInstance().setCurrentTrack(playlist.get(0));
     PlayerService.getInstance().play();
-    Track curtitle = playlist.get(0);
+    final Track curtitle = playlist.get(0);
     String nxtitle;
     if (1 > playlist.size() - 1) {
       nxtitle = "none";
@@ -98,13 +99,14 @@ public class PlaylistController {
    */
   public TrackProperty setProp(Track track) {
     String title = track.getTitle();
-    if (title == null) {
+    if (title == null || title.length() < 1) {
       title = FileName.getName(track.getPath());
       track.setTitle(title);
     }
     String artist = track.getArtist();
-    if (artist == null) {
+    if (artist == null || artist.length() < 1) {
       artist = "unkown";
+      track.setArtist("unknown");
     }
     double bpm = track.getBpm();
     MusicalKey key = track.getKey();
