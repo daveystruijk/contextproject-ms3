@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -28,7 +29,7 @@ public class LibraryController {
   /**
    * for the playlists. when clicked, show the tracks of the playlist.
    */
-  public void begin(PlaylistController playlistcontroller) {
+  public void begin(PlaylistController playlistcontroller, Scene scene) {
     this.playlistController = playlistcontroller;
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
@@ -108,5 +109,9 @@ public class LibraryController {
 
   public void setAppLibrary(Library library) {
     App.setLibrary(library);
+  }
+  
+  public TableView<LibraryProperty> getTable() {
+    return tableView;
   }
 }

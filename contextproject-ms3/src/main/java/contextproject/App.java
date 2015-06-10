@@ -25,9 +25,11 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -40,6 +42,9 @@ public class App extends Application {
 
   private static Library library;
   private boolean empty = false;
+  private int screenWidth;
+  private int screenHeight;
+  private static Scene scene;
 
   @FXML
   private static WindowController controller;
@@ -60,64 +65,75 @@ public class App extends Application {
   }
 
   @Override
-  public void start(Stage stage) throws Exception {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
-
-    Parent root = (Parent) loader.load();
-    final WindowController controller = (WindowController) loader.getController();
-    App.controller = controller;
-
-    Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Demo Sprint 3");
-    stage.setScene(scene);
-    stage.show();
-
+  public void start(Stage stage) {
     try {
-      LibraryLoader libraryLoader = new LibraryLoader("library.xml");
-      library = libraryLoader.load();
-      if (library.size() < 1) {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
+      
+      Parent root = (Parent) loader.load();
+      Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+      screenWidth = (int) screen.getWidth();
+      screenHeight = (int) screen.getHeight();
+      Scene scene = new Scene(root, screenWidth, screenHeight);
+      final WindowController controller = (WindowController) loader.getController();
+      App.controller = controller;
+      stage.setTitle("dj shrubberyrobber");
+      stage.setScene(scene);
+      stage.show();
+      App.scene = scene;
+
+      try {
+        LibraryLoader libraryLoader = new LibraryLoader("library.xml");
+        library = libraryLoader.load();
+        if (library.size() < 1) {
+          empty = true;
+        }
+      } catch (IOException | NullPointerException e) {
+        library = new Library();
         empty = true;
       }
-    } catch (IOException | NullPointerException e) {
-      library = new Library();
-      empty = true;
-    }
-    scene.getWindow().setOnHidden(new EventHandler<WindowEvent>() {
-      @Override
-      public void handle(WindowEvent arg0) {
-        PlayerService.getInstance().exit();
-        if (library != null) {
-          XmlExport exporter = new XmlExport("library.xml", library);
-          exporter.export();
-          System.out.println(library.size());
+      scene.getWindow().setOnHidden(new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent arg0) {
+          PlayerService.getInstance().exit();
+          if (library != null) {
+            XmlExport exporter = new XmlExport("library.xml", library);
+            exporter.export();
+          }
+          System.exit(0);
         }
-        System.exit(0);
-      }
-    });
-    if (empty) {
-      String directory = "";
-      DirectoryChooser directoryChooser = new DirectoryChooser();
-      File selectedDirectory = directoryChooser.showDialog(null);
-      if (selectedDirectory == null) {
-        System.out.println("No directory selected.");
-        System.exit(-1);
+      });
+      if (empty) {
+        log.trace("opening folderchooser");
+        String directory = "";
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(null);
+        if (selectedDirectory == null) {
+          System.out.println("No directory selected.");
+          System.exit(-1);
+        } else {
+          directory = selectedDirectory.getAbsolutePath();
+        }
+        FolderLoader folderLoader = new FolderLoader(directory);
+        String playlistname = FileName.getName(directory);
+        Playlist playlist = folderLoader.load();
+        PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
+        Playlist mixablePlaylist = sorter.sort(playlist);
+        controller.setEverything(mixablePlaylist, playlistname, scene);
       } else {
-        directory = selectedDirectory.getAbsolutePath();
+        controller.setLibrary(library, scene);
       }
 
-      FolderLoader folderLoader = new FolderLoader(directory);
-      String playlistname = FileName.getName(directory);
-      Playlist playlist = folderLoader.load();
-      PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
-      Playlist mixablePlaylist = sorter.sort(playlist);
-      controller.setEverything(mixablePlaylist, playlistname);
-    } else {
-      controller.setLibrary(library);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
   public static WindowController getController() {
     return controller;
+  }
+
+  public static Scene getScene() {
+    return scene;
   }
 
   /**

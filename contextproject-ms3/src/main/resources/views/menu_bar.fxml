@@ -8,7 +8,7 @@
 
 
 <MenuBar fx:controller="contextproject.controllers.MenuBarController"
-  xmlns:fx="http://javafx.com/fxml" fx:id="menuBar" prefWidth="1200">
+  xmlns:fx="http://javafx.com/fxml" fx:id="menuBar"  minWidth = "1200">
   <Menu fx:id="menu" text="File">
     <MenuItem fx:id="menuItemImport" text="Import Folder"
       onAction="#importPlaylistButtonAction">
@@ -20,4 +20,4 @@
   <stylesheets>
     <URL value="@../stylesheets/menu_bar.css" />
   </stylesheets>
-</MenuBar>
+  </MenuBar>

@@ -4,6 +4,7 @@ import contextproject.models.Library;
 import contextproject.models.Playlist;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.text.Text;
 
 public class WindowController {
@@ -15,6 +16,8 @@ public class WindowController {
   private LibraryController libraryController;
   @FXML
   private PlayerControlsController playerControlsController;
+  @FXML
+  private MenuBarController menubarController;
 
   /**
    * This function passes on the playlist from the model to the view.
@@ -22,12 +25,12 @@ public class WindowController {
    * @param playlist
    *          : The playlist that comes from our algorithm
    */
-  public void setEverything(Playlist playlist, String name) {
+  public void setEverything(Playlist playlist, String name, Scene scene) {
     playlistController.setPlaylist(playlist);
     libraryController.setLibrary(playlist, name);
-    libraryController.begin(playlistController);
-    playerControlsController.initialize();
-    playlistController.begin(playerControlsController);
+    libraryController.begin(playlistController,scene);
+    playerControlsController.initialize(scene);
+    playlistController.begin(playerControlsController,scene);
     
   }
   /**
@@ -36,12 +39,24 @@ public class WindowController {
    * @param library
    *          the loaded library
    */
-  public void setLibrary(Library library) {
+  public void setLibrary(Library library, Scene scene) {
     Playlist pl = library.get(0);
     playlistController.setPlaylist(pl);
     libraryController.setLibrary(library);
-    libraryController.begin(playlistController);
-    playerControlsController.initialize();
-    playlistController.begin(playerControlsController);
+    libraryController.begin(playlistController,scene);
+    playerControlsController.initialize(scene);
+    playlistController.begin(playerControlsController,scene);
+  }
+  
+  public PlaylistController getPlaylistController() {
+    return playlistController;
+  }
+  
+  public LibraryController getLibraryController() {
+    return libraryController;
+  }
+  
+  public PlayerControlsController getPlayerControlsController() {
+    return playerControlsController;
   }
 }
