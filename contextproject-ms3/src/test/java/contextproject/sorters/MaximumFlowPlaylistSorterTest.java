@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MaxFlowTest {
+public class MaximumFlowPlaylistSorterTest {
 
   private Graph graph;
   private Playlist playlist;
@@ -34,20 +34,13 @@ public class MaxFlowTest {
     playlist = new Playlist();
     playlist.add(track);
     playlist.add(track2);
-    graph = new Graph(playlist);
-
+    playlist.add(track3);
   }
+
   @Test
   public void test() {
-    MaxFlow max = new MaxFlow(graph);
-    assertEquals(max.getOptimalPath().size(), 2);
+    MaximumFlowPlaylistSorter max = new MaximumFlowPlaylistSorter();
+    assertEquals(max.sort(playlist).size(), 3);
   }
 
-  @Test
-  public void testMoreTracks() {
-    playlist.add(track3);
-    Graph biggerGraph = new Graph(playlist);
-    MaxFlow max = new MaxFlow(biggerGraph);
-    assertEquals(max.getOptimalPath().size(), 3);
-  }
 }
