@@ -31,6 +31,11 @@ import be.tarsos.dsp.util.fft.FFT;
 import be.tarsos.dsp.util.fft.HannWindow;
 
 /**
+ * -MS3-
+ * This method is originally from TarsosDSP, but there are a few additions that were needed.
+ * The additions will be commented and are recognized by the comments within '-MS3-'.
+ * -MS3-
+ * 
  * A complex Domain Method onset detection function
  * 
  * Christopher Duxbury, Mike E. Davies, and Mark B. Sandler. Complex domain
@@ -91,13 +96,17 @@ public class ComplexOnsetDetector implements AudioProcessor, OnsetDetector{
   private final float[] dev1;
   
   /**
+   * -MS3-
    * First onset.
+   * -MS3-
    */
   private double firstOnset;
   
   /**
+   * -MS3-
    * Boolean to detect the first onset.
    * Set to false if it is detected.
+   * -MS3-
    */
   private boolean firstBoolean = true;
   
@@ -186,10 +195,15 @@ public class ComplexOnsetDetector implements AudioProcessor, OnsetDetector{
         }
       }
     }
+    /* -MS3-
+     * This is were the first onset is initialized.
+     * It uses the boolean that checks if there is an onset and the boolean that is
+     * initially on true to be sure this only gets called once.
+     * -MS3-
+    */
     if(firstBoolean  && isOnset) {
       firstOnset = lastOnset;
       firstBoolean = false;
-      System.out.println(firstOnset + " first onset");
     }
   }
   
@@ -206,10 +220,12 @@ public class ComplexOnsetDetector implements AudioProcessor, OnsetDetector{
     
   }
   
-  public double getLastOnset() {
-    return lastOnset;
-  }
-  
+  /**
+   * -MS3-
+   * Get the first onset of the track.
+   * -MS3-
+   * @return first onset.
+   */
   public double getFirstOnset() {
     return firstOnset;
   }
