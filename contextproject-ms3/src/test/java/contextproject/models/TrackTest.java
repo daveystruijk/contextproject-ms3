@@ -160,9 +160,4 @@ public class TrackTest {
       e.printStackTrace();
     }
   }
-
-  @Test
-  public void testEmptyString() {
-    Track track = new Track("");
-  }
 }
