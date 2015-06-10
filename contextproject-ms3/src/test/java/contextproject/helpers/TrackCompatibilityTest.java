@@ -2,7 +2,7 @@ package contextproject.helpers;
 
 import static org.junit.Assert.assertEquals;
 
-import contextproject.models.Key;
+import contextproject.models.MusicalKey;
 import contextproject.models.Track;
 
 import org.junit.Test;
@@ -26,12 +26,14 @@ public class TrackCompatibilityTest {
 
   @Test
   public void testKeyScore() {
-    assertEquals(1.0f, TrackCompatibility.getKeyScore(new Key("B"), new Key("B")), 0.0001);
+    assertEquals(1.0f, TrackCompatibility.getKeyScore(new MusicalKey("B"), new MusicalKey("B")),
+        0.0001);
   }
 
   @Test
   public void testDifferentKeyScore() {
-    assertEquals(0.7f, TrackCompatibility.getKeyScore(new Key("A"), new Key("B")), 0.0001);
+    assertEquals(0.7f, TrackCompatibility.getKeyScore(new MusicalKey("A"), new MusicalKey("B")),
+        0.0001);
   }
 
   @Test
@@ -42,7 +44,7 @@ public class TrackCompatibilityTest {
       resourcePath = Paths.get(resourceUrl.toURI());
       Track track = new Track(resourcePath.toString());
       track.setBpm(180);
-      track.setKey(new Key("A"));
+      track.setKey(new MusicalKey("A"));
       assertEquals(TrackCompatibility.getScore(track, track), 1.0f, 0.0001);
     } catch (URISyntaxException e) {
       // TODO Auto-generated catch block
@@ -59,9 +61,9 @@ public class TrackCompatibilityTest {
       Track track = new Track(resourcePath.toString());
       Track track2 = new Track(resourcePath.toString());
       track.setBpm(180);
-      track.setKey(new Key("A"));
+      track.setKey(new MusicalKey("A"));
       track2.setBpm(150);
-      track2.setKey(new Key("B"));
+      track2.setKey(new MusicalKey("B"));
       assertEquals(TrackCompatibility.getScore(track, track2), 0.0f, 0.0001);
     } catch (URISyntaxException e) {
       // TODO Auto-generated catch block

@@ -1,6 +1,6 @@
 package contextproject.helpers;
 
-import contextproject.models.Key;
+import contextproject.models.MusicalKey;
 import contextproject.models.Track;
 
 /**
@@ -54,7 +54,7 @@ public class TrackCompatibility {
    *          The second key object
    * @return float A score, ranging [0..1]
    */
-  public static float getKeyScore(Key key1, Key key2) {
+  public static float getKeyScore(MusicalKey key1, MusicalKey key2) {
     boolean matchingKeys = key1.getNeighborKeys().contains(key2.getNormalizedKeyString());
     if (matchingKeys) {
       return KEY_SCORE_COMPATIBLE;

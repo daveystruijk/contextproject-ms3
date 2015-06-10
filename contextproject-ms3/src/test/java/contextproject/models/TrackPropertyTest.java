@@ -10,11 +10,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Hashtable;
 
 public class TrackPropertyTest {
 
-  private Key testKey = new Key("A");
+  private MusicalKey testKey = new MusicalKey("A");
   URL resourceUrl = getClass().getResource("/beep.mp3");
   Path resourcePath;
 
@@ -28,7 +27,7 @@ public class TrackPropertyTest {
   public void setUp() {
     try {
       resourcePath = Paths.get(resourceUrl.toURI());
-      testTrack = new Track(resourcePath.toString(), new Hashtable<String, String>());
+      testTrack = new Track(resourcePath.toString());
 
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");
@@ -39,7 +38,7 @@ public class TrackPropertyTest {
 
   @Test
   public void keyTest() {
-    testProperty.setKey(new Key("B"));
+    testProperty.setKey(new MusicalKey("B"));
     assertEquals(testProperty.keyProperty().get(), testProperty.getKey());
   }
 

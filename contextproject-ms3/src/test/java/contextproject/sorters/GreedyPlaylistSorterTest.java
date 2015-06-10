@@ -2,7 +2,7 @@ package contextproject.sorters;
 
 import static org.junit.Assert.assertEquals;
 
-import contextproject.models.Key;
+import contextproject.models.MusicalKey;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
 
@@ -24,9 +24,9 @@ public class GreedyPlaylistSorterTest {
     track.setBpm(180);
     track2.setBpm(180);
     track3.setBpm(120);
-    track.setKey(new Key("12A"));
-    track2.setKey(new Key("9A"));
-    track3.setKey(new Key("12B"));
+    track.setKey(new MusicalKey("12A"));
+    track2.setKey(new MusicalKey("9A"));
+    track3.setKey(new MusicalKey("12B"));
     playlist.add(track);
     playlist.add(track2);
     playlist.add(track3);

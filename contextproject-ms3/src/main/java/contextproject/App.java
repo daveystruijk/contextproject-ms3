@@ -2,7 +2,6 @@ package contextproject;
 
 import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
-import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.EnergyLevelProcessor;
 import contextproject.audio.OnsetProcessor;
@@ -15,7 +14,6 @@ import contextproject.loaders.FolderLoader;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Library;
 import contextproject.models.Playlist;
-import contextproject.models.Track;
 import contextproject.sorters.MaximumFlowPlaylistSorter;
 import contextproject.sorters.PlaylistSorter;
 
@@ -24,8 +22,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-
-import javax.sound.sampled.LineUnavailableException;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;

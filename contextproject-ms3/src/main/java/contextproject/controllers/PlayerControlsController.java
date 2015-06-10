@@ -1,6 +1,7 @@
 package contextproject.controllers;
 
 import contextproject.models.Track;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -59,11 +60,11 @@ public class PlayerControlsController {
       }
     });
   }
+  
   /**
-   * updates the statusbar.
-   * 
-   * @param title
-   *          the title of the current song.
+   * Updates the statusbar.
+   * @param curtitle current title.
+   * @param nxtitle next title.
    */
   public void update(Track curtitle, String nxtitle) {
     this.curtrack = curtitle;

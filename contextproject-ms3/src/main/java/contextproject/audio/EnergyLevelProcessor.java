@@ -55,7 +55,9 @@ public class EnergyLevelProcessor implements AudioProcessor {
    * @param track
    *          track to get energy from.
    * @throws EncoderException
+   *           encoder exception.
    * @throws LineUnavailableException
+   *           Line unavailable exception.
    */
   public void detect(Track track, double start) throws EncoderException, LineUnavailableException {
     inputStream = Streamer.stream(track.getPath(), attributes);
@@ -76,6 +78,7 @@ public class EnergyLevelProcessor implements AudioProcessor {
       }
     });
     dispatcher.addAudioProcessor(skipProcessor);
+
     dispatcher.addAudioProcessor(this);
     dispatcher.run();
 
