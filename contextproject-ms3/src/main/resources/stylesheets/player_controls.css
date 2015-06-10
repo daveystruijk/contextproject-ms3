@@ -27,3 +27,6 @@
 .text-field:focused {
     -fx-focus-color: transparent;
 }
+.text-field {
+    -fx-text-box-border: transparent; 
+}

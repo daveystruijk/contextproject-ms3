@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class KeyBpmFinder {
 
-  private static Logger log = LogManager.getLogger(Track.class.getName());
+  private static Logger log = LogManager.getLogger(KeyBpmFinder.class.getName());
 
   /**
    * Find Key and BPM

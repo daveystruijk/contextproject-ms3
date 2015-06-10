@@ -34,7 +34,7 @@ public class MaxFlow {
    */
   public MaxFlow(Graph graph) {
     this.graph = graph;
-    optimalPath = new Playlist();
+    this.optimalPath = new Playlist();
     calculateMaxflow();
     convertMap();
 
