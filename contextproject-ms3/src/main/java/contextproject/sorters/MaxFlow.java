@@ -36,19 +36,27 @@ public class MaxFlow {
     this.graph = graph;
     optimalPath = new Playlist();
     calculateMaxflow();
-    convertMap();
 
-    for (int i = 1; i <= graph.vertexSet().size(); i++) {
-      if (Math.pow(graph.vertexSet().size() - 2, i) < 500000000) {
-        maxDepth = i;
-      } else {
-        break;
+    try {
+
+      convertMap();
+
+      for (int i = 1; i <= graph.vertexSet().size(); i++) {
+        if (Math.pow(graph.vertexSet().size() - 2, i) < 500000000) {
+          maxDepth = i;
+        } else {
+          break;
+        }
+      }
+
+      calculateOptimalPath();
+
+    } catch (NullPointerException e) {
+      for (WeightedEdge edge : graph.edgeSet()) {
+        optimalPath.add((Track) edge.getEdgeSource());
       }
     }
-
-    calculateOptimalPath();
   }
-
   private void setUp() {
     bestScore = 0.0;
     bestAverage = 0.0;
@@ -75,7 +83,7 @@ public class MaxFlow {
 
             edmondsKarp = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(graph);
             edmondsKarp.calculateMaximumFlow(source, sink); // calculate max flow
-
+            System.out.println(edge1);
             graph.addEdge(source, sink, edge1);
             graph.addEdge(sink, source, edge2);
 
