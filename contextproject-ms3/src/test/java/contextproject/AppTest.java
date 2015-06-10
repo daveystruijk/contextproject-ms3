@@ -18,4 +18,5 @@ public class AppTest {
     assertEquals(App.getController(), null);
 
   }
+
 }

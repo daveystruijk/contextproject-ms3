@@ -28,10 +28,10 @@ public class WindowController {
   public void setEverything(Playlist playlist, String name, Scene scene) {
     playlistController.setPlaylist(playlist);
     libraryController.setLibrary(playlist, name);
-    libraryController.begin(playlistController,scene);
-    playerControlsController.initialize(scene);
-    playlistController.begin(playerControlsController,scene);
-    
+    libraryController.begin(playlistController, scene);
+    playerControlsController.initialize(scene.getWidth());
+    playlistController.begin(playerControlsController, scene);
+
   }
   /**
    * this function passes on the library from the library.xml to the view
@@ -43,19 +43,19 @@ public class WindowController {
     Playlist pl = library.get(0);
     playlistController.setPlaylist(pl);
     libraryController.setLibrary(library);
-    libraryController.begin(playlistController,scene);
-    playerControlsController.initialize(scene);
-    playlistController.begin(playerControlsController,scene);
+    libraryController.begin(playlistController, scene);
+    playerControlsController.initialize(scene.getWidth());
+    playlistController.begin(playerControlsController, scene);
   }
-  
+
   public PlaylistController getPlaylistController() {
     return playlistController;
   }
-  
+
   public LibraryController getLibraryController() {
     return libraryController;
   }
-  
+
   public PlayerControlsController getPlayerControlsController() {
     return playerControlsController;
   }
