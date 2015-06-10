@@ -11,13 +11,19 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class TrackProcessor {
+  
+  private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
   // State
   private PlayerState state;
   private Track track;
@@ -47,7 +53,8 @@ public class TrackProcessor {
       this.attributes = attributes;
       this.format = Streamer.streamAudioFormat(attributes);
     } catch (EncoderException e) {
-      e.printStackTrace();
+     log.error("Encoder exception");
+     log.trace(StackTrace.stackTrace(e));
     }
   }
   /**

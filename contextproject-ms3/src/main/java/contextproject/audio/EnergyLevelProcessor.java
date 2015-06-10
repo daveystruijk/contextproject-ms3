@@ -9,7 +9,12 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.App;
+import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
@@ -18,6 +23,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class EnergyLevelProcessor implements AudioProcessor {
+  
+  static Logger log = LogManager.getLogger(EnergyLevelProcessor.class.getName());
   // Data
   private Attributes attributes;
   private AudioFormat format;
@@ -39,7 +46,8 @@ public class EnergyLevelProcessor implements AudioProcessor {
       this.attributes = attributes;
       this.format = Streamer.streamAudioFormat(attributes);
     } catch (EncoderException e) {
-      e.printStackTrace();
+      log.error("The encoder was not right");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
 

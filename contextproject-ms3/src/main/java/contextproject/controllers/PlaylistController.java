@@ -24,6 +24,8 @@ public class PlaylistController {
   @FXML
   private TableColumn<TrackProperty, String> artistColumn;
   @FXML
+  private TableColumn<TrackProperty, String> albumColumn;
+  @FXML
   private TableColumn<TrackProperty, Double> bpmColumn;
   @FXML
   private TableColumn<TrackProperty, Object> keyColumn;
@@ -108,9 +110,14 @@ public class PlaylistController {
       artist = "unkown";
       track.setArtist("unknown");
     }
+    String album = track.getAlbum();
+    if (album == null || album.length() < 1) {
+      album = "unkown";
+      track.setAlbum("unknown");
+    }
     double bpm = track.getBpm();
     MusicalKey key = track.getKey();
-    TrackProperty prop = new TrackProperty(title, artist, bpm, key, track);
+    TrackProperty prop = new TrackProperty(title, artist, album, bpm, key, track);
     return prop;
   }
 }

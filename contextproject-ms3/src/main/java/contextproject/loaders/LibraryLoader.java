@@ -1,5 +1,6 @@
 package contextproject.loaders;
 
+import contextproject.helpers.StackTrace;
 import contextproject.models.Library;
 
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +37,7 @@ public class LibraryLoader {
       fis.close();
     } catch (ClassCastException e) {
       log.warn("library.xml is corrupted. Starting with empty library...");
+      log.trace(StackTrace.stackTrace(e));
       library = new Library();
     } 
 

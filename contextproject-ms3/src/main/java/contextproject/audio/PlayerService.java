@@ -5,6 +5,7 @@ import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.helpers.AudioProgress;
+import contextproject.helpers.StackTrace;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
@@ -15,7 +16,7 @@ import javax.sound.sampled.LineUnavailableException;
 
 public class PlayerService {
   private static PlayerService instance = null;
-  private static Logger log = LogManager.getLogger(LibraryLoader.class.getName());
+  private static Logger log = LogManager.getLogger(PlayerService.class.getName());
 
   private TrackProcessor currentProcessor;
   private TrackProcessor nextProcessor;
@@ -46,7 +47,8 @@ public class PlayerService {
       currentProcessor.play(1.0);
       currentAudioProgress.start();
     } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
+      log.error("Play() went wrong");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
   /**
@@ -63,7 +65,8 @@ public class PlayerService {
       currentAudioProgress = nextAudioProgress;
       currentAudioProgress.start();
     } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
+      log.error("transition went wrong");
+      log.trace(StackTrace.stackTrace(e));
     }
 
     // TODO: Refactor into transition class
@@ -71,7 +74,8 @@ public class PlayerService {
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        log.error("Thread couldn't sleep");
+        log.trace(StackTrace.stackTrace(e));
       }
       currentProcessor.setGain(1.0 - (i / 30.0));
       nextProcessor.setGain((double) i / 30.0);
@@ -111,16 +115,17 @@ public class PlayerService {
       try {
         instance = new PlayerService();
       } catch (EncoderException | LineUnavailableException e) {
-        log.warn(e.getMessage());
+        log.error("Couldn't create instance");
+        log.trace(StackTrace.stackTrace(e));
       }
     }
     return instance;
   }
-  
+
   public void pause() {
     currentProcessor.pause();
   }
-  
+
   public void resume() {
     currentProcessor.resume();
   }
