@@ -34,8 +34,8 @@ public class PlayerControlsControllerTest extends ApplicationTest {
 
   @Test
   public void clickButtonTest() {
-    clickOn("#playButton");
     clickOn("#pauseButton");
+    clickOn("#playButton");
   }
 
 }
