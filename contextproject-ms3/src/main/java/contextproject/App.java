@@ -2,6 +2,7 @@ package contextproject;
 
 import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
+import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.EnergyLevelProcessor;
 import contextproject.audio.OnsetProcessor;
@@ -12,6 +13,7 @@ import contextproject.formats.XmlExport;
 import contextproject.helpers.FileName;
 import contextproject.loaders.FolderLoader;
 import contextproject.loaders.LibraryLoader;
+import contextproject.models.Track;
 import contextproject.models.Library;
 import contextproject.models.Playlist;
 import contextproject.sorters.MaximumFlowPlaylistSorter;
@@ -22,6 +24,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -58,13 +62,11 @@ public class App extends Application {
     double start = processor.getFirstOnset();
     
     EnergyLevelProcessor energyprocessor = new EnergyLevelProcessor(attributes);
-    try {
+     try {
       energyprocessor.detect(new Track(song), start);
     } catch (EncoderException | LineUnavailableException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    
     
     boolean gui = true;
     if (gui == true) {
