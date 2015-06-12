@@ -21,7 +21,6 @@ public class PlayerService {
 
   private TrackProcessor currentProcessor;
   private TrackProcessor nextProcessor;
-  private AirhornProcessor airhornProcessor;
 
   private Attributes attributes;
 
@@ -34,9 +33,6 @@ public class PlayerService {
     // Initialize standard attributes for audio playback
     attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(SAMPLE_RATE);
-    
-    airhornProcessor = new AirhornProcessor(attributes, new Track(
-        "/Users/daveystruijk/Documents/FEESJE/Samples/Random - airhorn1.mp3"));
   }
   
   /**
