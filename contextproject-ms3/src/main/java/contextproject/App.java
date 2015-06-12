@@ -59,20 +59,6 @@ public class App extends Application {
    * This will start our app with a graphical user interface.
    */
   public static void main(String[] args) {
-//    Attributes attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
-//    attributes.setSamplingRate(44100);
-//    String song = "C:/Users/Emiel/Documents/Smoothie/02 - Living in the Moment.mp3";
-//    OnsetProcessor processor = new OnsetProcessor(attributes);
-//    processor.detectOnset(new Track(song));
-//    double start = processor.getFirstOnset();
-//    
-//    EnergyLevelProcessor energyprocessor = new EnergyLevelProcessor(attributes);
-//     try {
-//      energyprocessor.detect(new Track(song), start);
-//    } catch (EncoderException | LineUnavailableException e) {
-//      e.printStackTrace();
-//    }
-    
     boolean gui = true;
     if (gui == true) {
       launch(args);
