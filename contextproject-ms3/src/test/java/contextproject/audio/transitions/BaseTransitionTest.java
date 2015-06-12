@@ -25,7 +25,6 @@ public class BaseTransitionTest {
   @Test
   public void test() {
     BaseTransition base = new FadeInOutTransition(from, to, callback);
-    base.begin(from, to);
     assertEquals(base.getClass(), FadeInOutTransition.class);
   }
 
