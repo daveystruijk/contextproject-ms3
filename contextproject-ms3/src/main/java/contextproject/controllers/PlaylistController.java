@@ -37,8 +37,9 @@ public class PlaylistController {
   public void begin(final PlayerControlsController playerControlsController, Scene scene) {
     this.playerControlsController = playerControlsController;
     PlayerService.getInstance().setCurrentTrack(playlist.get(0));
-    PlayerService.getInstance().play();
-    final Track curtitle = playlist.get(0);
+    PlayerService.getInstance().prepareNextTrack(playlist.get(1));
+    PlayerService.getInstance().playCurrentTrack();
+    Track curtitle = playlist.get(0);
     String nxtitle;
     if (1 > playlist.size() - 1) {
       nxtitle = "none";
@@ -51,8 +52,6 @@ public class PlaylistController {
       @Override
       public void handle(MouseEvent event) {
         if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-          PlayerService.getInstance().setNextTrack(
-              tableView.getSelectionModel().getSelectedItem().getTrack());
           Track curtrack = tableView.getSelectionModel().getSelectedItem().getTrack();
           String nxtitle;
           if ((playlist.indexOf(curtrack) + 1) > (playlist.size() - 1)) {
@@ -60,8 +59,11 @@ public class PlaylistController {
           } else {
             nxtitle = playlist.get(playlist.indexOf(curtrack) + 1).getTitle();
           }
-          PlayerService.getInstance().transition();
-          playerControlsController.update(curtitle, nxtitle);
+          PlayerService.getInstance().setCurrentTrack(playlist.get(playlist.indexOf(curtrack)));
+          PlayerService.getInstance().prepareNextTrack(playlist.get(playlist.indexOf(curtrack) + 1));
+          PlayerService.getInstance().playCurrentTrack();
+          PlayerService.getInstance().setupTransition();
+          playerControlsController.update(curtrack,nxtitle);
         }
       }
     });

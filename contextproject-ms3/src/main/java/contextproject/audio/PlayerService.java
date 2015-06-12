@@ -4,7 +4,13 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+<<<<<<< HEAD
 import contextproject.helpers.AudioProgress;
+=======
+import contextproject.audio.TrackProcessor.PlayerState;
+import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
+import contextproject.audio.transitions.FadeInOutTransition;
+>>>>>>> feature-beatmatching
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
@@ -24,8 +30,8 @@ public class PlayerService {
 
   private Attributes attributes;
 
-  public Track currentTrack;
-  public Track nextTrack;
+  private Track currentTrack;
+  private Track nextTrack;
 
   private static final int SAMPLE_RATE = 44100;
 
@@ -34,27 +40,51 @@ public class PlayerService {
     attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(SAMPLE_RATE);
   }
-
+  
   /**
-   * Temporary method for playing tracks.
+   * Loads the current track and plays it.
+   * This method can be used when no track is playing currently,
+   * and we want to start the mix with an initial track.
    */
-  public void play() {
+  public void playCurrentTrack() {
+    if (currentProcessor != null) {
+      currentProcessor.unload();
+    }
     currentProcessor = new TrackProcessor(attributes);
+<<<<<<< HEAD
     currentProcessor.load(currentTrack);
     currentAudioProgress = new Thread(new AudioProgress(currentProcessor));
     try {
       currentProcessor.play(1.0);
       currentAudioProgress.start();
+=======
+    try {
+      currentProcessor.load(currentTrack, 1.0, 1.0);
+>>>>>>> feature-beatmatching
     } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }
+    
+    // Wait for track processor to be ready
+    while (currentProcessor.getState() != PlayerState.READY) {
+      try {
+        Thread.sleep(10);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+    
+    currentProcessor.play();
   }
+  
   /**
-   * This takes care of the Track transitions. It loads the next track or throws an exception when
-   * needed
+   * Prepares the next track for playback.
+   * Preparation means: Skipping the track to the point where a transition should happen.
    */
-  public void transition() {
+  public void prepareNextTrack(Track newTrack) {
+    this.nextTrack = newTrack;
     nextProcessor = new TrackProcessor(attributes);
+<<<<<<< HEAD
     nextProcessor.load(nextTrack);
     nextAudioProgress = new Thread(new AudioProgress(nextProcessor));
     try {
@@ -62,29 +92,33 @@ public class PlayerService {
       currentAudioProgress.stop();
       currentAudioProgress = nextAudioProgress;
       currentAudioProgress.start();
+=======
+    try {
+      nextProcessor.load(nextTrack, 1.0, 1.0);
+>>>>>>> feature-beatmatching
     } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }
-
-    // TODO: Refactor into transition class
-    for (int i = 0; i < 30; i++) {
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      currentProcessor.setGain(1.0 - (i / 30.0));
-      nextProcessor.setGain((double) i / 30.0);
-    }
-    currentProcessor.unload();
-    currentProcessor = nextProcessor;
   }
+  
   /**
-   * Stops the music.
+   * Starts playing the next track if it's ready, and applies the specified transition.
+   * If the track is not prepared for transition yet, this method will throw an exception.
    */
-  public void exit() {
-  }
+  public void setupTransition() {
+    double transitionTime = (60.0 / nextTrack.getBpm()) * 80;
+    currentProcessor.setupTransition(transitionTime, new FadeInOutTransition(
+        currentProcessor, nextProcessor, new TransitionDoneCallback() {
 
+          @Override
+          public void onFinished() {
+            currentProcessor.unload();
+            currentProcessor = nextProcessor;
+            //prepareNextTrack();
+          }
+        }));
+  }
+  
   public Track getCurrentTrack() {
     return currentTrack;
   }
@@ -92,7 +126,7 @@ public class PlayerService {
   public void setCurrentTrack(Track currentTrack) {
     this.currentTrack = currentTrack;
   }
-
+  
   public Track getNextTrack() {
     return nextTrack;
   }

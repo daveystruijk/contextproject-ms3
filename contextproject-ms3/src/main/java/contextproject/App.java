@@ -68,7 +68,7 @@ public class App extends Application {
   public void start(Stage stage) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
-      
+
       Parent root = (Parent) loader.load();
       Rectangle2D screen = Screen.getPrimary().getVisualBounds();
       screenWidth = (int) screen.getWidth();
@@ -76,7 +76,7 @@ public class App extends Application {
       Scene scene = new Scene(root, screenWidth, screenHeight);
       final WindowController controller = (WindowController) loader.getController();
       App.controller = controller;
-      stage.setTitle("dj shrubberyrobber");
+      stage.setTitle("Demo");
       stage.setScene(scene);
       stage.show();
       App.scene = scene;
@@ -108,7 +108,7 @@ public class App extends Application {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(null);
         if (selectedDirectory == null) {
-          System.out.println("No directory selected.");
+          log.warn("No directory selected.");
           System.exit(-1);
         } else {
           directory = selectedDirectory.getAbsolutePath();
@@ -120,11 +120,11 @@ public class App extends Application {
         Playlist mixablePlaylist = sorter.sort(playlist);
         controller.setEverything(mixablePlaylist, playlistname, scene);
       } else {
-        controller.setLibrary(library, scene);
+        controller.setLibrary(library);
       }
-
     } catch (Exception e) {
-      e.printStackTrace();
+      log.fatal(e.getMessage(), e);
+      System.exit(-1);
     }
   }
 

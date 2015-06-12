@@ -1,6 +1,7 @@
 package contextproject.audio;
 
-import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.AudioEvent;
+import be.tarsos.dsp.AudioProcessor;
 import be.tarsos.dsp.GainProcessor;
 import be.tarsos.dsp.WaveformSimilarityBasedOverlapAdd;
 import be.tarsos.dsp.WaveformSimilarityBasedOverlapAdd.Parameters;
@@ -11,13 +12,26 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
+import contextproject.audio.transitions.BaseTransition;
 import contextproject.models.Track;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
-public class TrackProcessor {
+public class TrackProcessor implements AudioProcessor {
+
+  private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
+  
+  private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+  
   // State
   private PlayerState state;
   private Track track;
@@ -32,15 +46,18 @@ public class TrackProcessor {
   private AudioPlayer audioPlayer;
   private WaveformSimilarityBasedOverlapAdd wsola;
   private GainProcessor gainProcessor;
-  private AudioDispatcher dispatcher;
-  private Thread thread;
+  private CustomAudioDispatcher dispatcher;
+  private SkipAudioProcessor skipProcessor;
 
   private double tempo;
   private double currentTime;
-  private double pausedAt;
-  private double totalDuration;
+  
+  private double transitionTime;
+  private BaseTransition transition;
+  private boolean hasTransitioned;
+  
   /**
-   * Class that processes tracks.
+   * This class acts as an audio player.
    */
   public TrackProcessor(Attributes attributes) {
     try {
@@ -50,98 +67,151 @@ public class TrackProcessor {
       e.printStackTrace();
     }
   }
+  
   /**
    * Loads the Track that is specified.
    */
-  public void load(Track track) {
+  public void load(Track track, double startGain, double startBpm) throws EncoderException,
+      LineUnavailableException {
     if (state != PlayerState.NO_FILE_LOADED) {
       this.unload();
     }
 
     this.track = track;
     this.tempo = 1.0;
-    this.pausedAt = 0;
     this.currentTime = 0;
-    this.totalDuration = track.getDuration();
-    //track.setLength((long) totalDuration);
+    this.transitionTime = 0;
+    this.setupDispatcherChain(startGain, startBpm);
     setState(PlayerState.FILE_LOADED);
   }
+  
   /**
-   * Unloads tracks.
+   * Unloads the current track.
    */
   public void unload() {
     if (dispatcher != null) {
       dispatcher.stop();
+      dispatcher = null;
     }
     track = null;
     setState(PlayerState.NO_FILE_LOADED);
   }
+  
   /**
-   * Play the trakcs.
-   * 
-   * @param startGain
-   *          . Given start Track.
-   * @throws EncoderException. Tarsos
-   *           Encode exception.
-   * @throws LineUnavailableException. Exception
-   *           in the audio stream!
+   * Play the current track.
    */
-  public void play(double startGain) throws EncoderException, LineUnavailableException {
-    inputStream = Streamer.stream(track.getPath(), attributes);
-    tarsosStream = new JVMAudioInputStream(inputStream);
-
-    audioPlayer = new AudioPlayer(format);
-    wsola = new WaveformSimilarityBasedOverlapAdd(Parameters.musicDefaults(tempo,
-        format.getSampleRate()));
-    gainProcessor = new GainProcessor(startGain);
-    dispatcher = new AudioDispatcher(tarsosStream, wsola.getInputBufferSize(), wsola.getOverlap());
-
-    wsola.setDispatcher(dispatcher);
-    dispatcher.addAudioProcessor(wsola);
-    dispatcher.addAudioProcessor(gainProcessor);
-    dispatcher.addAudioProcessor(audioPlayer);
-
-    thread = new Thread(dispatcher);
-    thread.start();
+  public void play() {
+    if (state != PlayerState.READY) {
+      throw new IllegalStateException("Track processor is not ready yet.");
+    }
+    // Dispatchers are already running, but skipProcessor is blocking
+    // the thread entirely. If we resume it, the track starts playing instantly!
+    synchronized (skipProcessor) {
+      skipProcessor.notify();
+    }
     setState(PlayerState.PLAYING);
   }
 
   public void setGain(double gain) {
     gainProcessor.setGain(gain);
   }
+  
+  /**
+   * Initializes and starts the dispatcher chain so the player can play.
+   * This method is called when a track is first loaded (this.load()).
+   * @param startGain
+   * @param startBpm
+   * @throws EncoderException
+   * @throws LineUnavailableException
+   */
+  private void setupDispatcherChain(double startGain, double startBpm) throws EncoderException,
+      LineUnavailableException {
+    // Initialize the correct stream objects from file
+    inputStream = Streamer.stream(track.getPath(), attributes);
+    tarsosStream = new JVMAudioInputStream(inputStream);
 
+    // Initialize audio processors
+    audioPlayer = new AudioPlayer(format);
+    wsola = new WaveformSimilarityBasedOverlapAdd(newParameters());
+    gainProcessor = new GainProcessor(startGain);
+    dispatcher = new CustomAudioDispatcher(tarsosStream, wsola.getInputBufferSize(),
+        wsola.getOverlap());
+
+    // skipProcessor makes sure that the player skips until the desired point in time.
+    // After that, we set our processor state to READY, so this.play can be called.
+    final TrackProcessor thisProcessor = this;
+    double secondsToSkip = (60.0 / track.getBpm()) * 64;
+    skipProcessor = new SkipAudioProcessor(secondsToSkip, new SkipAudioProcessorCallback() {
+      @Override
+      public void onFinished() {
+        thisProcessor.setState(PlayerState.READY);
+      }
+    });
+
+    // Setup the entire dispatcher chain
+    dispatcher.addAudioProcessor(this);
+    dispatcher.addAudioProcessor(skipProcessor);
+    wsola.setDispatcher(dispatcher);
+    dispatcher.addAudioProcessor(wsola);
+    dispatcher.addAudioProcessor(gainProcessor);
+    dispatcher.addAudioProcessor(audioPlayer);
+    Thread thread = new Thread(dispatcher);
+    thread.start();
+  }
+  
+  private Parameters newParameters() {
+    return Parameters.musicDefaults(tempo, format.getSampleRate());
+  }
+  
+  public void addPropertyChangeListener(PropertyChangeListener listener) {
+    this.pcs.addPropertyChangeListener(listener);
+  }
+  
+  public void removePropertyChangeListener(PropertyChangeListener listener) {
+    this.pcs.removePropertyChangeListener(listener);
+  }
+  
+  public PlayerState getState() {
+    return this.state;
+  }
+  
   private void setState(PlayerState state) {
+    PlayerState oldState = state;
     this.state = state;
+    this.pcs.firePropertyChange("state", oldState, state);
+    log.info("TrackProcessor #" + this.hashCode() + " state changed: " + state.toString());
   }
 
   public static enum PlayerState {
-    NO_FILE_LOADED, FILE_LOADED, PLAYING, PAUSED, STOPPED
+    NO_FILE_LOADED, FILE_LOADED, READY, PLAYING, PAUSED, STOPPED
   }
-   /**
-    * get the progres of the song.
-    * @return the progres in %.
-    */
-  public double getProgress() { 
-    this.currentTime =  dispatcher.secondsProcessed();
-    double progres = currentTime / totalDuration;
-    return progres;
+  
+  public void setupTransition(double transitionTime, BaseTransition transition) {
+    this.transitionTime = transitionTime;
+    this.hasTransitioned = false;
+    this.transition = transition;
   }
-  /**
-   * pauses the song.
-   */
-  @SuppressWarnings("deprecation")
-  public void pause() {
-    this.pausedAt = this.currentTime;
-    thread.stop();
-    setState(PlayerState.PAUSED);
+
+  @Override
+  public boolean process(AudioEvent audioEvent) {
+    currentTime = audioEvent.getTimeStamp();
+    if (transitionTime == 0) {
+      return true;
+    }
+    
+    if (!hasTransitioned && currentTime > transitionTime) {
+      new Thread(transition).start();
+      hasTransitioned = true;
+    }
+    
+    return true;
   }
-  /**
-   * resumes the song.
-   */
-  public void resume() {
-    dispatcher.skip(pausedAt);
-    thread = new Thread(dispatcher);
-    thread.start();
-    setState(PlayerState.PLAYING);
+
+  @Override
+  public void processingFinished() {
+  }
+
+  public Track getTrack() {
+    return track;
   }
 }
