@@ -9,24 +9,27 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.models.Track;
 
 import java.util.ArrayList;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class EnergyLevelProcessor implements AudioProcessor {
   // Data
   private Attributes attributes;
-  private AudioFormat format;
   private ArrayList<Double> energyLevels;
+  private float oneBarInSeconds;
+  public int counter = 0;
+  public double onset;
 
   // Audio Processing
   private AudioInputStream inputStream;
   private TarsosDSPAudioInputStream tarsosStream;
   private AudioDispatcher dispatcher;
+  private SkipAudioProcessor skipProcessor;
 
   /**
    * Constructor of the processor.
@@ -35,12 +38,8 @@ public class EnergyLevelProcessor implements AudioProcessor {
    *          of the song.
    */
   public EnergyLevelProcessor(Attributes attributes) {
-    try {
-      this.attributes = attributes;
-      this.format = Streamer.streamAudioFormat(attributes);
-    } catch (EncoderException e) {
-      e.printStackTrace();
-    }
+    this.attributes = attributes;
+    energyLevels = new ArrayList<Double>();
   }
 
   /**
@@ -53,30 +52,45 @@ public class EnergyLevelProcessor implements AudioProcessor {
    * @throws LineUnavailableException
    *           Line unavailable exception.
    */
-  public void detect(Track track) throws EncoderException, LineUnavailableException {
+  public void detect(Track track, double start) throws EncoderException, LineUnavailableException {
     inputStream = Streamer.stream(track.getPath(), attributes);
     tarsosStream = new JVMAudioInputStream(inputStream);
 
     float msPerBeat = (float) (60.0f / track.getBpm());
-    float fourBarsInSeconds = msPerBeat * 16;
-    energyLevels = new ArrayList<Double>();
-    System.out.println(fourBarsInSeconds);
+    oneBarInSeconds = msPerBeat * 4;
 
-    dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * fourBarsInSeconds), 0);
+    System.out.println(oneBarInSeconds + " time per beat");
+
+    dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * oneBarInSeconds), 0);
+    skipProcessor = new SkipAudioProcessor(start - oneBarInSeconds, false, new SkipAudioProcessorCallback() {
+
+      @Override
+      public void onFinished() {
+        synchronized (skipProcessor) {
+          skipProcessor.notify();
+        }
+
+
+      }
+    });
+    dispatcher.addAudioProcessor(skipProcessor);
 
     dispatcher.addAudioProcessor(this);
     dispatcher.run();
+
   }
 
   @Override
   public boolean process(AudioEvent audioEvent) {
+    counter++;
+    System.out.println(audioEvent.getRMS() + " at time " + oneBarInSeconds * counter);
     energyLevels.add(audioEvent.getRMS());
     return false;
   }
 
   @Override
   public void processingFinished() {
-
+    energyLevels = new ArrayList<Double>();
   }
 
   /**
@@ -92,5 +106,9 @@ public class EnergyLevelProcessor implements AudioProcessor {
       counter++;
     }
     return sum / counter;
+  }
+
+  public void test() {
+    // Event event = new Event();
   }
 }

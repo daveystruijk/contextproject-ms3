@@ -17,6 +17,7 @@ import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Track implements Serializable {
 
@@ -33,6 +34,7 @@ public class Track implements Serializable {
   private double bpm;
   private MusicalKey key;
   private BeatGrid beatGrid;
+  private ArrayList<Float> energyLevels;
   private MP3File song;
   private AbstractID3v2Tag tag;
 
@@ -325,6 +327,14 @@ public class Track implements Serializable {
    */
   public BeatGrid getBeatGrid() {
     return beatGrid;
+  }
+  
+  public ArrayList<Float> getEnergyLevels() {
+    return energyLevels;
+  }
+  
+  public void setEnergyLevels(ArrayList<Float> el) {
+    energyLevels = el;
   }
 
   public String toString() {

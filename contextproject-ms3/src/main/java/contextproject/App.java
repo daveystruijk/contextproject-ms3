@@ -2,7 +2,10 @@ package contextproject;
 
 import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
+import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.audio.EnergyLevelProcessor;
+import contextproject.audio.OnsetProcessor;
 import contextproject.audio.PlayerService;
 import contextproject.controllers.CliController;
 import contextproject.controllers.WindowController;
@@ -10,6 +13,7 @@ import contextproject.formats.XmlExport;
 import contextproject.helpers.FileName;
 import contextproject.loaders.FolderLoader;
 import contextproject.loaders.LibraryLoader;
+import contextproject.models.Track;
 import contextproject.models.Library;
 import contextproject.models.Playlist;
 import contextproject.sorters.MaximumFlowPlaylistSorter;
@@ -20,6 +24,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -53,8 +59,6 @@ public class App extends Application {
    * This will start our app with a graphical user interface.
    */
   public static void main(String[] args) {
-    Attributes attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
-    attributes.setSamplingRate(44100);
     boolean gui = true;
     if (gui == true) {
       launch(args);

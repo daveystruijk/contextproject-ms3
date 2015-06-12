@@ -141,7 +141,7 @@ public class TrackProcessor implements AudioProcessor {
     // After that, we set our processor state to READY, so this.play can be called.
     final TrackProcessor thisProcessor = this;
     double secondsToSkip = (60.0 / track.getBpm()) * 64;
-    skipProcessor = new SkipAudioProcessor(secondsToSkip, new SkipAudioProcessorCallback() {
+    skipProcessor = new SkipAudioProcessor(secondsToSkip, true, new SkipAudioProcessorCallback() {
       @Override
       public void onFinished() {
         thisProcessor.setState(PlayerState.READY);
