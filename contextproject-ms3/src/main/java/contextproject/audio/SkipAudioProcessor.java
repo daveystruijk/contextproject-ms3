@@ -48,10 +48,6 @@ public class SkipAudioProcessor implements AudioProcessor {
     
     return false;
   }
-  
-  public void stop() {
-    this.stopped = true;
-  }
 
   @Override
   public void processingFinished() {

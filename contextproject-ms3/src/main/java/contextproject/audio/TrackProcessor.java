@@ -200,8 +200,6 @@ public class TrackProcessor implements AudioProcessor {
     }
     
     if (!hasTransitioned && currentTime > transitionTime) {
-      System.out.println(transitionTime);
-      System.out.println("what");
       new Thread(transition).start();
       hasTransitioned = true;
     }

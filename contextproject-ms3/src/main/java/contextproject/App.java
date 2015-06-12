@@ -94,7 +94,6 @@ public class App extends Application {
           if (library != null) {
             XmlExport exporter = new XmlExport("library.xml", library);
             exporter.export();
-            System.out.println(library.size());
           }
           System.exit(0);
         }
@@ -104,7 +103,7 @@ public class App extends Application {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(null);
         if (selectedDirectory == null) {
-          System.out.println("No directory selected.");
+          log.warn("No directory selected.");
           System.exit(-1);
         } else {
           directory = selectedDirectory.getAbsolutePath();
