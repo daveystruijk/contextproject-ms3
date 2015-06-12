@@ -1,6 +1,5 @@
 package contextproject.audio;
 
-import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.AudioProcessor;
 import be.tarsos.dsp.GainProcessor;
@@ -14,6 +13,7 @@ import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
+import contextproject.audio.transitions.BaseTransition;
 import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
@@ -51,8 +51,10 @@ public class TrackProcessor implements AudioProcessor {
 
   private double tempo;
   private double currentTime;
-  private double pausedAt;
-  private double totalDuration;
+  
+  private double transitionTime;
+  private BaseTransition transition;
+  private boolean hasTransitioned;
   
   /**
    * This class acts as an audio player.
@@ -77,8 +79,8 @@ public class TrackProcessor implements AudioProcessor {
 
     this.track = track;
     this.tempo = 1.0;
-    this.pausedAt = 0;
     this.currentTime = 0;
+    this.transitionTime = 0;
     this.setupDispatcherChain(startGain, startBpm);
     setState(PlayerState.FILE_LOADED);
   }
@@ -183,15 +185,35 @@ public class TrackProcessor implements AudioProcessor {
   public static enum PlayerState {
     NO_FILE_LOADED, FILE_LOADED, READY, PLAYING, PAUSED, STOPPED
   }
+  
+  public void setupTransition(double transitionTime, BaseTransition transition) {
+    this.transitionTime = transitionTime;
+    this.hasTransitioned = false;
+    this.transition = transition;
+  }
 
   @Override
   public boolean process(AudioEvent audioEvent) {
-    this.currentTime = audioEvent.getTimeStamp();
+    currentTime = audioEvent.getTimeStamp();
+    if (transitionTime == 0) {
+      return true;
+    }
+    
+    if (!hasTransitioned && currentTime > transitionTime) {
+      System.out.println(transitionTime);
+      System.out.println("what");
+      new Thread(transition).start();
+      hasTransitioned = true;
+    }
     
     return true;
   }
 
   @Override
   public void processingFinished() {
+  }
+
+  public Track getTrack() {
+    return track;
   }
 }

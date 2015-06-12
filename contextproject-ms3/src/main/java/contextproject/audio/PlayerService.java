@@ -5,14 +5,13 @@ import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.TrackProcessor.PlayerState;
+import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
+import contextproject.audio.transitions.FadeInOutTransition;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 import javax.sound.sampled.LineUnavailableException;
 
@@ -46,6 +45,9 @@ public class PlayerService {
    * and we want to start the mix with an initial track.
    */
   public void playCurrentTrack() {
+    if (currentProcessor != null) {
+      currentProcessor.unload();
+    }
     currentProcessor = new TrackProcessor(attributes);
     try {
       currentProcessor.load(currentTrack, 1.0, 1.0);
@@ -69,7 +71,8 @@ public class PlayerService {
    * Prepares the next track for playback.
    * Preparation means: Skipping the track to the point where a transition should happen.
    */
-  public void prepareNextTrack() {
+  public void prepareNextTrack(Track newTrack) {
+    this.nextTrack = newTrack;
     nextProcessor = new TrackProcessor(attributes);
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
@@ -82,24 +85,18 @@ public class PlayerService {
    * Starts playing the next track if it's ready, and applies the specified transition.
    * If the track is not prepared for transition yet, this method will throw an exception.
    */
-  public void transitionIntoNextTrack() {
-    nextProcessor.setGain(1.0);
-    nextProcessor.play();
-    
-    // TODO: Add support for multiple transition types
-    // Basically, this block should be an interchangeable method 
-    /*for (int i = 0; i < 30; i++) {
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      currentProcessor.setGain(1.0 - (i / 30.0));
-      nextProcessor.setGain((double) i / 30.0);
-    }*/
-    
-    currentProcessor.unload();
-    currentProcessor = nextProcessor;
+  public void setupTransition() {
+    double transitionTime = (60.0 / nextTrack.getBpm()) * 80;
+    currentProcessor.setupTransition(transitionTime, new FadeInOutTransition(
+        currentProcessor, nextProcessor, new TransitionDoneCallback() {
+
+          @Override
+          public void onFinished() {
+            currentProcessor.unload();
+            currentProcessor = nextProcessor;
+            //prepareNextTrack();
+          }
+        }));
   }
   
   public Track getCurrentTrack() {
