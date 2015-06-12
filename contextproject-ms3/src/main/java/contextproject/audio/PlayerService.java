@@ -4,13 +4,10 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
-<<<<<<< HEAD
-import contextproject.helpers.AudioProgress;
-=======
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.audio.transitions.FadeInOutTransition;
->>>>>>> feature-beatmatching
+import contextproject.helpers.AudioProgress;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
@@ -51,16 +48,9 @@ public class PlayerService {
       currentProcessor.unload();
     }
     currentProcessor = new TrackProcessor(attributes);
-<<<<<<< HEAD
-    currentProcessor.load(currentTrack);
-    currentAudioProgress = new Thread(new AudioProgress(currentProcessor));
-    try {
-      currentProcessor.play(1.0);
-      currentAudioProgress.start();
-=======
+
     try {
       currentProcessor.load(currentTrack, 1.0, 1.0);
->>>>>>> feature-beatmatching
     } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }
@@ -84,18 +74,8 @@ public class PlayerService {
   public void prepareNextTrack(Track newTrack) {
     this.nextTrack = newTrack;
     nextProcessor = new TrackProcessor(attributes);
-<<<<<<< HEAD
-    nextProcessor.load(nextTrack);
-    nextAudioProgress = new Thread(new AudioProgress(nextProcessor));
-    try {
-      nextProcessor.play(0.0);
-      currentAudioProgress.stop();
-      currentAudioProgress = nextAudioProgress;
-      currentAudioProgress.start();
-=======
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
->>>>>>> feature-beatmatching
     } catch (EncoderException | LineUnavailableException e) {
       e.printStackTrace();
     }
@@ -149,13 +129,5 @@ public class PlayerService {
       }
     }
     return instance;
-  }
-  
-  public void pause() {
-    currentProcessor.pause();
-  }
-  
-  public void resume() {
-    currentProcessor.resume();
   }
 }

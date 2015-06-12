@@ -94,7 +94,6 @@ public class App extends Application {
       scene.getWindow().setOnHidden(new EventHandler<WindowEvent>() {
         @Override
         public void handle(WindowEvent arg0) {
-          PlayerService.getInstance().exit();
           if (library != null) {
             XmlExport exporter = new XmlExport("library.xml", library);
             exporter.export();
@@ -120,7 +119,7 @@ public class App extends Application {
         Playlist mixablePlaylist = sorter.sort(playlist);
         controller.setEverything(mixablePlaylist, playlistname, scene);
       } else {
-        controller.setLibrary(library);
+        controller.setLibrary(library, scene);
       }
     } catch (Exception e) {
       log.fatal(e.getMessage(), e);

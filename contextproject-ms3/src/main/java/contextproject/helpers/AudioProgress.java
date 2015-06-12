@@ -26,7 +26,8 @@ public class AudioProgress extends Thread {
   public void run() {
     pcc.setProgres(progress);
     while (progress < 1) {
-      progress = tp.getProgress();
+      // TODO: fix this
+      progress = 0;
       pcc.setProgres(progress);
     }
   }

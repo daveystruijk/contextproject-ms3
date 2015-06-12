@@ -72,9 +72,9 @@ public class PlayerControlsController {
       public void handle(ActionEvent arg0) {
         if (pauseButton.getId().equals("pauseButton")) {
           pauseButton.setId("playButton");
-          PlayerService.getInstance().pause();
+          //PlayerService.getInstance().pause();
         } else {
-          PlayerService.getInstance().resume();
+          //PlayerService.getInstance().resume();
           pauseButton.setId("pauseButton");
         }
       }
