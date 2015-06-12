@@ -27,7 +27,7 @@ public class KeyBpmFinder {
   public void findKeyBpm(String absolutePath) {
     try {
       Process proc = Runtime.getRuntime().exec(
-          "java -jar TrackAnalyzer.jar " + "\"" + absolutePath + "\"" + " -w -o null");
+          "java -jar TrackAnalyzer.jar " + "\"" + absolutePath + "\"" + " -w -o key_bpm_analyzer.log");
       proc.waitFor();
       proc.destroy();
       MP3File mp3 = new MP3File(absolutePath);

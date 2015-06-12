@@ -153,7 +153,7 @@ public class Track implements Serializable {
       try {
         key = new MusicalKey(tag.getFirst(FieldKey.KEY));
       } catch (IllegalArgumentException f) {
-        log.error("There was no bpm information in file: " + absolutePath);
+        log.error("There was no key information in file: " + absolutePath);
         log.trace(StackTrace.stackTrace(f));
       }
     }
