@@ -4,7 +4,7 @@ import contextproject.models.Track;
 
 import java.util.ArrayList;
 
-public class TrackNode {
+public class TrackNode implements Comparable<TrackNode> {
   private Track track;
   private double score;
   private TrackNode parent;
@@ -12,7 +12,9 @@ public class TrackNode {
 
   /**
    * Tracknode constructor without score.
-   * @param track Track
+   * 
+   * @param track
+   *          Track
    */
   public TrackNode(Track track) {
     this.track = track;
@@ -23,8 +25,11 @@ public class TrackNode {
 
   /**
    * Tracknode constructor with score.
-   * @param track Track
-   * @param score Double score
+   * 
+   * @param track
+   *          Track
+   * @param score
+   *          Double score
    */
   public TrackNode(Track track, double score) {
     this.track = track;
@@ -35,6 +40,7 @@ public class TrackNode {
 
   /**
    * Get track.
+   * 
    * @return Track
    */
   public Track getTrack() {
@@ -43,6 +49,7 @@ public class TrackNode {
 
   /**
    * Get score.
+   * 
    * @return Double score
    */
   public double getScore() {
@@ -51,7 +58,9 @@ public class TrackNode {
 
   /**
    * Set score.
-   * @param score Double score
+   * 
+   * @param score
+   *          Double score
    */
   public void setScore(double score) {
     this.score = score;
@@ -59,7 +68,9 @@ public class TrackNode {
 
   /**
    * Set parent.
-   * @param trackNode TrackNode parent
+   * 
+   * @param trackNode
+   *          TrackNode parent
    */
   public void setParent(TrackNode trackNode) {
     parent = trackNode;
@@ -67,7 +78,9 @@ public class TrackNode {
 
   /**
    * Add child to arrrayList.
-   * @param trackNode TrackNode child
+   * 
+   * @param trackNode
+   *          TrackNode child
    */
   public void addChild(TrackNode trackNode) {
     children.add(trackNode);
@@ -75,6 +88,7 @@ public class TrackNode {
 
   /**
    * Get parent.
+   * 
    * @return TrackNode parent.
    */
   public TrackNode getParent() {
@@ -83,7 +97,8 @@ public class TrackNode {
 
   /**
    * Get children.
-   * @return ArrayList(TrackNode)  children
+   * 
+   * @return ArrayList(TrackNode) children
    */
   public ArrayList<TrackNode> getChildren() {
     return children;
@@ -91,7 +106,9 @@ public class TrackNode {
 
   /**
    * Check if TrackNode is a child.
-   * @param child TrackNode
+   * 
+   * @param child
+   *          TrackNode
    * @return boolean
    */
   public boolean containsChild(TrackNode child) {
@@ -100,6 +117,7 @@ public class TrackNode {
 
   /**
    * check if TrackNode has a parent.
+   * 
    * @return boolean
    */
   public boolean hasParent() {
@@ -121,6 +139,11 @@ public class TrackNode {
    */
   public String toString() {
     return this.track.getTitle();
+  }
+  
+  @Override
+  public int compareTo(TrackNode that) {
+    return (int) (this.getScore() - that.getScore());
   }
 
 }
