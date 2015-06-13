@@ -13,7 +13,6 @@ import javafx.stage.Stage;
  */
 public class AppTest extends ApplicationTest {
 
-
   @Override
   public void start(Stage stage) throws Exception {
     // TODO Auto-generated method stub

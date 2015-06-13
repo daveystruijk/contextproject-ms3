@@ -16,7 +16,7 @@ public class ComplexOnsetDetectorTest {
   @Before
   public void setUp() {
     event = new AudioEvent(new TarsosDSPAudioFormat(100, 200, 110, true, false));
-    floatBuffer = new float[150];
+    floatBuffer = new float[10];
     for (int i = 0; i < 10; i++) {
       floatBuffer[i] = 7.0f + i / 10;
     }
@@ -35,5 +35,6 @@ public class ComplexOnsetDetectorTest {
   public void processTest() {
     ComplexOnsetDetector complex = new ComplexOnsetDetector(10);
     event.setFloatBuffer(floatBuffer);
+    assertEquals(complex.process(event), true);
   }
 }
