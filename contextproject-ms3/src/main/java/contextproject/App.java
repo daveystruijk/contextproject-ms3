@@ -71,19 +71,7 @@ public class App extends Application {
   @Override
   public void start(Stage stage) {
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
-
-      Parent root = (Parent) loader.load();
-      Rectangle2D screen = Screen.getPrimary().getVisualBounds();
-      screenWidth = (int) screen.getWidth();
-      screenHeight = (int) screen.getHeight();
-      Scene scene = new Scene(root, screenWidth, screenHeight);
-      final WindowController controller = (WindowController) loader.getController();
-      App.controller = controller;
-      stage.setTitle("Demo");
-      stage.setScene(scene);
-      stage.show();
-      App.scene = scene;
+      setUp(stage);
 
       try {
         LibraryLoader libraryLoader = new LibraryLoader("library.xml");
@@ -150,5 +138,27 @@ public class App extends Application {
     for (Playlist pl : lib) {
       library.add(pl);
     }
+  }
+
+  public void setUp(Stage stage) {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
+
+    try {
+      Parent root = (Parent) loader.load();
+      Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+      screenWidth = (int) screen.getWidth();
+      screenHeight = (int) screen.getHeight();
+      Scene scene = new Scene(root, screenWidth, screenHeight);
+      final WindowController controller = (WindowController) loader.getController();
+      App.controller = controller;
+      stage.setTitle("Demo");
+      stage.setScene(scene);
+      stage.show();
+      App.scene = scene;
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
   }
 }
