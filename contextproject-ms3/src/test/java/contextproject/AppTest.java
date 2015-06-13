@@ -12,11 +12,9 @@ public class AppTest {
 
   @Test
   public void appTest() throws Exception {
-
     App ap = new App();
     assertNotEquals(ap, null);
     assertEquals(App.getController(), null);
-
+    assertEquals(App.getScene(), null);
   }
-
 }
