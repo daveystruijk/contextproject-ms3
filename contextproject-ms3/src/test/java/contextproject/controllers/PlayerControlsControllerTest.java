@@ -41,7 +41,7 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     track.setTitle("Just to be sure");
     controller.currentTrack = new TextField();
     controller.nextTrack = new TextField();
-    controller.update(track, "testing");
+    controller.update(track, track);
     controller.buttonbox1 = new HBox();
     controller.buttonbox2 = new HBox();
     controller.curbox = new HBox();
@@ -49,7 +49,7 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     controller.musicBar = new ProgressBar();
     controller.pauseButton = new Button();
     controller.initialize(App.getScene().getWidth());
-    controller.setProgres(0.45);
+    controller.setProgress(0.45);
     controller.pauseButton.setId("pauseButton");
     controller.pauseButton.fire();
     controller.pauseButton.fire();

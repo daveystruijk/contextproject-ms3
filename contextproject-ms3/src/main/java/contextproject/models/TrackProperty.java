@@ -9,11 +9,13 @@ import javafx.beans.property.StringProperty;
 
 public class TrackProperty {
 
+  private final StringProperty playing = new SimpleStringProperty();  
   private final StringProperty title = new SimpleStringProperty();
   private final StringProperty artist = new SimpleStringProperty();
   private final DoubleProperty bpm = new SimpleDoubleProperty();
   private final ObjectProperty<MusicalKey> key = new SimpleObjectProperty<MusicalKey>();
   private final ObjectProperty<Track> track = new SimpleObjectProperty<Track>();
+
 
   /**
    * constructor of the playlist property.
@@ -35,6 +37,7 @@ public class TrackProperty {
     this.bpm.set(bpm);
     this.key.set(key);
     this.track.set(track);
+    this.playing.set("");
   }
 
   public final StringProperty titleProperty() {
@@ -96,4 +99,17 @@ public class TrackProperty {
   public final void setatrack(Track track) {
     this.trackProperty().set(track);
   }
+  
+  public final StringProperty playingProperty() {
+    return this.playing;
+  }
+
+  public final String getPlaying() {
+    return this.playingProperty().get();
+  }
+
+  public final void setPlaying(String playing) {
+    this.playingProperty().set(playing);
+  }
+
 }
