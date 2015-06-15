@@ -1,12 +1,10 @@
 package contextproject.controllers;
 
-import contextproject.audio.PlayerService;
 import contextproject.models.Track;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;

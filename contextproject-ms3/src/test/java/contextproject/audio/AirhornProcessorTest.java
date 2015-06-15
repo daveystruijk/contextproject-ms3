@@ -1,11 +1,11 @@
 package contextproject.audio;
 
+import static org.junit.Assert.assertNotEquals;
+
 import be.tarsos.transcoder.Attributes;
 
 import contextproject.models.MusicalKey;
 import contextproject.models.Track;
-
-import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +16,9 @@ public class AirhornProcessorTest {
   private Track track;
   private Attributes attr;
 
+  /**
+   * Set up variables.
+   */
   @Before
   public void setUp() {
     track = new Track();

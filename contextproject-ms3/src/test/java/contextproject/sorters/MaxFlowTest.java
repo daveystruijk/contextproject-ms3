@@ -1,10 +1,10 @@
 package contextproject.sorters;
 
+import static org.junit.Assert.assertEquals;
+
 import contextproject.models.MusicalKey;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
-
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +17,9 @@ public class MaxFlowTest {
   private Track track2;
   private Track track3;
 
+  /**
+   * set up variables.
+   */
   @Before
   public void setUp() {
     track = new Track();
@@ -37,6 +40,7 @@ public class MaxFlowTest {
     graph = new Graph(playlist);
 
   }
+  
   @Test
   public void test() {
     MaxFlow max = new MaxFlow(graph);
