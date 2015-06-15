@@ -55,6 +55,7 @@ public class Track implements Serializable {
   private AbstractID3v2Tag tag;
   private double averageEnergy;
   private ArrayList<Double> energyLevels;
+  private boolean isWindows;
 
   /**
    * Constructor without arguments.
@@ -70,6 +71,12 @@ public class Track implements Serializable {
    *          Path of the mp3 file
    */
   public Track(String abPath) {
+    String name = System.getProperty("os.name");
+    if (name.startsWith("Windows")) {
+      isWindows = true;
+    } else {
+      isWindows = false;
+    }
     this.absolutePath = abPath;
     createSong();
     getMetadata();
@@ -157,7 +164,9 @@ public class Track implements Serializable {
       try {
         bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
       } catch (NumberFormatException e) {
-        analyzeTrack();
+        if (isWindows) {
+          analyzeTrack();
+        }
         try {
           bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
           log.info("BPM for: " + title + " is: " + bpm);
@@ -170,7 +179,9 @@ public class Track implements Serializable {
     try {
       key = new MusicalKey(tag.getFirst(FieldKey.KEY));
     } catch (IllegalArgumentException e) {
-      analyzeTrack();
+      if (isWindows) {
+        analyzeTrack();
+      }
       try {
         key = new MusicalKey(tag.getFirst(FieldKey.KEY));
         log.info("Key for: " + title + " is: " + key);

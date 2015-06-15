@@ -14,6 +14,12 @@
     <URL value="@../stylesheets/library.css" />
   </stylesheets>
   <columns>
+    <TableColumn text="#" fx:id="playingColumn" sortable="false"
+    minWidth="40" prefWidth="40">
+      <cellValueFactory>
+        <PropertyValueFactory property="playing" />
+      </cellValueFactory>
+    </TableColumn>
     <TableColumn text="Title" fx:id="titleColumn" sortable="false"
     minWidth="300" prefWidth="350">
       <cellValueFactory>
