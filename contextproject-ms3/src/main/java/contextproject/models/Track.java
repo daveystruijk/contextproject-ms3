@@ -1,7 +1,14 @@
 package contextproject.models;
 
+import be.tarsos.transcoder.Attributes;
+import be.tarsos.transcoder.DefaultAttributes;
+import be.tarsos.transcoder.ffmpeg.EncoderException;
+
+import contextproject.audio.EnergyLevelProcessor;
+import contextproject.audio.OnsetProcessor;
 import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaudiotagger.audio.AudioFile;
@@ -19,6 +26,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.sound.sampled.LineUnavailableException;
+
 public class Track implements Serializable {
 
   private static final long serialVersionUID = -4652897251022204080L;
@@ -34,9 +43,10 @@ public class Track implements Serializable {
   private double bpm;
   private MusicalKey key;
   private BeatGrid beatGrid;
-  private ArrayList<Float> energyLevels;
   private MP3File song;
   private AbstractID3v2Tag tag;
+  private double averageEnergy;
+  private ArrayList<Double> energyLevels;
 
   /**
    * Constructor without arguments.
@@ -129,7 +139,7 @@ public class Track implements Serializable {
     if (duration < 1) {
       try {
         AudioFile audioFile = AudioFileIO.read(new File(absolutePath));
-        duration = ((MP3AudioHeader)audioFile.getAudioHeader()).getPreciseTrackLength();
+        duration = ((MP3AudioHeader) audioFile.getAudioHeader()).getPreciseTrackLength();
       } catch (Exception e) {
         log.error("Input was not correct: " + absolutePath);
         log.trace(StackTrace.stackTrace(e));
@@ -158,6 +168,22 @@ public class Track implements Serializable {
         log.error("There was no key information in file: " + absolutePath);
         log.trace(StackTrace.stackTrace(f));
       }
+    }
+    try {
+
+      Attributes attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
+      attributes.setSamplingRate(44100);
+      OnsetProcessor op = new OnsetProcessor(attributes);
+      EnergyLevelProcessor elp = new EnergyLevelProcessor(attributes);
+      op.detectOnset(this);
+      elp.detect(this, op.getFirstOnset());
+      energyLevels = elp.getEnergyLevels();
+      averageEnergy = elp.getAverageEnergy();
+      log.info("Energy for: " + this.title + "   is: " + averageEnergy);
+    } catch (EncoderException | LineUnavailableException e) {
+      log.error("Error in Track while analyzing energyLevels");
+      log.trace(StackTrace.stackTrace(e));
+      averageEnergy = 0.0;
     }
   }
 
@@ -200,18 +226,17 @@ public class Track implements Serializable {
   public void setPath(String path) {
     absolutePath = path;
   }
-  
+
   /**
    * setDuration.
    * 
    * @param duration
-   *            duration of song.
+   *          duration of song.
    */
   public void setDuration(double duration) {
     this.duration = duration;
   }
-  
-  
+
   /**
    * Set length of the song.
    * 
@@ -328,17 +353,37 @@ public class Track implements Serializable {
   public BeatGrid getBeatGrid() {
     return beatGrid;
   }
-  
-  public ArrayList<Float> getEnergyLevels() {
+
+  public ArrayList<Double> getEnergyLevels() {
     return energyLevels;
   }
-  
-  public void setEnergyLevels(ArrayList<Float> el) {
+
+  public void setEnergyLevels(ArrayList<Double> el) {
     energyLevels = el;
   }
 
   public String toString() {
     return title;
+  }
+
+  /**
+   * Get average energy level.
+   * 
+   * @return double avg
+   */
+  public double getAverageEnergy() {
+    return averageEnergy;
+
+  }
+
+  /**
+   * Set average energy level.
+   * 
+   * @param avg
+   *          double avg
+   */
+  public void setAverageEnergy(double avg) {
+    averageEnergy = avg;
   }
 
   /**

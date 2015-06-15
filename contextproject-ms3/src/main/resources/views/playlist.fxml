@@ -36,5 +36,10 @@
         <PropertyValueFactory property="key" />
       </cellValueFactory>
     </TableColumn>
+    <TableColumn text="Energy" fx:id="energyColumn" sortable="false">
+      <cellValueFactory>
+        <PropertyValueFactory property="energy" />
+      </cellValueFactory>
+    </TableColumn>
   </columns>
 </TableView>

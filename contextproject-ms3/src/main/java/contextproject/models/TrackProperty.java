@@ -1,5 +1,7 @@
 package contextproject.models;
 
+import org.apache.commons.math3.util.Precision;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -14,6 +16,7 @@ public class TrackProperty {
   private final DoubleProperty bpm = new SimpleDoubleProperty();
   private final ObjectProperty<MusicalKey> key = new SimpleObjectProperty<MusicalKey>();
   private final ObjectProperty<Track> track = new SimpleObjectProperty<Track>();
+  private final DoubleProperty energy = new SimpleDoubleProperty();
 
   /**
    * constructor of the playlist property.
@@ -26,14 +29,19 @@ public class TrackProperty {
    *          the bpm of the track.
    * @param key
    *          key of track.
+   * 
+   * @param energy
+   *          average energy of track.
    * @param track
    *          the track itself, is for playability issues.
    */
-  public TrackProperty(String title, String artist, double bpm, MusicalKey key, Track track) {
+  public TrackProperty(String title, String artist, double bpm, MusicalKey key, double energy,
+      Track track) {
     this.title.set(title);
     this.artist.set(artist);
     this.bpm.set(bpm);
     this.key.set(key);
+    this.energy.set(Precision.round(energy, 2));
     this.track.set(track);
   }
 
@@ -95,5 +103,17 @@ public class TrackProperty {
 
   public final void setatrack(Track track) {
     this.trackProperty().set(track);
+  }
+
+  public final DoubleProperty energyProperty() {
+    return this.energy;
+  }
+
+  public final double getEnergy() {
+    return this.energyProperty().get();
+  }
+
+  public final void setEnergy(Double energy) {
+    this.energyProperty().set(energy);
   }
 }

@@ -46,7 +46,7 @@ public class PlaylistControllerTest {
   public void propTest() {
     assertNotEquals(playController.setProp(track),
         new TrackProperty(track.getTitle(), track.getArtist(), track.getBpm(), track.getKey(),
-            track));
+            track.getAverageEnergy(), track));
   }
 
   @Test
@@ -54,7 +54,7 @@ public class PlaylistControllerTest {
     track.setTitle(null);
     assertNotEquals(playController.setProp(track),
         new TrackProperty(track.getTitle(), track.getArtist(), track.getBpm(), track.getKey(),
-            track));
+            track.getAverageEnergy(), track));
   }
 
   @Test
@@ -62,6 +62,6 @@ public class PlaylistControllerTest {
     track.setArtist(null);
     assertNotEquals(playController.setProp(track),
         new TrackProperty(track.getTitle(), track.getArtist(), track.getBpm(), track.getKey(),
-            track));
+            track.getAverageEnergy(), track));
   }
 }

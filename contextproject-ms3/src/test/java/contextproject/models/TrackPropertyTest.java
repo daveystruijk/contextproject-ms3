@@ -33,7 +33,7 @@ public class TrackPropertyTest {
       fail("file wans't read correctly");
       e.printStackTrace();
     }
-    testProperty = new TrackProperty("testName", "testArtist", 120, testKey, testTrack);
+    testProperty = new TrackProperty("testName", "testArtist", 120, testKey, 0.2, testTrack);
   }
 
   @Test

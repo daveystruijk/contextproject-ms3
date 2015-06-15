@@ -27,7 +27,6 @@ public class EnergyLevelProcessor implements AudioProcessor {
   private Attributes attributes;
   private ArrayList<Double> energyLevels;
   private float oneBarInSeconds;
-  public int counter = 0;
   public double onset;
 
   // Audio Processing
@@ -64,8 +63,6 @@ public class EnergyLevelProcessor implements AudioProcessor {
     float msPerBeat = (float) (60.0f / track.getBpm());
     oneBarInSeconds = msPerBeat * 4;
 
-    log.info(oneBarInSeconds + " time per beat");
-
     dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * oneBarInSeconds), 0);
     skipProcessor = new SkipAudioProcessor(start - oneBarInSeconds, false,
         new SkipAudioProcessorCallback() {
@@ -87,15 +84,12 @@ public class EnergyLevelProcessor implements AudioProcessor {
 
   @Override
   public boolean process(AudioEvent audioEvent) {
-    counter++;
-    log.info(audioEvent.getRMS() + " at time " + oneBarInSeconds * counter);
     energyLevels.add(audioEvent.getRMS());
     return false;
   }
 
   @Override
   public void processingFinished() {
-    energyLevels = new ArrayList<Double>();
   }
 
   /**
@@ -113,7 +107,12 @@ public class EnergyLevelProcessor implements AudioProcessor {
     return sum / counter;
   }
 
-  public void test() {
-    // Event event = new Event();
+  /**
+   * get Energy Levels.
+   * 
+   * @return ArrayList(Double) energyLevels
+   */
+  public ArrayList<Double> getEnergyLevels() {
+    return energyLevels;
   }
 }
