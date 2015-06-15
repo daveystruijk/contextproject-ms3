@@ -88,4 +88,9 @@ public class TrackNodeTest {
   public void toStringTest() {
     assertEquals("succesful test", tracknode1.toString());
   }
+
+  @Test
+  public void trackCompareTest() {
+    assertEquals(tracknode1.compareTo(tracknode2), 0);
+  }
 }

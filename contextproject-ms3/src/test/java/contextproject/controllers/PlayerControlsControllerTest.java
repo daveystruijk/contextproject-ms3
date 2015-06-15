@@ -32,7 +32,6 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
 
     Parent root = (Parent) loader.load();
-    PlayerControlsController controller = new PlayerControlsController();
     Scene scene = new Scene(root, 1200, 800);
     stage.setTitle("Test for Pressing Buttons");
     stage.setScene(scene);
