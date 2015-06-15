@@ -1,10 +1,15 @@
 package contextproject.controllers;
 
+import contextproject.audio.TrackProcessor;
 import contextproject.formats.M3UBuilder;
+import contextproject.helpers.StackTrace;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
 import contextproject.sorters.MaximumFlowPlaylistSorter;
 import contextproject.sorters.PlaylistSorter;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +22,8 @@ import java.util.Scanner;
  * Controls CLI for time being.
  */
 public class CliController {
+  private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
+
 
   /**
    * This will start a simple Command Line Interface for our first working version. Optionally to be
@@ -47,7 +54,8 @@ public class CliController {
       writer.write(builder.build());
       writer.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error("Error occured in CLIController while writing m3u");
+      log.trace(StackTrace.stackTrace(e));
     }
 
     System.out.println("Exported to " + fullPath);

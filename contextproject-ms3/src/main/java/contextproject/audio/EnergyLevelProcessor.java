@@ -9,8 +9,12 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.App;
 import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.models.Track;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
@@ -18,6 +22,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class EnergyLevelProcessor implements AudioProcessor {
+  static Logger log = LogManager.getLogger(App.class.getName());
+
   // Data
   private Attributes attributes;
   private ArrayList<Double> energyLevels;
@@ -59,7 +65,7 @@ public class EnergyLevelProcessor implements AudioProcessor {
     float msPerBeat = (float) (60.0f / track.getBpm());
     oneBarInSeconds = msPerBeat * 4;
 
-    System.out.println(oneBarInSeconds + " time per beat");
+    log.info(oneBarInSeconds + " time per beat");
 
     dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * oneBarInSeconds), 0);
     skipProcessor = new SkipAudioProcessor(start - oneBarInSeconds, false,
@@ -83,7 +89,7 @@ public class EnergyLevelProcessor implements AudioProcessor {
   @Override
   public boolean process(AudioEvent audioEvent) {
     counter++;
-    System.out.println(audioEvent.getRMS() + " at time " + oneBarInSeconds * counter);
+    log.info(audioEvent.getRMS() + " at time " + oneBarInSeconds * counter);
     energyLevels.add(audioEvent.getRMS());
     return false;
   }

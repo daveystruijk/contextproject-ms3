@@ -7,7 +7,12 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.App;
+import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sound.sampled.AudioInputStream;
 
@@ -16,6 +21,7 @@ import javax.sound.sampled.AudioInputStream;
  *
  */
 public class OnsetProcessor implements OnsetHandler {
+  static Logger log = LogManager.getLogger(App.class.getName());
 
   private ComplexOnsetDetector onsetDetector;
   private AudioDispatcher dispatcher;
@@ -45,7 +51,8 @@ public class OnsetProcessor implements OnsetHandler {
     try {
       stream = Streamer.stream(track.getPath(), attributes);
     } catch (EncoderException e) {
-      e.printStackTrace();
+      log.error("Encoder exception in OnSetProcessor");
+      log.trace(StackTrace.stackTrace(e));
     }
 
     final JVMAudioInputStream audioStream = new JVMAudioInputStream(stream);

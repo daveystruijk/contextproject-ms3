@@ -4,6 +4,7 @@ import contextproject.controllers.CliController;
 import contextproject.controllers.WindowController;
 import contextproject.formats.XmlExport;
 import contextproject.helpers.FileName;
+import contextproject.helpers.StackTrace;
 import contextproject.loaders.FolderLoader;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Library;
@@ -72,6 +73,7 @@ public class App extends Application {
       } catch (IOException | NullPointerException e) {
         library = new Library();
         empty = true;
+        log.info("No library found");
       }
       scene.getWindow().setOnHidden(new EventHandler<WindowEvent>() {
         @Override
@@ -152,7 +154,8 @@ public class App extends Application {
       stage.show();
       App.scene = scene;
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error("Error in setting up GUI");
+      log.trace(StackTrace.stackTrace(e));
     }
 
   }

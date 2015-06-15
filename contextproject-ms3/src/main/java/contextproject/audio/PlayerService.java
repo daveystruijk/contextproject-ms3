@@ -7,6 +7,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.audio.transitions.FadeInOutTransition;
+import contextproject.helpers.StackTrace;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
@@ -50,7 +51,8 @@ public class PlayerService {
     try {
       currentProcessor.load(currentTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
+      log.error("Error occured in playerservice while calling playCurrentTrack");
+      log.trace(StackTrace.stackTrace(e));
     }
 
     // Wait for track processor to be ready
@@ -58,7 +60,8 @@ public class PlayerService {
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        log.error("Error occured in playerservice while calling playCurrentTrack");
+        log.trace(StackTrace.stackTrace(e));
       }
     }
 
@@ -75,7 +78,8 @@ public class PlayerService {
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
+      log.error("Error occured in playerservice while calling prepareNextTrack");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
 
@@ -123,7 +127,8 @@ public class PlayerService {
       try {
         instance = new PlayerService();
       } catch (EncoderException | LineUnavailableException e) {
-        log.warn(e.getMessage());
+        log.error("Error occured in playerservice while calling getting Instance");
+        log.trace(StackTrace.stackTrace(e));
       }
     }
     return instance;

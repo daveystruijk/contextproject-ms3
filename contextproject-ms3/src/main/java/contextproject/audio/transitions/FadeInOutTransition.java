@@ -1,9 +1,15 @@
 package contextproject.audio.transitions;
 
 import contextproject.audio.TrackProcessor;
+import contextproject.helpers.StackTrace;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FadeInOutTransition extends BaseTransition {
+  private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
 
+  
   /**
    * In out fader transition.
    * 
@@ -30,7 +36,8 @@ public class FadeInOutTransition extends BaseTransition {
         double timePerBeat = 60.0 / from.getTrack().getBpm();
         Thread.sleep(Math.round(timePerBeat * 1000));
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        log.error("Error occured in FadeInOutProcessor while calling begin");
+        log.trace(StackTrace.stackTrace(e));
       }
     }
   }

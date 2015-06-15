@@ -14,6 +14,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.audio.transitions.BaseTransition;
+import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
@@ -64,7 +65,8 @@ public class TrackProcessor implements AudioProcessor {
       this.attributes = attributes;
       this.format = Streamer.streamAudioFormat(attributes);
     } catch (EncoderException e) {
-      e.printStackTrace();
+      log.error("Error occured in TrackProcessor while calling constructor");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
 

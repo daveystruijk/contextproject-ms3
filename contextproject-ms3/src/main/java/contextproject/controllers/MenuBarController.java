@@ -8,6 +8,9 @@ import contextproject.models.Playlist;
 import contextproject.sorters.MaximumFlowPlaylistSorter;
 import contextproject.sorters.PlaylistSorter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 
 import javafx.event.ActionEvent;
@@ -20,6 +23,8 @@ import javafx.scene.control.TableView;
 import javafx.stage.DirectoryChooser;
 
 public class MenuBarController {
+  static Logger log = LogManager.getLogger(App.class.getName());
+  
   @FXML
   private Menu menu;
   @FXML
@@ -48,7 +53,7 @@ public class MenuBarController {
     DirectoryChooser directoryChooser = new DirectoryChooser();
     File selectedDirectory = directoryChooser.showDialog(null);
     if (selectedDirectory == null) {
-      System.out.println("No directory selected.");
+      log.info("No directory selected.");
     } else {
       directory = selectedDirectory.getAbsolutePath();
     }
