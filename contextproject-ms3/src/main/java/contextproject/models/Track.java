@@ -55,6 +55,7 @@ public class Track implements Serializable {
   private AbstractID3v2Tag tag;
   private double averageEnergy;
   private ArrayList<Double> energyLevels;
+  private ArrayList<Double> differences;
   private boolean isWindows;
 
   /**
@@ -195,6 +196,10 @@ public class Track implements Serializable {
     } catch (NumberFormatException e) {
       energyLevels();
     }
+    for(int i = 0; i < energyLevels.size()-2; i++) {
+      differences.add(energyLevels.get(i) - energyLevels.get(i+1));
+    }
+    
   }
 
   /**
@@ -435,6 +440,22 @@ public class Track implements Serializable {
    */
   public void setAverageEnergy(double avg) {
     averageEnergy = avg;
+  }
+  
+  /**
+   * Get the differences of energy per bar of the track.
+   * @return ArrayList(double) differences.
+   */
+  public ArrayList<Double> getDifferences() {
+    return differences;
+  }
+  
+  /**
+   * Set the differences of the energy per bar of the track.
+   * @param dif ArrayList(Double) differences.
+   */
+  public void setDifferences(ArrayList<Double> dif) {
+    differences = dif;
   }
 
   /**
