@@ -51,7 +51,7 @@ public class PlayerService {
     try {
       currentProcessor.load(currentTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
-      log.error("Error occured in playerservice while calling playCurrentTrack");
+      log.error("Thread interrupted");
       log.trace(StackTrace.stackTrace(e));
     }
 
@@ -60,7 +60,7 @@ public class PlayerService {
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
-        log.error("Error occured in playerservice while calling playCurrentTrack");
+        log.error("Thread interrupted");
         log.trace(StackTrace.stackTrace(e));
       }
     }
@@ -78,7 +78,7 @@ public class PlayerService {
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
-      log.error("Error occured in playerservice while calling prepareNextTrack");
+      log.error("Thread interrupted");
       log.trace(StackTrace.stackTrace(e));
     }
   }
@@ -87,8 +87,8 @@ public class PlayerService {
    * Starts playing the next track if it's ready, and applies the specified transition. If the track
    * is not prepared for transition yet, this method will throw an exception.
    */
-  public void setupTransition() {
-    double transitionTime = (60.0 / nextTrack.getBpm()) * 80;
+  public void setupTransition(TransitionDoneCallback callback) {
+    double transitionTime = (60.0 / nextTrack.getBpm()) * 128;
     currentProcessor.setupTransition(transitionTime, new FadeInOutTransition(currentProcessor,
         nextProcessor, new TransitionDoneCallback() {
 
@@ -96,7 +96,7 @@ public class PlayerService {
           public void onFinished() {
             currentProcessor.unload();
             currentProcessor = nextProcessor;
-            // prepareNextTrack();
+            callback.onFinished();
           }
         }));
   }
