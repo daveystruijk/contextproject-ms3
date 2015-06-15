@@ -1,17 +1,12 @@
 package contextproject.controllers;
 
 import contextproject.App;
-import contextproject.models.Library;
-import contextproject.models.Playlist;
-import contextproject.models.Track;
 
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class WindowControllerTest extends ApplicationTest {
@@ -27,6 +22,7 @@ public class WindowControllerTest extends ApplicationTest {
     // TODO Auto-generated method stub
     App ap = new App();
     ap.setUp(stage);
+    
   }
 
   @Test

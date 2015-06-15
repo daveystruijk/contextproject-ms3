@@ -2,6 +2,7 @@ package contextproject.controllers;
 
 import static org.junit.Assert.assertEquals;
 
+import contextproject.App;
 import contextproject.models.Track;
 
 import org.junit.Test;
@@ -29,14 +30,8 @@ public class PlayerControlsControllerTest extends ApplicationTest {
 
   @Override
   public void start(Stage stage) throws Exception {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
-
-    Parent root = (Parent) loader.load();
-    Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Test for Pressing Buttons");
-    stage.setScene(scene);
-    scene2 = scene;
-    stage.show();
+    App ap = new App();
+    ap.setUp(stage);
   }
 
   @Test
@@ -53,11 +48,12 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     controller.nextbox = new HBox();
     controller.musicBar = new ProgressBar();
     controller.pauseButton = new Button();
-    controller.initialize(scene2.getWidth());
+    controller.initialize(App.getScene().getWidth());
     controller.setProgres(0.45);
     controller.pauseButton.setId("pauseButton");
-    clickOn("#pauseButton");
-
+    controller.pauseButton.fire();
+    controller.pauseButton.fire();
+    assertEquals(controller.pauseButton.getId(), "pauseButton");
   }
 
 }
