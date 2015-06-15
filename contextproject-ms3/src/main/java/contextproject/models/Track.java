@@ -2,6 +2,7 @@ package contextproject.models;
 
 import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaudiotagger.audio.AudioFile;
@@ -37,6 +38,7 @@ public class Track implements Serializable {
   private ArrayList<Float> energyLevels;
   private MP3File song;
   private AbstractID3v2Tag tag;
+  private boolean isWindows;
 
   /**
    * Constructor without arguments.
@@ -52,6 +54,12 @@ public class Track implements Serializable {
    *          Path of the mp3 file
    */
   public Track(String abPath) {
+    String name = System.getProperty("os.name");
+    if (name.startsWith("Windows")) {
+      isWindows = true;
+    } else {
+      isWindows = false;
+    }
     this.absolutePath = abPath;
     createSong();
     getMetadata();
@@ -129,7 +137,7 @@ public class Track implements Serializable {
     if (duration < 1) {
       try {
         AudioFile audioFile = AudioFileIO.read(new File(absolutePath));
-        duration = ((MP3AudioHeader)audioFile.getAudioHeader()).getPreciseTrackLength();
+        duration = ((MP3AudioHeader) audioFile.getAudioHeader()).getPreciseTrackLength();
       } catch (Exception e) {
         log.error("Input was not correct: " + absolutePath);
         log.trace(StackTrace.stackTrace(e));
@@ -139,7 +147,9 @@ public class Track implements Serializable {
       try {
         bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
       } catch (NumberFormatException e) {
-        analyzeTrack();
+        if (isWindows) {
+          analyzeTrack();
+        }
         try {
           bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
         } catch (NumberFormatException f) {
@@ -151,7 +161,9 @@ public class Track implements Serializable {
     try {
       key = new MusicalKey(tag.getFirst(FieldKey.KEY));
     } catch (IllegalArgumentException e) {
-      analyzeTrack();
+      if (isWindows) {
+        analyzeTrack();
+      }
       try {
         key = new MusicalKey(tag.getFirst(FieldKey.KEY));
       } catch (IllegalArgumentException f) {
@@ -200,18 +212,17 @@ public class Track implements Serializable {
   public void setPath(String path) {
     absolutePath = path;
   }
-  
+
   /**
    * setDuration.
    * 
    * @param duration
-   *            duration of song.
+   *          duration of song.
    */
   public void setDuration(double duration) {
     this.duration = duration;
   }
-  
-  
+
   /**
    * Set length of the song.
    * 
@@ -328,11 +339,11 @@ public class Track implements Serializable {
   public BeatGrid getBeatGrid() {
     return beatGrid;
   }
-  
+
   public ArrayList<Float> getEnergyLevels() {
     return energyLevels;
   }
-  
+
   public void setEnergyLevels(ArrayList<Float> el) {
     energyLevels = el;
   }
