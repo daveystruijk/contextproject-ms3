@@ -2,6 +2,7 @@ package contextproject.controllers;
 
 import contextproject.App;
 import contextproject.models.Library;
+import contextproject.models.Playlist;
 
 import static org.junit.Assert.assertNotEquals;
 
@@ -26,12 +27,21 @@ public class LibraryControllerTest extends ApplicationTest {
   }
 
   @Test
-  public void libControllerTest() {
+  public void libSetTest() {
     WindowController window = App.getController();
     LibraryController libController = window.getLibraryController();
     libController.getTable();
-    Library lib = new Library();
+    Playlist play = new Playlist();
+    libController.setLibrary(play, "testLib");
+    libController.getPlaylist("testLib");
     libController.update();
+  }
+
+  @Test
+  public void libSetTestComplexArguments() {
+    WindowController window = App.getController();
+    LibraryController libController = window.getLibraryController();
+    libController.setLibrary(new Library());
   }
 
 }
