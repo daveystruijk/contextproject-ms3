@@ -129,7 +129,7 @@ public class Track implements Serializable {
     if (duration < 1) {
       try {
         AudioFile audioFile = AudioFileIO.read(new File(absolutePath));
-        duration = ((MP3AudioHeader)audioFile.getAudioHeader()).getPreciseTrackLength();
+        duration = ((MP3AudioHeader) audioFile.getAudioHeader()).getPreciseTrackLength();
       } catch (Exception e) {
         log.error("Input was not correct: " + absolutePath);
         log.trace(StackTrace.stackTrace(e));
@@ -200,18 +200,17 @@ public class Track implements Serializable {
   public void setPath(String path) {
     absolutePath = path;
   }
-  
+
   /**
    * setDuration.
    * 
    * @param duration
-   *            duration of song.
+   *          duration of song.
    */
   public void setDuration(double duration) {
     this.duration = duration;
   }
-  
-  
+
   /**
    * Set length of the song.
    * 
@@ -328,11 +327,11 @@ public class Track implements Serializable {
   public BeatGrid getBeatGrid() {
     return beatGrid;
   }
-  
+
   public ArrayList<Float> getEnergyLevels() {
     return energyLevels;
   }
-  
+
   public void setEnergyLevels(ArrayList<Float> el) {
     energyLevels = el;
   }
