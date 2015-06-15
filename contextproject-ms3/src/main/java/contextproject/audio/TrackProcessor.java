@@ -87,6 +87,14 @@ public class TrackProcessor implements AudioProcessor {
     setState(PlayerState.FILE_LOADED);
   }
 
+  public double getTempo() {
+    return tempo;
+  }
+
+  public void setTempo(double tempo) {
+    this.tempo = tempo;
+  }
+
   /**
    * Unloads the current track.
    */

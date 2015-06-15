@@ -1,12 +1,14 @@
 package contextproject.controllers;
 
 import contextproject.audio.PlayerService;
+import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.helpers.FileName;
 import contextproject.models.MusicalKey;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
 import contextproject.models.TrackProperty;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -19,6 +21,8 @@ import javafx.scene.input.MouseEvent;
 public class PlaylistController {
   @FXML
   private TableView<TrackProperty> tableView;
+  @FXML
+  private TableColumn<TrackProperty, String> playingColumn;
   @FXML
   private TableColumn<TrackProperty, String> titleColumn;
   @FXML
@@ -36,38 +40,103 @@ public class PlaylistController {
    */
   public void begin(final PlayerControlsController playerControlsController, Scene scene) {
     this.playerControlsController = playerControlsController;
-    PlayerService.getInstance().setCurrentTrack(playlist.get(0));
-    PlayerService.getInstance().prepareNextTrack(playlist.get(1));
-    PlayerService.getInstance().playCurrentTrack();
-    Track curtitle = playlist.get(0);
-    String nxtitle;
-    if (1 > playlist.size() - 1) {
-      nxtitle = "none";
-    } else {
-      nxtitle = playlist.get(1).getTitle();
-    }
-    this.playerControlsController.update(curtitle, nxtitle);
-
+    
+    // Setup click handler on track
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
         if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-          Track curtrack = tableView.getSelectionModel().getSelectedItem().getTrack();
-          String nxtitle;
-          if ((playlist.indexOf(curtrack) + 1) > (playlist.size() - 1)) {
-            nxtitle = "none";
-          } else {
-            nxtitle = playlist.get(playlist.indexOf(curtrack) + 1).getTitle();
-          }
-          PlayerService.getInstance().setCurrentTrack(playlist.get(playlist.indexOf(curtrack)));
-          PlayerService.getInstance()
-              .prepareNextTrack(playlist.get(playlist.indexOf(curtrack) + 1));
-          PlayerService.getInstance().playCurrentTrack();
-          PlayerService.getInstance().setupTransition();
-          playerControlsController.update(curtrack, nxtitle);
+          handleTrackClick();
         }
       }
     });
+  }
+  
+  /**
+   * Gets called whenever a track is clicked on within the GUI.
+   */
+  private void handleTrackClick() {
+    Track selectedTrack = getSelectedTrack();
+    Track nextTrack = getNextTrack(selectedTrack);
+    
+    playTrack(selectedTrack);
+    prepareNextTrackTransition(nextTrack);
+    updateTracks(selectedTrack, nextTrack);
+  }
+  
+  /**
+   * Plays a track from the playlist and sets up events for next transitions.
+   * This should happen only the first time and whenever a track is clicked,
+   * since it stops audio and doesn't do transitions.
+   * @param track The track object to play.
+   */
+  private void playTrack(Track track) {
+    PlayerService.getInstance().setCurrentTrack(track);
+    PlayerService.getInstance().playCurrentTrack();
+  }
+  
+  /**
+   * Sets up events for the track to transition into the next track.
+   * @param track The track to prepare.
+   */
+  private void prepareNextTrackTransition(Track track) {
+    PlayerService.getInstance().prepareNextTrack(track);
+    PlayerService.getInstance().setupTransition(new TransitionDoneCallback() {
+      @Override
+      public void onFinished() {
+        // When transition is done, setup events for the next one
+        Track nextTrack = getNextTrack(track);
+        prepareNextTrackTransition(nextTrack);
+        Platform.runLater(new Runnable() {
+          @Override
+          public void run() {
+            updateTracks(track, nextTrack);
+          }
+        });
+        
+      }
+    });
+  }
+  
+  /**
+   * Gets the selected track object from the current playlist.
+   * @return Track
+   */
+  private Track getSelectedTrack() {
+    return tableView.getSelectionModel().getSelectedItem().getTrack();
+  }
+  
+  /**
+   * Determines the next track (current track's index + 1) in the playlist.
+   * @param track The current track that is playing.
+   * @return Track
+   */
+  private Track getNextTrack(Track track) {
+    return playlist.get(
+        playlist.indexOf(track) + 1
+    );
+  }
+  
+  /**
+   * Updates the GUI to show what track is playing and what will be next.
+   */
+  private void updateTracks(Track track, Track nextTrack) {
+    playerControlsController.update(track, nextTrack);
+    setPlayingIndicator(track, ">");
+
+  }
+  
+  /**
+   * Sets/removes the playing indicator in front of the specified track.
+   * @param track The track to indicate.
+   * @param playing The string to put into the playing column.
+   */
+  private void setPlayingIndicator(Track track, String playing) {
+    for (TrackProperty trackProp : tableView.getItems()) {
+      trackProp.setPlaying("");
+    }
+    TrackProperty trackProperty = tableView.getItems().get(playlist.indexOf(track));
+    trackProperty.setPlaying(playing);
   }
 
   /**
