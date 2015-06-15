@@ -62,17 +62,17 @@ public class EnergyLevelProcessor implements AudioProcessor {
     System.out.println(oneBarInSeconds + " time per beat");
 
     dispatcher = new AudioDispatcher(tarsosStream, Math.round(44100 * oneBarInSeconds), 0);
-    skipProcessor = new SkipAudioProcessor(start - oneBarInSeconds, false, new SkipAudioProcessorCallback() {
+    skipProcessor = new SkipAudioProcessor(start - oneBarInSeconds, false,
+        new SkipAudioProcessorCallback() {
 
-      @Override
-      public void onFinished() {
-        synchronized (skipProcessor) {
-          skipProcessor.notify();
-        }
+          @Override
+          public void onFinished() {
+            synchronized (skipProcessor) {
+              skipProcessor.notify();
+            }
 
-
-      }
-    });
+          }
+        });
     dispatcher.addAudioProcessor(skipProcessor);
 
     dispatcher.addAudioProcessor(this);

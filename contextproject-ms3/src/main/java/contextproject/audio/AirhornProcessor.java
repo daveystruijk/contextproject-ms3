@@ -15,7 +15,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class AirhornProcessor {
-  
+
   private Track track;
 
   // Data
@@ -28,15 +28,17 @@ public class AirhornProcessor {
   private AudioPlayer audioPlayer;
   private AudioDispatcher dispatcher;
 
-  
   /**
    * This class plays an airhorn sample.
-   * @throws EncoderException 
-   * @throws LineUnavailableException 
+   * 
+   * @throws EncoderException
+   *           encode error.
+   * @throws LineUnavailableException
+   *           line error.
    */
   public AirhornProcessor(Attributes attributes, Track track) {
     this.track = track;
-    
+
     try {
       this.attributes = attributes;
       this.format = Streamer.streamAudioFormat(attributes);
@@ -44,7 +46,15 @@ public class AirhornProcessor {
       e.printStackTrace();
     }
   }
-  
+
+  /**
+   * Play airhorn.
+   * 
+   * @throws EncoderException
+   *           encode error.
+   * @throws LineUnavailableException
+   *           line error.
+   */
   public void play() throws EncoderException, LineUnavailableException {
     // Initialize the correct stream objects from file
     inputStream = Streamer.stream(track.getPath(), attributes);

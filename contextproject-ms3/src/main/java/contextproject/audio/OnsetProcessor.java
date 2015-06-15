@@ -31,10 +31,10 @@ public class OnsetProcessor implements OnsetHandler {
     this.attributes = attributes;
   }
 
-  /** 
-   * Detection of the onset.
-   * Uses the complex onset detector to compute. 
-   * @param track
+  /**
+   * Detection of the onset. Uses the complex onset detector to compute.
+   * 
+   * @param track track.
    */
   public void detectOnset(Track track) {
 
@@ -47,7 +47,7 @@ public class OnsetProcessor implements OnsetHandler {
     } catch (EncoderException e) {
       e.printStackTrace();
     }
-    
+
     final JVMAudioInputStream audioStream = new JVMAudioInputStream(stream);
     dispatcher = new AudioDispatcher(audioStream, bufferSize, overlap);
     onsetDetector = new ComplexOnsetDetector(bufferSize, threshold, 0.07, -60);
@@ -61,9 +61,10 @@ public class OnsetProcessor implements OnsetHandler {
   public void handleOnset(double time, double salience) {
 
   }
-  
+
   /**
    * Getter of the first onset of a song.
+   * 
    * @return onset of song.
    */
   public double getFirstOnset() {

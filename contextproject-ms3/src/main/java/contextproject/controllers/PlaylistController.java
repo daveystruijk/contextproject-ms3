@@ -60,10 +60,11 @@ public class PlaylistController {
             nxtitle = playlist.get(playlist.indexOf(curtrack) + 1).getTitle();
           }
           PlayerService.getInstance().setCurrentTrack(playlist.get(playlist.indexOf(curtrack)));
-          PlayerService.getInstance().prepareNextTrack(playlist.get(playlist.indexOf(curtrack) + 1));
+          PlayerService.getInstance()
+              .prepareNextTrack(playlist.get(playlist.indexOf(curtrack) + 1));
           PlayerService.getInstance().playCurrentTrack();
           PlayerService.getInstance().setupTransition();
-          playerControlsController.update(curtrack,nxtitle);
+          playerControlsController.update(curtrack, nxtitle);
         }
       }
     });

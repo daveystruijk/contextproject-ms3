@@ -4,7 +4,18 @@ import contextproject.audio.TrackProcessor;
 
 public class FadeInOutTransition extends BaseTransition {
 
-  public FadeInOutTransition(TrackProcessor from, TrackProcessor to, TransitionDoneCallback callback) {
+  /**
+   * In out fader transition.
+   * 
+   * @param from
+   *          from track processor.
+   * @param to
+   *          to track processor.
+   * @param callback
+   *          transition callback
+   */
+  public FadeInOutTransition(TrackProcessor from, TrackProcessor to, 
+      TransitionDoneCallback callback) {
     super(from, to, callback);
   }
 

@@ -1,6 +1,5 @@
 package contextproject;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
@@ -15,10 +14,10 @@ public class AppTest extends ApplicationTest {
 
   @Override
   public void start(Stage stage) throws Exception {
-    // TODO Auto-generated method stub
     App ap = new App();
     ap.setUp(stage);
   }
+
   @Test
   public void appTest() {
     App ap = new App();

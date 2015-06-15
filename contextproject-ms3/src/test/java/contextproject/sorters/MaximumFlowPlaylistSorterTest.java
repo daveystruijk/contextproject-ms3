@@ -1,22 +1,24 @@
 package contextproject.sorters;
 
+import static org.junit.Assert.assertEquals;
+
 import contextproject.models.MusicalKey;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
-
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class MaximumFlowPlaylistSorterTest {
 
-  private Graph graph;
   private Playlist playlist;
   private Track track;
   private Track track2;
   private Track track3;
 
+  /**
+   * Set up variables.
+   */
   @Before
   public void setUp() {
     track = new Track();

@@ -44,6 +44,10 @@ public class MaxFlow {
       }
     }
   }
+  
+  /**
+   * Set up variables for maxFlow.
+   */
   private void setUp() {
     bestScore = 0.0;
     bestAverage = 0.0;
