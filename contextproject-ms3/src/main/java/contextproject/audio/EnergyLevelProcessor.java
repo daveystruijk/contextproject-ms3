@@ -95,7 +95,6 @@ public class EnergyLevelProcessor implements AudioProcessor {
 
   @Override
   public void processingFinished() {
-    energyLevels = new ArrayList<Double>();
   }
 
   /**
@@ -113,7 +112,4 @@ public class EnergyLevelProcessor implements AudioProcessor {
     return sum / counter;
   }
 
-  public void test() {
-    // Event event = new Event();
-  }
 }
