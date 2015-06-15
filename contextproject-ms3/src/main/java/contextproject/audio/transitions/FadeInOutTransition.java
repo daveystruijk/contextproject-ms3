@@ -36,7 +36,7 @@ public class FadeInOutTransition extends BaseTransition {
         double timePerBeat = 60.0 / from.getTrack().getBpm();
         Thread.sleep(Math.round(timePerBeat * 1000));
       } catch (InterruptedException e) {
-        log.error("Error occured in FadeInOutProcessor while calling begin");
+        log.error("Thread interrupted");
         log.trace(StackTrace.stackTrace(e));
       }
     }

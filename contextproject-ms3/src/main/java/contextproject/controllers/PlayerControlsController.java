@@ -87,12 +87,12 @@ public class PlayerControlsController {
    * @param nxtitle
    *          next title.
    */
-  public void update(Track curtitle, String nxtitle) {
+  public void update(Track curtitle, Track nxtitle) {
     currentTrack.setText(curtitle.getTitle());
-    nextTrack.setText(nxtitle);
+    nextTrack.setText(nxtitle.getTitle());
   }
 
-  public void setProgres(double prog) {
+  public void setProgress(double prog) {
     musicBar.progressProperty().set(prog);
   }
 }
