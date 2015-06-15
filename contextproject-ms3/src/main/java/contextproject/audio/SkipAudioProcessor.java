@@ -4,13 +4,12 @@ import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.AudioProcessor;
 
 import contextproject.helpers.StackTrace;
-import contextproject.loaders.LibraryLoader;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class SkipAudioProcessor implements AudioProcessor {
-  private static Logger log = LogManager.getLogger(LibraryLoader.class.getName());
+  private static Logger log = LogManager.getLogger(SkipAudioProcessor.class.getName());
 
   private double secondsToSkip;
   private SkipAudioProcessorCallback callback;

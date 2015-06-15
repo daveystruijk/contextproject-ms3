@@ -23,7 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.stage.DirectoryChooser;
 
 public class MenuBarController {
-  static Logger log = LogManager.getLogger(App.class.getName());
+  static Logger log = LogManager.getLogger(MenuBarController.class.getName());
   
   @FXML
   private Menu menu;

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class FadeInOutTransition extends BaseTransition {
-  private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
+  private static Logger log = LogManager.getLogger(FadeInOutTransition.class.getName());
 
   
   /**

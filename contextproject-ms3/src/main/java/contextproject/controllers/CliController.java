@@ -1,6 +1,5 @@
 package contextproject.controllers;
 
-import contextproject.audio.TrackProcessor;
 import contextproject.formats.M3UBuilder;
 import contextproject.helpers.StackTrace;
 import contextproject.loaders.FolderLoader;
@@ -22,7 +21,7 @@ import java.util.Scanner;
  * Controls CLI for time being.
  */
 public class CliController {
-  private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
+  private static Logger log = LogManager.getLogger(CliController.class.getName());
 
 
   /**

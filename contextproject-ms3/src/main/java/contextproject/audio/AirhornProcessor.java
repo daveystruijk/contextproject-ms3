@@ -8,7 +8,6 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
-import contextproject.App;
 import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
 
@@ -20,7 +19,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class AirhornProcessor {
-  static Logger log = LogManager.getLogger(App.class.getName());
+  static Logger log = LogManager.getLogger(AirhornProcessor.class.getName());
 
   private Track track;
 
