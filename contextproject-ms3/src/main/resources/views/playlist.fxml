@@ -26,6 +26,12 @@
         <PropertyValueFactory property="artist" />
       </cellValueFactory>
     </TableColumn>
+     <TableColumn text="Album" fx:id="albumColumn" sortable="false"
+    minWidth="150" prefWidth="175">
+      <cellValueFactory>
+        <PropertyValueFactory property="album" />
+      </cellValueFactory>
+    </TableColumn>
     <TableColumn text="BPM" fx:id="bpmColumn" sortable="false">
       <cellValueFactory>
         <PropertyValueFactory property="bpm" />

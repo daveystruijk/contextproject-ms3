@@ -7,8 +7,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.audio.transitions.FadeInOutTransition;
-import contextproject.helpers.AudioProgress;
-import contextproject.loaders.LibraryLoader;
+import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,12 +17,10 @@ import javax.sound.sampled.LineUnavailableException;
 
 public class PlayerService {
   private static PlayerService instance = null;
-  private static Logger log = LogManager.getLogger(LibraryLoader.class.getName());
+  private static Logger log = LogManager.getLogger(PlayerService.class.getName());
 
   private TrackProcessor currentProcessor;
   private TrackProcessor nextProcessor;
-  private Thread currentAudioProgress;
-  private Thread nextAudioProgress;
 
   private Attributes attributes;
 
@@ -52,7 +49,8 @@ public class PlayerService {
     try {
       currentProcessor.load(currentTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
+      log.error("Play() went wrong");
+      log.trace(StackTrace.stackTrace(e));
     }
     
     // Wait for track processor to be ready
@@ -77,8 +75,10 @@ public class PlayerService {
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
+      log.error("transition went wrong");
+      log.trace(StackTrace.stackTrace(e));
     }
+
   }
   
   /**
@@ -125,7 +125,8 @@ public class PlayerService {
       try {
         instance = new PlayerService();
       } catch (EncoderException | LineUnavailableException e) {
-        log.warn(e.getMessage());
+        log.error("Couldn't create instance");
+        log.trace(StackTrace.stackTrace(e));
       }
     }
     return instance;

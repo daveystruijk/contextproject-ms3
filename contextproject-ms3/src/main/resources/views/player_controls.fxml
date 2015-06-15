@@ -15,7 +15,7 @@
   <HBox>
   <HBox fx:id = "curbox" alignment = "center">
    <Text text = " "></Text>
-   <Text fx:id = "curtext" text = "current track:"></Text>
+   <Text fx:id = "curtext" text = "Current track:"></Text>
   <TextField fx:id="currentTrack" prefHeight = "20" >
   </TextField>
   </HBox>

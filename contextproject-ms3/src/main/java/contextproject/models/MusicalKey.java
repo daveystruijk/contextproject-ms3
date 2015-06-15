@@ -1,5 +1,11 @@
 package contextproject.models;
 
+import contextproject.audio.PlayerService;
+import contextproject.helpers.StackTrace;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -7,6 +13,7 @@ import java.util.regex.Pattern;
 
 public class MusicalKey implements Serializable {
 
+  private static Logger log = LogManager.getLogger(MusicalKey.class.getName());
   private static final long serialVersionUID = -3532632476298869674L;
   private int normalizedKeyNumber;
   private String normalizedKeyFlag;
@@ -25,11 +32,16 @@ public class MusicalKey implements Serializable {
    * @param keyString
    *          String key from ID3 information
    */
-  public MusicalKey(String keyString) throws IllegalArgumentException {
-    if (keyString != null) {
-      normalizeKey(keyString);
-    } else {
-      throw new IllegalArgumentException("Key should not be null");
+  public MusicalKey(String keyString) {
+    try {
+      if (keyString != null) {
+        normalizeKey(keyString);
+      } else {
+        throw new IllegalArgumentException("Key should not be null");
+      }
+    } catch (IllegalArgumentException e) {
+      log.error("key should not be null");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
 
@@ -38,134 +50,141 @@ public class MusicalKey implements Serializable {
    */
   private void normalizeKey(String keyString) throws IllegalArgumentException,
       NumberFormatException {
-    this.musicalKeyString = keyString;
-    switch (keyString) {
-      case "A" :
-        normalizedKeyNumber = 11;
-        normalizedKeyFlag = "B";
-        break;
+    try {
+      this.musicalKeyString = keyString;
+      switch (keyString) {
+        case "A" :
+          normalizedKeyNumber = 11;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "Bb" :
-        normalizedKeyNumber = 6;
-        normalizedKeyFlag = "B";
-        break;
+        case "Bb" :
+          normalizedKeyNumber = 6;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "B" :
-        normalizedKeyNumber = 1;
-        normalizedKeyFlag = "B";
-        break;
+        case "B" :
+          normalizedKeyNumber = 1;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "C" :
-        normalizedKeyNumber = 8;
-        normalizedKeyFlag = "B";
-        break;
+        case "C" :
+          normalizedKeyNumber = 8;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "Db" :
-        normalizedKeyNumber = 3;
-        normalizedKeyFlag = "B";
-        break;
+        case "Db" :
+          normalizedKeyNumber = 3;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "D" :
-        normalizedKeyNumber = 10;
-        normalizedKeyFlag = "B";
-        break;
+        case "D" :
+          normalizedKeyNumber = 10;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "Eb" :
-        normalizedKeyNumber = 5;
-        normalizedKeyFlag = "B";
-        break;
+        case "Eb" :
+          normalizedKeyNumber = 5;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "E" :
-        normalizedKeyNumber = 12;
-        normalizedKeyFlag = "B";
-        break;
+        case "E" :
+          normalizedKeyNumber = 12;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "F" :
-        normalizedKeyNumber = 7;
-        normalizedKeyFlag = "B";
-        break;
+        case "F" :
+          normalizedKeyNumber = 7;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "Gb" :
-        normalizedKeyNumber = 2;
-        normalizedKeyFlag = "B";
-        break;
+        case "Gb" :
+          normalizedKeyNumber = 2;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "G" :
-        normalizedKeyNumber = 9;
-        normalizedKeyFlag = "B";
-        break;
+        case "G" :
+          normalizedKeyNumber = 9;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "Ab" :
-        normalizedKeyNumber = 4;
-        normalizedKeyFlag = "B";
-        break;
+        case "Ab" :
+          normalizedKeyNumber = 4;
+          normalizedKeyFlag = "B";
+          break;
 
-      case "Am" :
-        normalizedKeyNumber = 8;
-        normalizedKeyFlag = "A";
-        break;
+        case "Am" :
+          normalizedKeyNumber = 8;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Bbm" :
-        normalizedKeyNumber = 3;
-        normalizedKeyFlag = "A";
-        break;
+        case "Bbm" :
+          normalizedKeyNumber = 3;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Bm" :
-        normalizedKeyNumber = 10;
-        normalizedKeyFlag = "A";
-        break;
+        case "Bm" :
+          normalizedKeyNumber = 10;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Cm" :
-        normalizedKeyNumber = 5;
-        normalizedKeyFlag = "A";
-        break;
+        case "Cm" :
+          normalizedKeyNumber = 5;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Dbm" :
-        normalizedKeyNumber = 12;
-        normalizedKeyFlag = "A";
-        break;
+        case "Dbm" :
+          normalizedKeyNumber = 12;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Dm" :
-        normalizedKeyNumber = 7;
-        normalizedKeyFlag = "A";
-        break;
+        case "Dm" :
+          normalizedKeyNumber = 7;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Ebm" :
-        normalizedKeyNumber = 2;
-        normalizedKeyFlag = "A";
-        break;
+        case "Ebm" :
+          normalizedKeyNumber = 2;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Em" :
-        normalizedKeyNumber = 9;
-        normalizedKeyFlag = "A";
-        break;
+        case "Em" :
+          normalizedKeyNumber = 9;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Fm" :
-        normalizedKeyNumber = 4;
-        normalizedKeyFlag = "A";
-        break;
+        case "Fm" :
+          normalizedKeyNumber = 4;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Gbm" :
-        normalizedKeyNumber = 11;
-        normalizedKeyFlag = "A";
-        break;
+        case "Gbm" :
+          normalizedKeyNumber = 11;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Gm" :
-        normalizedKeyNumber = 6;
-        normalizedKeyFlag = "A";
-        break;
+        case "Gm" :
+          normalizedKeyNumber = 6;
+          normalizedKeyFlag = "A";
+          break;
 
-      case "Abm" :
-        normalizedKeyNumber = 1;
-        normalizedKeyFlag = "A";
-        break;
+        case "Abm" :
+          normalizedKeyNumber = 1;
+          normalizedKeyFlag = "A";
+          break;
 
-      default :
-        boolean foundNormalizedKey = setNormalizedString(keyString);
-        if (!foundNormalizedKey) {
-          throw new IllegalArgumentException("Key cannot be detected");
-        }
+        default :
+          boolean foundNormalizedKey = setNormalizedString(keyString);
+          if (!foundNormalizedKey) {
+            throw new IllegalArgumentException("Key cannot be detected");
+          }
+      }
+    } catch (IllegalArgumentException e) {
+      log.error("key cannot be detected");
+      log.trace(StackTrace.stackTrace(e));
+
     }
+
   }
 
   /**

@@ -29,4 +29,6 @@
 }
 .text-field {
     -fx-text-box-border: transparent; 
+    -fx-background-color: transparent;
+     -fx-background-insets: 0;
 }

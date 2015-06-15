@@ -33,7 +33,8 @@ public class TrackPropertyTest {
       fail("file wans't read correctly");
       e.printStackTrace();
     }
-    testProperty = new TrackProperty("testName", "testArtist", 120, testKey, testTrack);
+    testProperty = new TrackProperty("testName", "testArtist",
+        "testAlbum", 120, testKey, testTrack);
   }
 
   @Test
@@ -48,6 +49,13 @@ public class TrackPropertyTest {
     assertEquals(testProperty.artistProperty().get(), testProperty.getArtist());
   }
 
+  @Test
+  public void albumTest() {
+    testProperty.setAlbum("R.A.M");
+    assertEquals(testProperty.albumProperty().get(), testProperty.getAlbum());
+  }
+
+  
   @Test
   public void titleTest() {
     testProperty.setTitle("Cool track!");

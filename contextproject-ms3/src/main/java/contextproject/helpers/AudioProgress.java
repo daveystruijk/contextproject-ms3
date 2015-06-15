@@ -1,6 +1,7 @@
 package contextproject.helpers;
 
 import contextproject.App;
+import contextproject.audio.PlayerService;
 import contextproject.audio.TrackProcessor;
 import contextproject.controllers.PlayerControlsController;
 import contextproject.controllers.WindowController;
@@ -29,6 +30,11 @@ public class AudioProgress extends Thread {
       // TODO: fix this
       progress = 0;
       pcc.setProgres(progress);
+      System.out.println("progress = " + (progress * 100) + "%");
+      if (progress > 0.05) {
+        System.out.println("transition this shit");
+      }
     }
+    
   }
 }
