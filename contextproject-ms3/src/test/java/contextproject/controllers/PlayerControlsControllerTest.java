@@ -25,8 +25,6 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     assertEquals(controller, controller);
 
   }
-  
-  
 
   @Override
   public void start(Stage stage) throws Exception {
@@ -41,7 +39,6 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     scene2 = scene;
     stage.show();
   }
-
 
   @Test
   public void updateTest() {
@@ -59,9 +56,8 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     controller.pauseButton = new Button();
     controller.initialize(scene2.getWidth());
     controller.setProgres(0.45);
-    controller.pauseButton.setId("#pauseButton");
+    controller.pauseButton.setId("pauseButton");
     clickOn("#pauseButton");
-    
 
   }
 
