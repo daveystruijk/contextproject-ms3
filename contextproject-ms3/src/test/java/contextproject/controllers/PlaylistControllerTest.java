@@ -85,4 +85,12 @@ public class PlaylistControllerTest extends ApplicationTest {
     playController.setPlaylist(playlist);
   }
 
+  @Test
+  public void startTest() {
+    WindowController window = App.getController();
+    PlaylistController playController = window.getPlaylistController();
+    playController.begin(window.getPlayerControlsController(), App.getScene());
+    clickOn("#tableView");
+    clickOn("#tableView");
+  }
 }
