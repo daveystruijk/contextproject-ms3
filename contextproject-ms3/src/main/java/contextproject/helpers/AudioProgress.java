@@ -27,14 +27,14 @@ public class AudioProgress extends Thread {
   public void run() {
     pcc.setProgres(progress);
     while (progress < 1) {
-      progress = tp.getProgress();
+      // TODO: fix this
+      progress = 0;
       pcc.setProgres(progress);
       System.out.println("progress = " + (progress * 100) + "%");
       if (progress > 0.05) {
         System.out.println("transition this shit");
-        PlayerService.getInstance().transition();
       }
     }
-    PlayerService.getInstance().transition();
+    
   }
 }

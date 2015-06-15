@@ -16,9 +16,9 @@ import javafx.scene.text.Text;
 
 public class PlayerControlsController {
   @FXML
-  private Button pauseButton;
+  public Button pauseButton;
   @FXML
-  private ProgressBar musicBar;
+  public ProgressBar musicBar;
   @FXML
   public TextField currentTrack;
   @FXML
@@ -44,8 +44,7 @@ public class PlayerControlsController {
   /**
    * . initialize the controller
    */
-  public void initialize(Scene scene) {
-    int sceneWidth = (int) scene.getWidth();
+  public void initialize(double sceneWidth) {
     textwidth = sceneWidth * 0.3;
     progresswidth = sceneWidth * 0.4;
     buttonwidth = progresswidth * 0.48;
@@ -73,9 +72,9 @@ public class PlayerControlsController {
       public void handle(ActionEvent arg0) {
         if (pauseButton.getId().equals("pauseButton")) {
           pauseButton.setId("playButton");
-          PlayerService.getInstance().pause();
+          //PlayerService.getInstance().pause();
         } else {
-          PlayerService.getInstance().resume();
+          //PlayerService.getInstance().resume();
           pauseButton.setId("pauseButton");
         }
       }

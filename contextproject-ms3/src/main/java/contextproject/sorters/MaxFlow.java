@@ -19,7 +19,6 @@ public class MaxFlow {
   private Track bestSink;
   private TrackTree trackTree;
   private Playlist optimalPath;
-  private int maxDepth = 5;
   private Double bestScore;
   private Double bestAverage;
   private int bestCountNonZero;
@@ -36,19 +35,15 @@ public class MaxFlow {
     this.graph = graph;
     this.optimalPath = new Playlist();
     calculateMaxflow();
-    convertMap();
-
-    for (int i = 1; i <= graph.vertexSet().size(); i++) {
-      if (Math.pow(graph.vertexSet().size() - 2, i) < 500000000) {
-        maxDepth = i;
-      } else {
-        break;
+    try {
+      convertMap();
+      calculateOptimalPath();
+    } catch (NullPointerException e) {
+      for (WeightedEdge edge : graph.edgeSet()) {
+        optimalPath.add((Track) edge.getEdgeSource());
       }
     }
-
-    calculateOptimalPath();
   }
-
   private void setUp() {
     bestScore = 0.0;
     bestAverage = 0.0;
@@ -75,7 +70,7 @@ public class MaxFlow {
 
             edmondsKarp = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(graph);
             edmondsKarp.calculateMaximumFlow(source, sink); // calculate max flow
-
+            System.out.println(edge1);
             graph.addEdge(source, sink, edge1);
             graph.addEdge(sink, source, edge2);
 
@@ -85,35 +80,28 @@ public class MaxFlow {
             int countNonZero = 0;
             // calculate average, and the total non-zero's
             for (Double value : edmondsKarp.getMaximumFlow().values()) {
-              {
-                average += value;
-                if (value > 0) {
-                  countNonZero++;
-                }
+              average += value;
+              if (value > 0) {
+                countNonZero++;
               }
-              boolean add = false;
-              if (countNonZero > bestCountNonZero) { // find best flow with best source and sink
-                add = true;
-              } else if (countNonZero == bestCountNonZero && average > bestAverage) {
-                add = true;
-              } else if (countNonZero == bestCountNonZero && average == bestAverage
-                  && edmondsKarp.getMaximumFlowValue() > bestScore) {
-                add = true;
-              }
+            }
+            average /= (double) edmondsKarp.getMaximumFlow().values().size();
 
-              if (add) {
-                bestScore = edmondsKarp.getMaximumFlowValue();
-                bestFlow = edmondsKarp.getMaximumFlow();
-                bestSource = edmondsKarp.getCurrentSource();
-                bestSink = edmondsKarp.getCurrentSink();
-                bestAverage = average;
-                bestCountNonZero = countNonZero;
-              }
+            if ((countNonZero > bestCountNonZero)
+                | (countNonZero == bestCountNonZero && average > bestAverage)
+                | (countNonZero == bestCountNonZero && average == bestAverage && edmondsKarp
+                    .getMaximumFlowValue() > bestScore)) {
+              bestScore = edmondsKarp.getMaximumFlowValue();
+              bestFlow = edmondsKarp.getMaximumFlow();
+              bestSource = edmondsKarp.getCurrentSource();
+              bestSink = edmondsKarp.getCurrentSink();
+              bestAverage = average;
+              bestCountNonZero = countNonZero;
             }
           }
         }
-
       }
+
     }
   }
 
@@ -127,7 +115,7 @@ public class MaxFlow {
     Collections.sort(scores);
     Collections.reverse(scores); // begin with highest score
 
-    double minScore = 0.5;
+    double minScore = 1;
 
     for (WeightedEdge edge : bestFlow.keySet()) {
       if (tempMap.containsKey(edge)) {
@@ -161,19 +149,17 @@ public class MaxFlow {
    */
   private void calculateOptimalPath() {
     TrackTree tree = new TrackTree(new TrackNode(bestSource));
-    ArrayList<TrackNode> children = new ArrayList<TrackNode>();
+    ArrayList<TrackNode> parents = new ArrayList<TrackNode>();
     ArrayList<TrackNode> newChildren = new ArrayList<TrackNode>();
     ArrayList<TrackNode> finishedNodes = new ArrayList<TrackNode>();
-    children.add(new TrackNode(bestSource));
-    int depth = 0;
-    while (children.size() > 0 && depth < maxDepth) {
+    parents.add(new TrackNode(bestSource));
+    while (parents.size() > 0) {
       newChildren = new ArrayList<TrackNode>();
       for (WeightedEdge edge : bestFlow.keySet()) {
         TrackNode possibleChild = new TrackNode((Track) edge.getEdgeTarget(), bestFlow.get(edge));
         TrackNode possibleParent = new TrackNode((Track) edge.getEdgeSource());
-
-        if (children.contains(possibleParent)) {
-          for (TrackNode parent : children) {
+        if (parents.contains(possibleParent)) {
+          for (TrackNode parent : parents) {
             if (parent.equals(possibleParent) && !tree.hasAncestor(parent, possibleChild)
                 && !possibleChild.equals(new TrackNode(bestSource))
                 && !optimalPath.contains(possibleChild.getTrack())) {
@@ -182,7 +168,6 @@ public class MaxFlow {
               } else {
                 newChildren.add(possibleChild);
               }
-
               parent.addChild(possibleChild);
               possibleChild.setParent(parent);
             }
@@ -192,28 +177,19 @@ public class MaxFlow {
       if (newChildren.size() > 0) {
         finishedNodes = new ArrayList<TrackNode>();
       }
-      depth++;
-      children = newChildren;
+      Collections.sort(newChildren);
+      Collections.reverse(newChildren);
+      if (newChildren.size() > 10) {
+
+        System.out.println(newChildren.size());
+        parents = new ArrayList<TrackNode>();
+        parents.addAll(newChildren.subList(0, 9));
+      } else {
+        parents = newChildren;
+      }
     }
     trackTree = tree;
-    System.out.println(children.size() + "    " + finishedNodes.size());
-    if (finishedNodes.size() > 0) {
-      if (optimalPath.size() > 1) {
-        optimalPath.addAll(trackTree.optimalPath(finishedNodes).subList(1, maxDepth - 1));
-      } else {
-        optimalPath = trackTree.optimalPath(finishedNodes);
-      }
-
-    } else {
-      if (optimalPath.size() > 1) {
-        optimalPath.addAll(trackTree.optimalPath(children).subList(1, maxDepth - 1));
-      } else {
-        optimalPath = trackTree.optimalPath(children);
-      }
-      bestSource = optimalPath.get(optimalPath.size() - 1);
-      System.out.println(optimalPath.toString());
-      calculateOptimalPath();
-    }
+    optimalPath = trackTree.optimalPath(finishedNodes);
   }
 
   /**
