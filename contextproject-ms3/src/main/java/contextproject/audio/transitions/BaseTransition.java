@@ -17,6 +17,12 @@ public abstract class BaseTransition implements Runnable {
     public void onFinished();
   }
   
+  /**
+   * Base transition.
+   * @param from from track prosessor
+   * @param to to track processor
+   * @param callback transisition callback
+   */
   public BaseTransition(TrackProcessor from, TrackProcessor to, TransitionDoneCallback callback) {
     log.info("Setup transition");
     this.from = from;

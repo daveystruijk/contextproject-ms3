@@ -1,9 +1,9 @@
 package contextproject.audio.transitions;
 
+import static org.junit.Assert.assertEquals;
+
 import contextproject.audio.TrackProcessor;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
-
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +15,9 @@ public class BaseTransitionTest {
   private TrackProcessor to;
   private TransitionDoneCallback callback;
 
+  /**
+   * Set up variables.
+   */
   @Before
   public void setUp() {
     from = Mockito.mock(TrackProcessor.class);
@@ -22,6 +25,7 @@ public class BaseTransitionTest {
     callback = Mockito.mock(TransitionDoneCallback.class);
 
   }
+  
   @Test
   public void test() {
     BaseTransition base = new FadeInOutTransition(from, to, callback);

@@ -8,14 +8,19 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
 public class AirhornProcessor {
-  
+  static Logger log = LogManager.getLogger(AirhornProcessor.class.getName());
+
   private Track track;
 
   // Data
@@ -28,23 +33,34 @@ public class AirhornProcessor {
   private AudioPlayer audioPlayer;
   private AudioDispatcher dispatcher;
 
-  
   /**
    * This class plays an airhorn sample.
-   * @throws EncoderException 
-   * @throws LineUnavailableException 
+   * 
+   * @throws EncoderException
+   *           encode error.
+   * @throws LineUnavailableException
+   *           line error.
    */
   public AirhornProcessor(Attributes attributes, Track track) {
     this.track = track;
-    
+
     try {
       this.attributes = attributes;
       this.format = Streamer.streamAudioFormat(attributes);
     } catch (EncoderException e) {
-      e.printStackTrace();
+      log.error("Airhorn processor encoder exception");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
-  
+
+  /**
+   * Play airhorn.
+   * 
+   * @throws EncoderException
+   *           encode error.
+   * @throws LineUnavailableException
+   *           line error.
+   */
   public void play() throws EncoderException, LineUnavailableException {
     // Initialize the correct stream objects from file
     inputStream = Streamer.stream(track.getPath(), attributes);

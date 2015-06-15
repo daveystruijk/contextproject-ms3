@@ -7,7 +7,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.audio.transitions.FadeInOutTransition;
-import contextproject.helpers.AudioProgress;
+import contextproject.helpers.StackTrace;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
@@ -22,8 +22,8 @@ public class PlayerService {
 
   private TrackProcessor currentProcessor;
   private TrackProcessor nextProcessor;
-  private Thread currentAudioProgress;
-  private Thread nextAudioProgress;
+  // private Thread currentAudioProgress;
+  // private Thread nextAudioProgress;
 
   private Attributes attributes;
 
@@ -37,11 +37,10 @@ public class PlayerService {
     attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(SAMPLE_RATE);
   }
-  
+
   /**
-   * Loads the current track and plays it.
-   * This method can be used when no track is playing currently,
-   * and we want to start the mix with an initial track.
+   * Loads the current track and plays it. This method can be used when no track is playing
+   * currently, and we want to start the mix with an initial track.
    */
   public void playCurrentTrack() {
     if (currentProcessor != null) {
@@ -52,24 +51,26 @@ public class PlayerService {
     try {
       currentProcessor.load(currentTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
+      log.error("Error occured in playerservice while calling playCurrentTrack");
+      log.trace(StackTrace.stackTrace(e));
     }
-    
+
     // Wait for track processor to be ready
     while (currentProcessor.getState() != PlayerState.READY) {
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        log.error("Error occured in playerservice while calling playCurrentTrack");
+        log.trace(StackTrace.stackTrace(e));
       }
     }
-    
+
     currentProcessor.play();
   }
-  
+
   /**
-   * Prepares the next track for playback.
-   * Preparation means: Skipping the track to the point where a transition should happen.
+   * Prepares the next track for playback. Preparation means: Skipping the track to the point where
+   * a transition should happen.
    */
   public void prepareNextTrack(Track newTrack) {
     this.nextTrack = newTrack;
@@ -77,28 +78,29 @@ public class PlayerService {
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
-      e.printStackTrace();
+      log.error("Error occured in playerservice while calling prepareNextTrack");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
-  
+
   /**
-   * Starts playing the next track if it's ready, and applies the specified transition.
-   * If the track is not prepared for transition yet, this method will throw an exception.
+   * Starts playing the next track if it's ready, and applies the specified transition. If the track
+   * is not prepared for transition yet, this method will throw an exception.
    */
   public void setupTransition() {
     double transitionTime = (60.0 / nextTrack.getBpm()) * 80;
-    currentProcessor.setupTransition(transitionTime, new FadeInOutTransition(
-        currentProcessor, nextProcessor, new TransitionDoneCallback() {
+    currentProcessor.setupTransition(transitionTime, new FadeInOutTransition(currentProcessor,
+        nextProcessor, new TransitionDoneCallback() {
 
           @Override
           public void onFinished() {
             currentProcessor.unload();
             currentProcessor = nextProcessor;
-            //prepareNextTrack();
+            // prepareNextTrack();
           }
         }));
   }
-  
+
   public Track getCurrentTrack() {
     return currentTrack;
   }
@@ -106,7 +108,7 @@ public class PlayerService {
   public void setCurrentTrack(Track currentTrack) {
     this.currentTrack = currentTrack;
   }
-  
+
   public Track getNextTrack() {
     return nextTrack;
   }
@@ -125,7 +127,8 @@ public class PlayerService {
       try {
         instance = new PlayerService();
       } catch (EncoderException | LineUnavailableException e) {
-        log.warn(e.getMessage());
+        log.error("Error occured in playerservice while calling getting Instance");
+        log.trace(StackTrace.stackTrace(e));
       }
     }
     return instance;

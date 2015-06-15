@@ -44,6 +44,10 @@ public class MaxFlow {
       }
     }
   }
+  
+  /**
+   * Set up variables for maxFlow.
+   */
   private void setUp() {
     bestScore = 0.0;
     bestAverage = 0.0;
@@ -70,7 +74,6 @@ public class MaxFlow {
 
             edmondsKarp = new EdmondsKarpMaximumFlow<Track, WeightedEdge>(graph);
             edmondsKarp.calculateMaximumFlow(source, sink); // calculate max flow
-            System.out.println(edge1);
             graph.addEdge(source, sink, edge1);
             graph.addEdge(sink, source, edge2);
 
@@ -180,8 +183,6 @@ public class MaxFlow {
       Collections.sort(newChildren);
       Collections.reverse(newChildren);
       if (newChildren.size() > 10) {
-
-        System.out.println(newChildren.size());
         parents = new ArrayList<TrackNode>();
         parents.addAll(newChildren.subList(0, 9));
       } else {

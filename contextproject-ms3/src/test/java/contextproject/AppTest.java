@@ -14,10 +14,10 @@ public class AppTest extends ApplicationTest {
 
   @Override
   public void start(Stage stage) throws Exception {
-    // TODO Auto-generated method stub
     App ap = new App();
     ap.setUp(stage);
   }
+
   @Test
   public void appTest() {
     App ap = new App();

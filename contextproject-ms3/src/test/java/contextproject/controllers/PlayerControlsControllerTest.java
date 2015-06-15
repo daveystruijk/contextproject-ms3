@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 public class PlayerControlsControllerTest extends ApplicationTest {
 
   private Scene scene2;
+
   @Test
   public void test() {
     PlayerControlsController controller = new PlayerControlsController();
@@ -28,7 +29,6 @@ public class PlayerControlsControllerTest extends ApplicationTest {
 
   @Override
   public void start(Stage stage) throws Exception {
-    // TODO Auto-generated method stub
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
 
     Parent root = (Parent) loader.load();

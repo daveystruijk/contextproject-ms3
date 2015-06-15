@@ -14,6 +14,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.audio.transitions.BaseTransition;
+import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
@@ -29,9 +30,9 @@ import javax.sound.sampled.LineUnavailableException;
 public class TrackProcessor implements AudioProcessor {
 
   private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
-  
+
   private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-  
+
   // State
   private PlayerState state;
   private Track track;
@@ -51,11 +52,11 @@ public class TrackProcessor implements AudioProcessor {
 
   private double tempo;
   private double currentTime;
-  
+
   private double transitionTime;
   private BaseTransition transition;
   private boolean hasTransitioned;
-  
+
   /**
    * This class acts as an audio player.
    */
@@ -64,10 +65,11 @@ public class TrackProcessor implements AudioProcessor {
       this.attributes = attributes;
       this.format = Streamer.streamAudioFormat(attributes);
     } catch (EncoderException e) {
-      e.printStackTrace();
+      log.error("Error occured in TrackProcessor while calling constructor");
+      log.trace(StackTrace.stackTrace(e));
     }
   }
-  
+
   /**
    * Loads the Track that is specified.
    */
@@ -84,7 +86,7 @@ public class TrackProcessor implements AudioProcessor {
     this.setupDispatcherChain(startGain, startBpm);
     setState(PlayerState.FILE_LOADED);
   }
-  
+
   /**
    * Unloads the current track.
    */
@@ -96,7 +98,7 @@ public class TrackProcessor implements AudioProcessor {
     track = null;
     setState(PlayerState.NO_FILE_LOADED);
   }
-  
+
   /**
    * Play the current track.
    */
@@ -115,14 +117,15 @@ public class TrackProcessor implements AudioProcessor {
   public void setGain(double gain) {
     gainProcessor.setGain(gain);
   }
-  
+
   /**
-   * Initializes and starts the dispatcher chain so the player can play.
-   * This method is called when a track is first loaded (this.load()).
-   * @param startGain
-   * @param startBpm
-   * @throws EncoderException
-   * @throws LineUnavailableException
+   * Initializes and starts the dispatcher chain so the player can play. This method is called when
+   * a track is first loaded (this.load()).
+   * 
+   * @param startGain start gain
+   * @param startBpm start BPM
+   * @throws EncoderException encode error
+   * @throws LineUnavailableException line error
    */
   private void setupDispatcherChain(double startGain, double startBpm) throws EncoderException,
       LineUnavailableException {
@@ -158,23 +161,23 @@ public class TrackProcessor implements AudioProcessor {
     Thread thread = new Thread(dispatcher);
     thread.start();
   }
-  
+
   private Parameters newParameters() {
     return Parameters.musicDefaults(tempo, format.getSampleRate());
   }
-  
+
   public void addPropertyChangeListener(PropertyChangeListener listener) {
     this.pcs.addPropertyChangeListener(listener);
   }
-  
+
   public void removePropertyChangeListener(PropertyChangeListener listener) {
     this.pcs.removePropertyChangeListener(listener);
   }
-  
+
   public PlayerState getState() {
     return this.state;
   }
-  
+
   private void setState(PlayerState state) {
     PlayerState oldState = state;
     this.state = state;
@@ -185,7 +188,12 @@ public class TrackProcessor implements AudioProcessor {
   public static enum PlayerState {
     NO_FILE_LOADED, FILE_LOADED, READY, PLAYING, PAUSED, STOPPED
   }
-  
+
+  /**
+   * Set up a transition.
+   * @param transitionTime time to transit
+   * @param transition the transition
+   */
   public void setupTransition(double transitionTime, BaseTransition transition) {
     this.transitionTime = transitionTime;
     this.hasTransitioned = false;
@@ -198,12 +206,12 @@ public class TrackProcessor implements AudioProcessor {
     if (transitionTime == 0) {
       return true;
     }
-    
+
     if (!hasTransitioned && currentTime > transitionTime) {
       new Thread(transition).start();
       hasTransitioned = true;
     }
-    
+
     return true;
   }
 
