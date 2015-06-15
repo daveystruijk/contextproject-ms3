@@ -222,4 +222,9 @@ public class TrackProcessor implements AudioProcessor {
   public Track getTrack() {
     return track;
   }
+  
+  public double getProgress() { 
+    double progress = dispatcher.secondsProcessed();
+    return progress / track.getDuration();
+  }
 }

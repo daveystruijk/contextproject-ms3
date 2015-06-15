@@ -8,7 +8,7 @@ import contextproject.controllers.WindowController;
 public class AudioProgress extends Thread {
 
   private double progress = 0;
-  //private TrackProcessor tp;
+  private TrackProcessor tp;
   private PlayerControlsController pcc;
   private WindowController wc;
 
@@ -19,7 +19,7 @@ public class AudioProgress extends Thread {
    *          the track processor.
    */
   public AudioProgress(TrackProcessor tp) {
-    //this.tp = tp;
+    this.tp = tp;
     wc = App.getController();
     pcc = wc.getPlayerControlsController();
   }
@@ -28,7 +28,7 @@ public class AudioProgress extends Thread {
   public void run() {
     pcc.setProgres(progress);
     while (progress < 1) {
-      progress = 0;
+      tp.getProgress();
       pcc.setProgres(progress);
     }
   }
