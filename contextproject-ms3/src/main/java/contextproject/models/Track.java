@@ -13,13 +13,21 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.audio.mp3.MP3AudioHeader;
 import org.jaudiotagger.audio.mp3.MP3File;
+import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
+import org.jaudiotagger.tag.id3.AbstractID3v2Frame;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
+import org.jaudiotagger.tag.id3.ID3v23Frame;
+import org.jaudiotagger.tag.id3.ID3v23Tag;
+import org.jaudiotagger.tag.id3.ID3v24Frame;
+import org.jaudiotagger.tag.id3.ID3v24Tag;
+import org.jaudiotagger.tag.id3.framebody.FrameBodyTXXX;
 
 import java.io.File;
 import java.io.IOException;
@@ -152,6 +160,7 @@ public class Track implements Serializable {
         analyzeTrack();
         try {
           bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
+          log.info("BPM for: " + title + " is: " + bpm);
         } catch (NumberFormatException f) {
           log.error("There was no bpm information in file: " + absolutePath);
           log.trace(StackTrace.stackTrace(f));
@@ -164,11 +173,23 @@ public class Track implements Serializable {
       analyzeTrack();
       try {
         key = new MusicalKey(tag.getFirst(FieldKey.KEY));
+        log.info("Key for: " + title + " is: " + key);
       } catch (IllegalArgumentException f) {
         log.error("There was no key information in file: " + absolutePath);
         log.trace(StackTrace.stackTrace(f));
       }
     }
+    try {
+      averageEnergy = Double.parseDouble(tag.getFirst("TXXX"));
+    } catch (NumberFormatException e) {
+      energyLevels();
+    }
+  }
+
+  /**
+   * Calculate Energy Levels.
+   */
+  public void energyLevels() {
     try {
 
       Attributes attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
@@ -179,12 +200,31 @@ public class Track implements Serializable {
       elp.detect(this, op.getFirstOnset());
       energyLevels = elp.getEnergyLevels();
       averageEnergy = elp.getAverageEnergy();
+
+      tag.deleteField("TXXX");
+      FrameBodyTXXX txxxBody = new FrameBodyTXXX();
+      txxxBody.setDescription("Average Energy level");
+      txxxBody.setText(averageEnergy + "");
+      AbstractID3v2Frame frame = null;
+      if (tag instanceof ID3v23Tag) {
+        frame = new ID3v23Frame("TXXX");
+      } else if (tag instanceof ID3v24Tag) {
+        frame = new ID3v24Frame("TXXX");
+      }
+      frame.setBody(txxxBody);
+      tag.setField(frame);
+      song.setTag(tag);
+      song.commit();
+      tag = song.getID3v2Tag();
+
       log.info("Energy for: " + this.title + "   is: " + averageEnergy);
-    } catch (EncoderException | LineUnavailableException e) {
+    } catch (EncoderException | LineUnavailableException | FieldDataInvalidException
+        | CannotWriteException e) {
       log.error("Error in Track while analyzing energyLevels");
       log.trace(StackTrace.stackTrace(e));
       averageEnergy = 0.0;
     }
+
   }
 
   /**
