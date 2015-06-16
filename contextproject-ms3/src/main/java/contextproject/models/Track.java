@@ -13,21 +13,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.audio.mp3.MP3AudioHeader;
 import org.jaudiotagger.audio.mp3.MP3File;
-import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
-import org.jaudiotagger.tag.id3.AbstractID3v2Frame;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
-import org.jaudiotagger.tag.id3.ID3v23Frame;
-import org.jaudiotagger.tag.id3.ID3v23Tag;
-import org.jaudiotagger.tag.id3.ID3v24Frame;
-import org.jaudiotagger.tag.id3.ID3v24Tag;
-import org.jaudiotagger.tag.id3.framebody.FrameBodyTXXX;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +47,8 @@ public class Track implements Serializable {
   private AbstractID3v2Tag tag;
   private double averageEnergy;
   private ArrayList<Double> energyLevels;
-  private ArrayList<Double> differences;
+  ArrayList<Double> outTransitionTimes;
+  ArrayList<Double> inTransitionTimes;
   private boolean isWindows;
 
   /**
@@ -196,11 +189,26 @@ public class Track implements Serializable {
     } catch (NumberFormatException e) {
       energyLevels();
     }
-    for(int i = 0; i < energyLevels.size()-2; i++) {
-      differences.add(energyLevels.get(i) - energyLevels.get(i+1));
-    }
+    double min = -(averageEnergy * 0.4);
+
+    outTransitionTimes = new ArrayList<Double>();
+    inTransitionTimes = new ArrayList<Double>();
     
-  }
+    double secondsPerFourBars = 60.0f/this.getBpm() *  16;
+    for(int i = 0; i < energyLevels.size()-2; i++) {
+      double difference = (energyLevels.get(i+1) - energyLevels.get(i));
+      if (difference < min && ((i+2)*secondsPerFourBars) > (0.2 * this.duration) && ((i+2)*secondsPerFourBars) < (0.8 * this.duration)) {
+        outTransitionTimes.add((i+2) * secondsPerFourBars);
+      } if (difference < min && (i+2)*secondsPerFourBars < (0.5 * this.duration)) {
+        inTransitionTimes.add((i+2) * secondsPerFourBars);
+      }
+    }
+    System.out.println(outTransitionTimes);
+    System.out.println(inTransitionTimes);
+    //System.out.println(secondsperbar + " " + times);
+   
+  } 
+
 
   /**
    * Calculate Energy Levels.
@@ -217,25 +225,25 @@ public class Track implements Serializable {
       energyLevels = elp.getEnergyLevels();
       averageEnergy = elp.getAverageEnergy();
 
-      tag.deleteField("TXXX");
-      FrameBodyTXXX txxxBody = new FrameBodyTXXX();
-      txxxBody.setDescription("Average Energy level");
-      txxxBody.setText(averageEnergy + "");
-      AbstractID3v2Frame frame = null;
-      if (tag instanceof ID3v23Tag) {
-        frame = new ID3v23Frame("TXXX");
-      } else if (tag instanceof ID3v24Tag) {
-        frame = new ID3v24Frame("TXXX");
-      }
-      frame.setBody(txxxBody);
-      tag.setField(frame);
-      song.setTag(tag);
-      song.commit();
-      tag = song.getID3v2Tag();
+//      tag.deleteField("TXXX");
+//      FrameBodyTXXX txxxBody = new FrameBodyTXXX();
+//      txxxBody.setDescription("Average Energy level");
+//      txxxBody.setText(averageEnergy + "");
+//      AbstractID3v2Frame frame = null;
+//      if (tag instanceof ID3v23Tag) {
+//        frame = new ID3v23Frame("TXXX");
+//      } else if (tag instanceof ID3v24Tag) {
+//        frame = new ID3v24Frame("TXXX");
+//      }
+//      frame.setBody(txxxBody);
+//      tag.setField(frame);
+//      song.setTag(tag);
+//      song.commit();
+//      tag = song.getID3v2Tag();
 
       log.info("Energy for: " + this.title + "   is: " + averageEnergy);
-    } catch (EncoderException | LineUnavailableException | FieldDataInvalidException
-        | CannotWriteException e) {
+    } catch (EncoderException | LineUnavailableException e){// | FieldDataInvalidException
+        //| CannotWriteException e) {
       log.error("Error in Track while analyzing energyLevels");
       log.trace(StackTrace.stackTrace(e));
       averageEnergy = 0.0;
@@ -441,22 +449,39 @@ public class Track implements Serializable {
   public void setAverageEnergy(double avg) {
     averageEnergy = avg;
   }
-  
+    
   /**
-   * Get the differences of energy per bar of the track.
-   * @return ArrayList(double) differences.
+   * Get the out transition times of the track.
+   * @return ArrayList(Double) transition times.
    */
-  public ArrayList<Double> getDifferences() {
-    return differences;
+  public ArrayList<Double> getOutTransionTimes() {
+    return outTransitionTimes;
   }
   
   /**
-   * Set the differences of the energy per bar of the track.
-   * @param dif ArrayList(Double) differences.
+   * Set the out transition times of the track.
+   * @param ott ArrayList(Double) transition times.
    */
-  public void setDifferences(ArrayList<Double> dif) {
-    differences = dif;
+  public void setOutTransitionTimes(ArrayList<Double> ott) {
+    outTransitionTimes = ott;
   }
+  
+  /**
+   * Get the in transition times of the track.
+   * @return ArrayList(Double) transition times.
+   */
+  public ArrayList<Double> getInTransionTimes() {
+    return inTransitionTimes;
+  }
+  
+  /**
+   * Set the in transition times of the track.
+   * @param itt ArrayList(Double) transition times.
+   */
+  public void setInTransitionTimes(ArrayList<Double> itt) {
+    inTransitionTimes = itt;
+  }
+  
 
   /**
    * Equals method to check if an object is the same as the Track object.
