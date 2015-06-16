@@ -72,5 +72,4 @@ public class FolderLoaderTest {
     FolderLoader loader = new FolderLoader(directory);
     assertTrue(loader.load().containsAll(pl) && pl.containsAll(loader.load()));
   }
-
 }

@@ -1,15 +1,19 @@
 package contextproject.audio;
 
-import static org.junit.Assert.assertEquals;
+import contextproject.models.Track;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.io.TarsosDSPAudioFormat;
 import be.tarsos.transcoder.Attributes;
+import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import javax.sound.sampled.LineUnavailableException;
 
 public class EnergyLevelProcessorTest {
 
