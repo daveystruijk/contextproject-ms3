@@ -101,6 +101,6 @@ public class MaxFlowTest {
     playlist.add(track11);
     Graph hugeGraph = new Graph(playlist);
     MaxFlow biggestFlow = new MaxFlow(hugeGraph);
-    assertEquals(biggestFlow.getOptimalPath().size(), 9);
+    assertEquals(biggestFlow.getOptimalPath().size(), 10);
   }
 }
