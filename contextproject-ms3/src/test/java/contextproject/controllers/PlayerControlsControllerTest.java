@@ -10,7 +10,7 @@ import org.testfx.framework.junit.ApplicationTest;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+//import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -47,15 +47,15 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     controller.currentTrack = new TextField();
     controller.nextTrack = new TextField();
     controller.update(track, track);
-    controller.buttonbox1 = new HBox();
-    controller.buttonbox2 = new HBox();
+    //controller.buttonbox1 = new HBox();
+    //controller.buttonbox2 = new HBox();
     controller.curbox = new HBox();
     controller.nextbox = new HBox();
     controller.musicBar = new ProgressBar();
-    controller.pauseButton = new Button();
+    //controller.pauseButton = new Button();
     controller.initialize(scene2.getWidth());
-    controller.pauseButton.setId("pauseButton");
-    clickOn("#pauseButton");
+    //controller.pauseButton.setId("pauseButton");
+    //clickOn("#pauseButton");
 
   }
 

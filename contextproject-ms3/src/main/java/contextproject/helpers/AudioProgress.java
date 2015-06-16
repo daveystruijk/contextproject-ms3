@@ -26,10 +26,10 @@ public class AudioProgress extends Thread {
 
   @Override
   public void run() {
-    pcc.setProgres(progress);
+    pcc.setProgress(progress);
     while (progress < 1) {
-      tp.getProgress();
-      pcc.setProgres(progress);
+      progress = tp.getProgress();
+      pcc.setProgress(progress);
     }
   }
 }

@@ -33,7 +33,7 @@ public class TrackPropertyTest {
       fail("file wans't read correctly");
       e.printStackTrace();
     }
-    testProperty = new TrackProperty("testName", "testArtist", 120, testKey, testTrack);
+    testProperty = new TrackProperty("testName", "testArtist", "120", testKey, testTrack, "");
   }
 
   @Test
@@ -56,13 +56,13 @@ public class TrackPropertyTest {
 
   @Test
   public void bpmTest() {
-    testProperty.setBpm(220.d);
-    assertEquals(testProperty.bpmProperty().get(), testProperty.getBpm(), 0.00001f);
+    testProperty.setBpm("220");
+    assertEquals(testProperty.bpmProperty().get(), testProperty.getBpm());
   }
 
   @Test
   public void trackTest() {
-    testProperty.setatrack(testTrack);
+    testProperty.setTrack(testTrack);
     assertEquals(testProperty.trackProperty().get(), testProperty.getTrack());
   }
 }

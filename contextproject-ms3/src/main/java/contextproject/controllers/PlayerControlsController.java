@@ -2,10 +2,12 @@ package contextproject.controllers;
 
 import contextproject.models.Track;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+//import javafx.event.ActionEvent;
+//import javafx.event.EventHandler;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+
+//import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -13,8 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class PlayerControlsController {
-  @FXML
-  public Button pauseButton;
+//  @FXML
+//  public Button pauseButton;
   @FXML
   public ProgressBar musicBar;
   @FXML
@@ -27,15 +29,15 @@ public class PlayerControlsController {
   public Text nxtext;
   @FXML
   public VBox centerBox;
-  @FXML
-  public HBox buttonbox1;
-  @FXML
-  public HBox buttonbox2;
+//  @FXML
+//  public HBox buttonbox1;
+//  @FXML
+//  public HBox buttonbox2;
   @FXML
   public HBox curbox;
   @FXML
   public HBox nextbox;
-  private double buttonwidth;
+ // private double buttonwidth;
   private double textwidth;
   private double progresswidth;
 
@@ -45,10 +47,10 @@ public class PlayerControlsController {
   public void initialize(double sceneWidth) {
     textwidth = sceneWidth * 0.3;
     progresswidth = sceneWidth * 0.4;
-    buttonwidth = progresswidth * 0.48;
-    buttonbox1.setPrefWidth(buttonwidth);
-    buttonbox1.setMinWidth(10);
-    buttonbox2.setPrefWidth(buttonwidth);
+//    buttonwidth = progresswidth * 0.48;
+//    buttonbox1.setPrefWidth(buttonwidth);
+//    buttonbox1.setMinWidth(10);
+//    buttonbox2.setPrefWidth(buttonwidth);
     curbox.setPrefWidth(textwidth);
     currentTrack.setPrefWidth(textwidth * 0.8);
     nextbox.setPrefWidth(textwidth);
@@ -58,26 +60,26 @@ public class PlayerControlsController {
     currentTrack.setEditable(false);
     nextTrack.setEditable(false);
     musicBar.progressProperty().set(0);
-    togglePlayPause();
+    //togglePlayPause();
   }
 
   /**
    * Toggles the button.
    */
-  public void togglePlayPause() {
-    pauseButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent arg0) {
-        if (pauseButton.getId().equals("pauseButton")) {
-          pauseButton.setId("playButton");
-          //PlayerService.getInstance().pause();
-        } else {
-          //PlayerService.getInstance().resume();
-          pauseButton.setId("pauseButton");
-        }
-      }
-    });
-  }
+//  public void togglePlayPause() {
+//    pauseButton.setOnAction(new EventHandler<ActionEvent>() {
+//      @Override
+//      public void handle(ActionEvent arg0) {
+//        if (pauseButton.getId().equals("pauseButton")) {
+//          pauseButton.setId("playButton");
+//          //PlayerService.getInstance().pause();
+//        } else {
+//          //PlayerService.getInstance().resume();
+//          pauseButton.setId("pauseButton");
+//        }
+//      }
+//    });
+//  }
 
   /**
    * Updates the statusbar.

@@ -7,6 +7,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.audio.transitions.FadeInOutTransition;
+import contextproject.helpers.AudioProgress;
 import contextproject.helpers.StackTrace;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
@@ -22,8 +23,8 @@ public class PlayerService {
 
   private TrackProcessor currentProcessor;
   private TrackProcessor nextProcessor;
-  // private Thread currentAudioProgress;
-  // private Thread nextAudioProgress;
+  private Thread currentAudioProgress;
+  private Thread nextAudioProgress;
 
   private Attributes attributes;
 
@@ -47,6 +48,7 @@ public class PlayerService {
       currentProcessor.unload();
     }
     currentProcessor = new TrackProcessor(attributes);
+    currentAudioProgress = new Thread(new AudioProgress(currentProcessor));
 
     try {
       currentProcessor.load(currentTrack, 1.0, 1.0);
@@ -66,6 +68,7 @@ public class PlayerService {
     }
 
     currentProcessor.play();
+    currentAudioProgress.start();
   }
 
   /**
@@ -75,6 +78,7 @@ public class PlayerService {
   public void prepareNextTrack(Track newTrack) {
     this.nextTrack = newTrack;
     nextProcessor = new TrackProcessor(attributes);
+    nextAudioProgress = new Thread(new AudioProgress(nextProcessor));
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
@@ -96,6 +100,9 @@ public class PlayerService {
           public void onFinished() {
             currentProcessor.unload();
             currentProcessor = nextProcessor;
+            currentAudioProgress.stop();
+            currentAudioProgress = nextAudioProgress;
+            currentAudioProgress.start();
             callback.onFinished();
           }
         }));
