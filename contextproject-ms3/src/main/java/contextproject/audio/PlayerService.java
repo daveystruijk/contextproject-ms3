@@ -25,9 +25,7 @@ public class PlayerService {
 
   private TrackProcessor currentProcessor;
   private TrackProcessor nextProcessor;
-  private Thread currentAudioProgress;
-  private Thread nextAudioProgress;
-  private PlayerControlsController pcc = App.getController().getPlayerControlsController();
+  private PlayerControlsController pcc;
   private Attributes attributes;
 
   private Track currentTrack;
@@ -50,8 +48,8 @@ public class PlayerService {
       currentProcessor.unload();
     }
     currentProcessor = new TrackProcessor(attributes);
+    pcc = App.getController().getPlayerControlsController();
     pcc.setPcs(currentProcessor);
-    //currentAudioProgress = new Thread(new AudioProgress(currentProcessor));
 
     try {
       currentProcessor.load(currentTrack, 1.0, 1.0);
@@ -71,7 +69,6 @@ public class PlayerService {
     }
 
     currentProcessor.play();
-    //currentAudioProgress.start();
   }
 
   /**
@@ -81,7 +78,6 @@ public class PlayerService {
   public void prepareNextTrack(Track newTrack) {
     this.nextTrack = newTrack;
     nextProcessor = new TrackProcessor(attributes);
-   // nextAudioProgress = new Thread(new AudioProgress(nextProcessor));
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
@@ -103,9 +99,6 @@ public class PlayerService {
           public void onFinished() {
             currentProcessor.unload();
             currentProcessor = nextProcessor;
-//            currentAudioProgress.stop();
-//            currentAudioProgress = nextAudioProgress;
-//            currentAudioProgress.start();
             callback.onFinished();
           }
         }));

@@ -15,6 +15,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 import contextproject.App;
 import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.audio.transitions.BaseTransition;
+import contextproject.controllers.PlayerControlsController;
 import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
 
@@ -33,8 +34,7 @@ public class TrackProcessor implements AudioProcessor {
   private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
 
   private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-  private PropertyChangeSupport progressPcs = App.getController().getPlayerControlsController()
-      .getPcs();
+  private PropertyChangeSupport progressPcs;
 
   // State
   private PlayerState state;
@@ -248,5 +248,9 @@ public class TrackProcessor implements AudioProcessor {
 
   public Track getTrack() {
     return track;
+  }
+  
+  public void setProgressPcs(PlayerControlsController pcc) {
+    progressPcs = pcc.getPcs();
   }
 }
