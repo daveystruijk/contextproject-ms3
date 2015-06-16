@@ -1,7 +1,10 @@
 package contextproject.audio;
 
+import static org.junit.Assert.fail;
+
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.FadeInOutTransition;
+import contextproject.models.Track;
 
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.io.TarsosDSPAudioFormat;
@@ -14,6 +17,10 @@ import org.mockito.Mockito;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeListenerProxy;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class TrackProcessorTest {
   private Attributes attr;
