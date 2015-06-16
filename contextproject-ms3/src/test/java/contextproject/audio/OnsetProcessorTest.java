@@ -11,7 +11,7 @@ import org.mockito.Mockito;
 public class OnsetProcessorTest {
 
   @Test
-  public void test() {
+  public void handleTest() {
     Attributes attr = Mockito.mock(Attributes.class);
     OnsetProcessor onset = new OnsetProcessor(attr);
     assertEquals(onset.getFirstOnset(), 0, 0.001f);
