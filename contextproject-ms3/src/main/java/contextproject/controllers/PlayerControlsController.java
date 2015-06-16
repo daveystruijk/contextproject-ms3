@@ -1,9 +1,18 @@
 package contextproject.controllers;
 
+import contextproject.audio.TrackProcessor;
 import contextproject.models.Track;
 
 //import javafx.event.ActionEvent;
 //import javafx.event.EventHandler;
+
+
+
+
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import javafx.fxml.FXML;
 
@@ -40,6 +49,8 @@ public class PlayerControlsController {
  // private double buttonwidth;
   private double textwidth;
   private double progresswidth;
+  private double progress;
+  private PropertyChangeSupport pcs;
 
   /**
    * . initialize the controller
@@ -60,8 +71,29 @@ public class PlayerControlsController {
     currentTrack.setEditable(false);
     nextTrack.setEditable(false);
     musicBar.progressProperty().set(0);
+    
     //togglePlayPause();
   }
+  /**
+   * .
+   * @param tp .
+   */
+  public void setPcs(TrackProcessor tp) {
+    pcs = new PropertyChangeSupport(tp);
+    pcs.addPropertyChangeListener("progress", new PropertyChangeListener() {
+      
+      @Override
+      public void propertyChange(PropertyChangeEvent evt) {
+        musicBar.progressProperty().set((double) evt.getNewValue());
+        
+      }
+    });
+  }
+  
+  public PropertyChangeSupport getPcs() {
+    return pcs;
+  }
+  
 
   /**
    * Toggles the button.

@@ -12,6 +12,7 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.App;
 import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.audio.transitions.BaseTransition;
 import contextproject.helpers.StackTrace;
@@ -32,6 +33,8 @@ public class TrackProcessor implements AudioProcessor {
   private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
 
   private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+  private PropertyChangeSupport progressPcs = App.getController().getPlayerControlsController()
+      .getPcs();
 
   // State
   private PlayerState state;
@@ -56,6 +59,8 @@ public class TrackProcessor implements AudioProcessor {
   private double transitionTime;
   private BaseTransition transition;
   private boolean hasTransitioned;
+  private int loops = 0;
+  private double progress = 0;
 
   /**
    * This class acts as an audio player.
@@ -130,10 +135,14 @@ public class TrackProcessor implements AudioProcessor {
    * Initializes and starts the dispatcher chain so the player can play. This method is called when
    * a track is first loaded (this.load()).
    * 
-   * @param startGain start gain
-   * @param startBpm start BPM
-   * @throws EncoderException encode error
-   * @throws LineUnavailableException line error
+   * @param startGain
+   *          start gain
+   * @param startBpm
+   *          start BPM
+   * @throws EncoderException
+   *           encode error
+   * @throws LineUnavailableException
+   *           line error
    */
   private void setupDispatcherChain(double startGain, double startBpm) throws EncoderException,
       LineUnavailableException {
@@ -199,8 +208,11 @@ public class TrackProcessor implements AudioProcessor {
 
   /**
    * Set up a transition.
-   * @param transitionTime time to transit
-   * @param transition the transition
+   * 
+   * @param transitionTime
+   *          time to transit
+   * @param transition
+   *          the transition
    */
   public void setupTransition(double transitionTime, BaseTransition transition) {
     this.transitionTime = transitionTime;
@@ -219,7 +231,14 @@ public class TrackProcessor implements AudioProcessor {
       new Thread(transition).start();
       hasTransitioned = true;
     }
-
+    if (loops >= 10) {
+      loops = 0;
+      double oldValue = progress;
+      double newValue = currentTime / transitionTime;
+      progress = newValue;
+      progressPcs.firePropertyChange("progress", oldValue, newValue);
+    }
+    loops++;
     return true;
   }
 
@@ -229,10 +248,5 @@ public class TrackProcessor implements AudioProcessor {
 
   public Track getTrack() {
     return track;
-  }
-  
-  public double getProgress() { 
-    double progress = currentTime;
-    return progress / track.getDuration();
   }
 }
