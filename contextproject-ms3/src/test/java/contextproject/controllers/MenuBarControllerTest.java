@@ -17,12 +17,4 @@ public class MenuBarControllerTest extends ApplicationTest {
     App ap = new App();
     ap.setUp(stage);
   }
-
-  @Test
-  public void clickTest() {
-    clickOn("#menu");
-    clickOn("#menuItemImport");
-    write("");
-    press(KeyCode.ENTER);
-  }
 }
