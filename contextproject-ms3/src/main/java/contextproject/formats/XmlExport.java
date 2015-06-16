@@ -42,5 +42,4 @@ public class XmlExport {
     encoder.writeObject(library);
     encoder.close();
   }
-
 }
