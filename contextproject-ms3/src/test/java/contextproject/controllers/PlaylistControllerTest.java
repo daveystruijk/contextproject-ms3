@@ -90,7 +90,6 @@ public class PlaylistControllerTest extends ApplicationTest {
     WindowController window = App.getController();
     PlaylistController playController = window.getPlaylistController();
     playController.begin(window.getPlayerControlsController(), App.getScene());
-    clickOn("#tableView");
-    clickOn("#tableView");
+    doubleClickOn(App.getScene().getWidth() / 4, App.getScene().getHeight() / 12);
   }
 }
