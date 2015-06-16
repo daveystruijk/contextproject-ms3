@@ -153,6 +153,8 @@ public class App extends Application {
       stage.setScene(scene);
       stage.show();
       App.scene = scene;
+      App.library = new Library();
+
     } catch (IOException e) {
       log.error("Error in setting up GUI");
       log.trace(StackTrace.stackTrace(e));

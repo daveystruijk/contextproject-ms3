@@ -1,13 +1,12 @@
 package contextproject.controllers;
 
-import static org.junit.Assert.assertEquals;
+import contextproject.App;
+
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class WindowControllerTest extends ApplicationTest {
@@ -15,19 +14,26 @@ public class WindowControllerTest extends ApplicationTest {
   @Test
   public void test() {
     WindowController window = new WindowController();
-    assertEquals(window, window);
+    assertNotEquals(window, null);
   }
 
   @Override
   public void start(Stage stage) throws Exception {
     // TODO Auto-generated method stub
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/window.fxml"));
+    App ap = new App();
+    ap.setUp(stage);
+    
+  }
 
-    Parent root = (Parent) loader.load();
+  @Test
+  public void controllerTest() {
+    WindowController window = App.getController();
+    assertNotEquals(window.getLibraryController(), null);
+  }
 
-    Scene scene = new Scene(root, 1200, 800);
-    stage.setTitle("Window Test!");
-    stage.setScene(scene);
-    stage.show();
+  @Test
+  public void playlistControllerTest() {
+    WindowController window = App.getController();
+    assertNotEquals(window.getPlaylistController(), null);
   }
 }

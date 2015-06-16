@@ -65,4 +65,10 @@ public class TrackPropertyTest {
     testProperty.setatrack(testTrack);
     assertEquals(testProperty.trackProperty().get(), testProperty.getTrack());
   }
+
+  @Test
+  public void playingTest() {
+    testProperty.setPlaying("Playing");
+    assertEquals(testProperty.getPlaying(), testProperty.playingProperty().get());
+  }
 }

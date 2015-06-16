@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class TrackTest {
 
@@ -28,7 +29,15 @@ public class TrackTest {
       fail("file wans't read correctly");
       e.printStackTrace();
     }
+  }
 
+  @Test
+  public void setEnergyLevels() {
+    ArrayList<Double> testList = new ArrayList<Double>();
+    testList.add(1.0);
+    Track track = new Track();
+    track.setEnergyLevels(testList);
+    assertEquals(track.getEnergyLevels(), testList);
   }
 
   @Test
