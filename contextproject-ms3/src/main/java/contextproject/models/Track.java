@@ -227,7 +227,9 @@ public class Track implements Serializable {
       elp.detect(this, op.getFirstOnset());
       energyLevels = elp.getEnergyLevels();
       averageEnergy = elp.getAverageEnergy();
-
+      if (!(averageEnergy >= 0.0)) {
+        averageEnergy = 0.0;
+      }
 //      tag.deleteField("TXXX");
 //      FrameBodyTXXX txxxBody = new FrameBodyTXXX();
 //      txxxBody.setDescription("Average Energy level");
@@ -245,6 +247,7 @@ public class Track implements Serializable {
 //      tag = song.getID3v2Tag();
 
       log.info("Energy for: " + this.title + "   is: " + averageEnergy);
+      
     } catch (EncoderException | LineUnavailableException e){// | FieldDataInvalidException
         //| CannotWriteException e) {
       log.error("Error in Track while analyzing energyLevels");
