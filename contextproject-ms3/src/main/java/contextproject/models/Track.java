@@ -13,18 +13,27 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.audio.mp3.MP3AudioHeader;
 import org.jaudiotagger.audio.mp3.MP3File;
+import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
+import org.jaudiotagger.tag.id3.AbstractID3v2Frame;
 import org.jaudiotagger.tag.id3.AbstractID3v2Tag;
+import org.jaudiotagger.tag.id3.ID3v23Frame;
+import org.jaudiotagger.tag.id3.ID3v23Tag;
+import org.jaudiotagger.tag.id3.ID3v24Frame;
+import org.jaudiotagger.tag.id3.ID3v24Tag;
+import org.jaudiotagger.tag.id3.framebody.FrameBodyTXXX;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.sound.sampled.LineUnavailableException;
 
@@ -50,6 +59,7 @@ public class Track implements Serializable {
   ArrayList<Double> outTransitionTimes;
   ArrayList<Double> inTransitionTimes;
   private boolean isWindows;
+  private boolean writeNewEnergyTag = false;
 
   /**
    * Constructor without arguments.
@@ -74,6 +84,10 @@ public class Track implements Serializable {
     this.absolutePath = abPath;
     createSong();
     getMetadata();
+
+    if (writeNewEnergyTag) {
+      id3EnergyWiriter();
+    }
   }
 
   private void createSong() {
@@ -185,15 +199,16 @@ public class Track implements Serializable {
       }
     }
     try {
-      averageEnergy = Double.parseDouble(tag.getFirst("TXXX"));
-    } catch (NumberFormatException e) {
+      id3EnergyParser();
+    } catch (NumberFormatException | NullPointerException e) {
       energyLevels();
+      if (this.getBpm() > 0.0) {
+        calculateTransitions();
+      }
     }
-    if(this.getBpm() > 0.0) {
-      calculateTransitions();
-    }
-  } 
-  
+
+  }
+
   /**
    * Calculate the in and out transitions times of the track.
    */
@@ -201,18 +216,19 @@ public class Track implements Serializable {
     double min = -(averageEnergy * 0.4);
     outTransitionTimes = new ArrayList<Double>();
     inTransitionTimes = new ArrayList<Double>();
-    
-    double secondsPerFourBars = 60.0f/this.getBpm() *  16;
-    for(int i = 0; i < energyLevels.size()-2; i++) {
-      double difference = (energyLevels.get(i+1) - energyLevels.get(i));
-      if (difference < min && ((i+2)*secondsPerFourBars) > (0.2 * this.duration) && ((i+2)*secondsPerFourBars) < (0.8 * this.duration)) {
-        outTransitionTimes.add((i+2) * secondsPerFourBars);
-      } if (difference < min && (i+2)*secondsPerFourBars < (0.5 * this.duration)) {
-        inTransitionTimes.add((i+2) * secondsPerFourBars);
+
+    double secondsPerFourBars = 60.0f / this.getBpm() * 16;
+    for (int i = 0; i < energyLevels.size() - 2; i++) {
+      double difference = (energyLevels.get(i + 1) - energyLevels.get(i));
+      if (difference < min && ((i + 2) * secondsPerFourBars) > (0.2 * this.duration)
+          && ((i + 2) * secondsPerFourBars) < (0.8 * this.duration)) {
+        outTransitionTimes.add((i + 2) * secondsPerFourBars);
+      }
+      if (difference < min && (i + 2) * secondsPerFourBars < (0.5 * this.duration)) {
+        inTransitionTimes.add((i + 2) * secondsPerFourBars);
       }
     }
   }
-
 
   /**
    * Calculate Energy Levels.
@@ -235,31 +251,71 @@ public class Track implements Serializable {
       } catch (OutOfMemoryError e) {
         averageEnergy = 0.0;
       }
-//      tag.deleteField("TXXX");
-//      FrameBodyTXXX txxxBody = new FrameBodyTXXX();
-//      txxxBody.setDescription("Average Energy level");
-//      txxxBody.setText(averageEnergy + "");
-//      AbstractID3v2Frame frame = null;
-//      if (tag instanceof ID3v23Tag) {
-//        frame = new ID3v23Frame("TXXX");
-//      } else if (tag instanceof ID3v24Tag) {
-//        frame = new ID3v24Frame("TXXX");
-//      }
-//      frame.setBody(txxxBody);
-//      tag.setField(frame);
-//      song.setTag(tag);
-//      song.commit();
-//      tag = song.getID3v2Tag();
-
+      writeNewEnergyTag = true;
       log.info("Energy for: " + this.title + "   is: " + averageEnergy);
-      
-    } catch (EncoderException | LineUnavailableException e){// | FieldDataInvalidException
-        //| CannotWriteException e) {
+
+    } catch (EncoderException | LineUnavailableException e) {
       log.error("Error in Track while analyzing energyLevels");
       log.trace(StackTrace.stackTrace(e));
       averageEnergy = 0.0;
     }
 
+  }
+
+  /**
+   * Write average energy, intro and outro transitions to id3 tag.
+   */
+  public void id3EnergyWiriter() {
+    try {
+      String res = averageEnergy + "-" + inTransitionTimes.toString() + "-"
+          + outTransitionTimes.toString();
+
+      tag.deleteField("TXXX");
+      FrameBodyTXXX txxxBody = new FrameBodyTXXX();
+      txxxBody.setDescription("Average Energy and into and outro transitions");
+      txxxBody.setText(res);
+      AbstractID3v2Frame frame = null;
+      if (tag instanceof ID3v23Tag) {
+        frame = new ID3v23Frame("TXXX");
+      } else if (tag instanceof ID3v24Tag) {
+        frame = new ID3v24Frame("TXXX");
+      }
+      frame.setBody(txxxBody);
+
+      tag.setField(frame);
+
+      song.setTag(tag);
+      song.commit();
+      tag = song.getID3v2Tag();
+    } catch (FieldDataInvalidException | CannotWriteException e) {
+      log.error("Error in Track while writing energyLevels to ID3");
+      log.trace(StackTrace.stackTrace(e));
+    }
+  }
+
+  /**
+   * Read the average energy and in and out transitions from id3 tags.
+   */
+  public void id3EnergyParser() {
+    inTransitionTimes = new ArrayList<Double>();
+    outTransitionTimes = new ArrayList<Double>();
+    ArrayList<String> parse = new ArrayList<String>();
+    
+    parse.addAll(Arrays.asList(tag.getFirst("TXXX").split("-")));
+    averageEnergy = Double.parseDouble(parse.get(0));
+    
+    for (String add : parse.get(1).split(",")) {
+      add = add.replaceAll("\\]", "").replaceAll("\\[", "");
+      if (add.length() > 0) {
+        inTransitionTimes.add(Double.parseDouble(add));
+      }
+    }
+    for (String add : parse.get(2).split(",")) {
+      add = add.replaceAll("\\]", "").replaceAll("\\[", "");
+      if (add.length() > 0) {
+        outTransitionTimes.add(Double.parseDouble(add));
+      }
+    }
   }
 
   /**
@@ -460,39 +516,44 @@ public class Track implements Serializable {
   public void setAverageEnergy(double avg) {
     averageEnergy = avg;
   }
-    
+
   /**
    * Get the out transition times of the track.
+   * 
    * @return ArrayList(Double) transition times.
    */
   public ArrayList<Double> getOutTransitionTimes() {
     return outTransitionTimes;
   }
-  
+
   /**
    * Set the out transition times of the track.
-   * @param ott ArrayList(Double) transition times.
+   * 
+   * @param ott
+   *          ArrayList(Double) transition times.
    */
   public void setOutTransitionTimes(ArrayList<Double> ott) {
     outTransitionTimes = ott;
   }
-  
+
   /**
    * Get the in transition times of the track.
+   * 
    * @return ArrayList(Double) transition times.
    */
   public ArrayList<Double> getInTransitionTimes() {
     return inTransitionTimes;
   }
-  
+
   /**
    * Set the in transition times of the track.
-   * @param itt ArrayList(Double) transition times.
+   * 
+   * @param itt
+   *          ArrayList(Double) transition times.
    */
   public void setInTransitionTimes(ArrayList<Double> itt) {
     inTransitionTimes = itt;
   }
-  
 
   /**
    * Equals method to check if an object is the same as the Track object.
