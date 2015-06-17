@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -151,7 +152,11 @@ public class TrackProcessor implements AudioProcessor {
     // skipProcessor makes sure that the player skips until the desired point in time.
     // After that, we set our processor state to READY, so this.play can be called.
     final TrackProcessor thisProcessor = this;
-    double secondsToSkip = (60.0 / track.getBpm()) * 64;
+    ArrayList<Double> itt = track.getInTransitionTimes();
+    double secondsToSkip = 0;
+    if(!itt.isEmpty()) {
+      secondsToSkip = itt.get(0);
+    }
     skipProcessor = new SkipAudioProcessor(secondsToSkip, true, new SkipAudioProcessorCallback() {
       @Override
       public void onFinished() {

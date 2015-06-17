@@ -59,7 +59,7 @@ public class GraphTest {
 
   @Test
   public void convertScoreTest() {
-    assertEquals(12, (int) graph.getEdgeWeight(graph.getEdge(track1, track2))); // (1-(11/12))^-1
+    assertEquals(24, (int) graph.getEdgeWeight(graph.getEdge(track1, track2)));
   }
 
   @Test

@@ -31,6 +31,8 @@ public class PlaylistController {
   private TableColumn<TrackProperty, Double> bpmColumn;
   @FXML
   private TableColumn<TrackProperty, Object> keyColumn;
+  @FXML
+  private TableColumn<TrackProperty, Double> energyColumn;
 
   private Playlist playlist;
   private PlayerControlsController playerControlsController;
@@ -182,7 +184,8 @@ public class PlaylistController {
     }
     double bpm = track.getBpm();
     MusicalKey key = track.getKey();
-    TrackProperty prop = new TrackProperty(title, artist, bpm, key, track);
+    double energy = track.getAverageEnergy();
+    TrackProperty prop = new TrackProperty(title, artist, bpm, key, energy,track);
     return prop;
   }
 }
