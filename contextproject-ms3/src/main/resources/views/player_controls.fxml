@@ -19,15 +19,15 @@
   <TextField fx:id="currentTrack" prefHeight = "20" >
   </TextField>
   </HBox>
-  <!-- <VBox>-->
-   <HBox alignment = "center">
-  <!--<HBox fx:id = "buttonbox1" ></HBox>
-  <Button fx:id="pauseButton" >
+  <VBox>
+   <HBox>
+  <HBox fx:id = "buttonbox1" ></HBox>
+  <Button fx:id="playButton" >
   </Button>
-  <HBox fx:id = "buttonbox2" ></HBox>-->
+  <HBox fx:id = "buttonbox2" ></HBox>
+  </HBox>
    <ProgressBar fx:id = "musicBar" prefHeight = "20"></ProgressBar>
-    </HBox>
-   <!--  </VBox>-->
+   </VBox>
   <HBox fx:id = "nextbox" alignment = "center">
   <Text text = " "></Text>
   <Text fx:id = "nxtext" text = "next track:"></Text>

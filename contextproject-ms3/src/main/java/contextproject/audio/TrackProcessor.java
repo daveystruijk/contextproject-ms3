@@ -12,7 +12,6 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
-import contextproject.App;
 import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.audio.transitions.BaseTransition;
 import contextproject.controllers.PlayerControlsController;
@@ -52,10 +51,12 @@ public class TrackProcessor implements AudioProcessor {
   private CustomAudioDispatcher dispatcher;
   private SkipAudioProcessor skipProcessor;
   private ProgressProcessor progressProcessor;
+  private Thread thread;
 
   private double tempo;
   private double currentTime;
-
+  private double secondsToSkip;
+  
   private double transitionTime;
   private BaseTransition transition;
   private boolean hasTransitioned;
@@ -86,7 +87,8 @@ public class TrackProcessor implements AudioProcessor {
     this.tempo = 1.0;
     this.currentTime = 0;
     this.transitionTime = 0;
-    this.setupDispatcherChain(startGain, startBpm);
+    this.secondsToSkip = (60.0 / track.getBpm()) * 64;
+    this.setupDispatcherChain(startGain, startBpm, secondsToSkip);
     setState(PlayerState.FILE_LOADED);
   }
 
@@ -124,6 +126,21 @@ public class TrackProcessor implements AudioProcessor {
     }
     setState(PlayerState.PLAYING);
   }
+  
+  /**
+   * pauses the player.
+   * @throws LineUnavailableException line error.
+   * @throws EncoderException encode error.
+   */
+  public void pause() throws EncoderException, LineUnavailableException {
+    if (this.state != PlayerState.PLAYING) {
+      throw new IllegalStateException("Track processor is not even playing");
+    }
+    thread.stop();
+    dispatcher.stop();
+    this.setupDispatcherChain(1.0, 1.0, currentTime);
+    setState(PlayerState.PAUSED);
+  }
 
   public void setGain(double gain) {
     gainProcessor.setGain(gain);
@@ -142,7 +159,8 @@ public class TrackProcessor implements AudioProcessor {
    * @throws LineUnavailableException
    *           line error
    */
-  private void setupDispatcherChain(double startGain, double startBpm) throws EncoderException,
+  private void setupDispatcherChain(double startGain, double startBpm,
+      double secondsToSkip) throws EncoderException,
       LineUnavailableException {
     // Initialize the correct stream objects from file
     inputStream = Streamer.stream(track.getPath(), attributes);
@@ -155,12 +173,11 @@ public class TrackProcessor implements AudioProcessor {
     dispatcher = new CustomAudioDispatcher(tarsosStream, wsola.getInputBufferSize(),
         wsola.getOverlap());
     progressProcessor = new ProgressProcessor();
-    progressProcessor.setUp(track.getDuration(), pcc);
+    progressProcessor.setUp(track.getDuration(), this.secondsToSkip, pcc);
 
     // skipProcessor makes sure that the player skips until the desired point in time.
     // After that, we set our processor state to READY, so this.play can be called.
     final TrackProcessor thisProcessor = this;
-    double secondsToSkip = (60.0 / track.getBpm()) * 64;
     skipProcessor = new SkipAudioProcessor(secondsToSkip, true, new SkipAudioProcessorCallback() {
       @Override
       public void onFinished() {
@@ -176,7 +193,7 @@ public class TrackProcessor implements AudioProcessor {
     dispatcher.addAudioProcessor(gainProcessor);
     dispatcher.addAudioProcessor(progressProcessor);
     dispatcher.addAudioProcessor(audioPlayer);
-    Thread thread = new Thread(dispatcher);
+    thread = new Thread(dispatcher);
     thread.start();
   }
 

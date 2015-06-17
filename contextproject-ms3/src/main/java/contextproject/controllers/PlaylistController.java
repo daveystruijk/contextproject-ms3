@@ -41,6 +41,13 @@ public class PlaylistController {
    */
   public void begin(final PlayerControlsController playerControlsController, Scene scene) {
     this.playerControlsController = playerControlsController;
+    Track firstTrack = playlist.get(0);
+    PlayerService.getInstance().setCurrentTrack(firstTrack);
+    PlayerService.getInstance().setUpCurrentTrack();
+    playingtrack = firstTrack;
+    Track nextTrack = getNextTrack(firstTrack);
+    prepareNextTrackTransition(nextTrack);
+    updateTracks(firstTrack, nextTrack);
 
     // Setup click handler on track
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -60,8 +67,8 @@ public class PlaylistController {
     Track selectedTrack = getSelectedTrack();
     Track nextTrack = getNextTrack(selectedTrack);
 
-    playTrack(selectedTrack);
     prepareNextTrackTransition(nextTrack);
+    playTrack(selectedTrack);
     updateTracks(selectedTrack, nextTrack);
   }
 
@@ -76,6 +83,7 @@ public class PlaylistController {
   private void playTrack(Track track) {
     PlayerService.getInstance().setCurrentTrack(track);
     PlayerService.getInstance().playCurrentTrack();
+    playerControlsController.toggleButton();
     playingtrack = track;
   }
 

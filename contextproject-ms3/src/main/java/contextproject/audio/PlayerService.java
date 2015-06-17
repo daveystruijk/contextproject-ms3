@@ -9,9 +9,7 @@ import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.audio.transitions.FadeInOutTransition;
 import contextproject.controllers.PlayerControlsController;
-import contextproject.helpers.AudioProgress;
 import contextproject.helpers.StackTrace;
-import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +28,7 @@ public class PlayerService {
 
   private Track currentTrack;
   private Track nextTrack;
+  private boolean nextRunning = false;
 
   private static final int SAMPLE_RATE = 44100;
 
@@ -44,6 +43,13 @@ public class PlayerService {
    * currently, and we want to start the mix with an initial track.
    */
   public void playCurrentTrack() {
+    setUpCurrentTrack();
+    currentProcessor.play();
+  }
+  /**
+   * sets up the current track.
+   */
+  public void setUpCurrentTrack() {
     if (currentProcessor != null) {
       currentProcessor.unload();
     }
@@ -67,8 +73,6 @@ public class PlayerService {
         log.trace(StackTrace.stackTrace(e));
       }
     }
-
-    currentProcessor.play();
   }
 
   /**
@@ -136,5 +140,37 @@ public class PlayerService {
       }
     }
     return instance;
+  }
+  
+  /**
+   * pauses the track processors.
+   * @throws EncoderException encode error.
+   * @throws LineUnavailableException line error.
+   */
+  public void pause() throws EncoderException, LineUnavailableException {
+    if (currentProcessor.getState() == PlayerState.PLAYING) {
+      currentProcessor.pause();
+    }
+    if (nextProcessor.getState() == PlayerState.PLAYING) {
+      nextProcessor.pause();
+      nextRunning = true;
+    } else {
+      nextRunning = false;
+    }
+  }
+  
+  /**
+   * resumes the track processors.
+   * @throws EncoderException encode error.
+   * @throws LineUnavailableException line error.
+   */
+  public void resume() throws EncoderException, LineUnavailableException {
+    if (currentProcessor.getState() == PlayerState.READY) {
+      currentProcessor.play();
+    }
+    if (nextProcessor.getState() == PlayerState.READY && nextRunning == true) {
+      nextProcessor.play();
+    }
+      
   }
 }
