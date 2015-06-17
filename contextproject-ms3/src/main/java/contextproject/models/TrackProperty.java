@@ -1,6 +1,10 @@
 package contextproject.models;
 
+import org.apache.commons.math3.util.Precision;
+
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -13,6 +17,7 @@ public class TrackProperty {
   private final StringProperty bpm = new SimpleStringProperty();
   private final ObjectProperty<MusicalKey> key = new SimpleObjectProperty<MusicalKey>();
   private final ObjectProperty<Track> track = new SimpleObjectProperty<Track>();
+  private final StringProperty energy = new SimpleStringProperty();
 
   /**
    * constructor of the playlist property.
@@ -25,17 +30,22 @@ public class TrackProperty {
    *          the bpm of the track.
    * @param key
    *          key of track.
+   * 
+   * @param energy
+   *          average energy of track.
    * @param track
    *          the track itself, is for playability issues.
    * @param playing
    *          wether the track is playing or not.
    */
-  public TrackProperty(String title, String artist, String bpm, MusicalKey key, Track track,
-      String playing) {
+
+  public TrackProperty(String title, String artist, String bpm, MusicalKey key,
+      String energy, Track track, String playing) {
     this.title.set(title);
     this.artist.set(artist);
     this.bpm.set(bpm);
     this.key.set(key);
+    this.energy.set("" + Precision.round(Double.parseDouble(energy), 2));
     this.track.set(track);
     this.playing.set(playing);
   }
@@ -144,6 +154,33 @@ public class TrackProperty {
    * 
    * @return the track property
    */
+  
+  /**
+   * the energy property of track property.
+   * @return the energy property
+   */
+  public final StringProperty energyProperty() {
+    return this.energy;
+  }
+/**
+ * get the energy of the property.
+ * @return the energy
+ */
+  public final String getEnergy() {
+    return this.energyProperty().get();
+  }
+/**
+ * set the energy of the property
+ * @param energy the energy to be set.
+ */
+  public final void setEnergy(String energy) {
+    this.energyProperty().set(energy);
+  }
+  
+ /**
+  * the track property of track property(for playability issues).
+  * @return the track property.
+  */
   public final ObjectProperty<Track> trackProperty() {
     return this.track;
   }

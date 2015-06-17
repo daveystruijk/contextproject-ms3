@@ -1,5 +1,11 @@
 package contextproject.models;
 
+import be.tarsos.transcoder.Attributes;
+import be.tarsos.transcoder.DefaultAttributes;
+import be.tarsos.transcoder.ffmpeg.EncoderException;
+
+import contextproject.audio.EnergyLevelProcessor;
+import contextproject.audio.OnsetProcessor;
 import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
 
@@ -20,6 +26,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.sound.sampled.LineUnavailableException;
+
 public class Track implements Serializable {
 
   private static final long serialVersionUID = -4652897251022204080L;
@@ -35,9 +43,12 @@ public class Track implements Serializable {
   private double bpm;
   private MusicalKey key;
   private BeatGrid beatGrid;
-  private ArrayList<Float> energyLevels;
   private MP3File song;
   private AbstractID3v2Tag tag;
+  private double averageEnergy;
+  private ArrayList<Double> energyLevels;
+  ArrayList<Double> outTransitionTimes;
+  ArrayList<Double> inTransitionTimes;
   private boolean isWindows;
 
   /**
@@ -152,6 +163,7 @@ public class Track implements Serializable {
         }
         try {
           bpm = Double.parseDouble(tag.getFirst(FieldKey.BPM));
+          log.info("BPM for: " + title + " is: " + bpm);
         } catch (NumberFormatException f) {
           log.error("There was no bpm information in file: " + absolutePath);
           log.trace(StackTrace.stackTrace(f));
@@ -166,11 +178,88 @@ public class Track implements Serializable {
       }
       try {
         key = new MusicalKey(tag.getFirst(FieldKey.KEY));
+        log.info("Key for: " + title + " is: " + key);
       } catch (IllegalArgumentException f) {
         log.error("There was no key information in file: " + absolutePath);
         log.trace(StackTrace.stackTrace(f));
       }
     }
+    try {
+      averageEnergy = Double.parseDouble(tag.getFirst("TXXX"));
+    } catch (NumberFormatException e) {
+      energyLevels();
+    }
+    if(this.getBpm() > 0.0) {
+      calculateTransitions();
+    }
+  } 
+  
+  /**
+   * Calculate the in and out transitions times of the track.
+   */
+  public void calculateTransitions() {
+    double min = -(averageEnergy * 0.4);
+    outTransitionTimes = new ArrayList<Double>();
+    inTransitionTimes = new ArrayList<Double>();
+    
+    double secondsPerFourBars = 60.0f/this.getBpm() *  16;
+    for(int i = 0; i < energyLevels.size()-2; i++) {
+      double difference = (energyLevels.get(i+1) - energyLevels.get(i));
+      if (difference < min && ((i+2)*secondsPerFourBars) > (0.2 * this.duration) && ((i+2)*secondsPerFourBars) < (0.8 * this.duration)) {
+        outTransitionTimes.add((i+2) * secondsPerFourBars);
+      } if (difference < min && (i+2)*secondsPerFourBars < (0.5 * this.duration)) {
+        inTransitionTimes.add((i+2) * secondsPerFourBars);
+      }
+    }
+  }
+
+
+  /**
+   * Calculate Energy Levels.
+   */
+  public void energyLevels() {
+    try {
+
+      Attributes attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
+      attributes.setSamplingRate(44100);
+      OnsetProcessor op = new OnsetProcessor(attributes);
+      EnergyLevelProcessor elp = new EnergyLevelProcessor(attributes);
+      op.detectOnset(this);
+      try {
+        elp.detect(this, op.getFirstOnset());
+        energyLevels = elp.getEnergyLevels();
+        averageEnergy = elp.getAverageEnergy();
+        if (!(averageEnergy >= 0.0)) {
+          averageEnergy = 0.0;
+        }
+      } catch (OutOfMemoryError e) {
+        averageEnergy = 0.0;
+      }
+//      tag.deleteField("TXXX");
+//      FrameBodyTXXX txxxBody = new FrameBodyTXXX();
+//      txxxBody.setDescription("Average Energy level");
+//      txxxBody.setText(averageEnergy + "");
+//      AbstractID3v2Frame frame = null;
+//      if (tag instanceof ID3v23Tag) {
+//        frame = new ID3v23Frame("TXXX");
+//      } else if (tag instanceof ID3v24Tag) {
+//        frame = new ID3v24Frame("TXXX");
+//      }
+//      frame.setBody(txxxBody);
+//      tag.setField(frame);
+//      song.setTag(tag);
+//      song.commit();
+//      tag = song.getID3v2Tag();
+
+      log.info("Energy for: " + this.title + "   is: " + averageEnergy);
+      
+    } catch (EncoderException | LineUnavailableException e){// | FieldDataInvalidException
+        //| CannotWriteException e) {
+      log.error("Error in Track while analyzing energyLevels");
+      log.trace(StackTrace.stackTrace(e));
+      averageEnergy = 0.0;
+    }
+
   }
 
   /**
@@ -340,17 +429,70 @@ public class Track implements Serializable {
     return beatGrid;
   }
 
-  public ArrayList<Float> getEnergyLevels() {
+  public ArrayList<Double> getEnergyLevels() {
     return energyLevels;
   }
 
-  public void setEnergyLevels(ArrayList<Float> el) {
+  public void setEnergyLevels(ArrayList<Double> el) {
     energyLevels = el;
   }
 
   public String toString() {
     return title;
   }
+
+  /**
+   * Get average energy level.
+   * 
+   * @return double avg
+   */
+  public double getAverageEnergy() {
+    return averageEnergy;
+
+  }
+
+  /**
+   * Set average energy level.
+   * 
+   * @param avg
+   *          double avg
+   */
+  public void setAverageEnergy(double avg) {
+    averageEnergy = avg;
+  }
+    
+  /**
+   * Get the out transition times of the track.
+   * @return ArrayList(Double) transition times.
+   */
+  public ArrayList<Double> getOutTransitionTimes() {
+    return outTransitionTimes;
+  }
+  
+  /**
+   * Set the out transition times of the track.
+   * @param ott ArrayList(Double) transition times.
+   */
+  public void setOutTransitionTimes(ArrayList<Double> ott) {
+    outTransitionTimes = ott;
+  }
+  
+  /**
+   * Get the in transition times of the track.
+   * @return ArrayList(Double) transition times.
+   */
+  public ArrayList<Double> getInTransitionTimes() {
+    return inTransitionTimes;
+  }
+  
+  /**
+   * Set the in transition times of the track.
+   * @param itt ArrayList(Double) transition times.
+   */
+  public void setInTransitionTimes(ArrayList<Double> itt) {
+    inTransitionTimes = itt;
+  }
+  
 
   /**
    * Equals method to check if an object is the same as the Track object.

@@ -31,6 +31,8 @@ public class PlaylistController {
   private TableColumn<TrackProperty, String> bpmColumn;
   @FXML
   private TableColumn<TrackProperty, Object> keyColumn;
+  @FXML
+  private TableColumn<TrackProperty, Double> energyColumn;
 
   private Track playingtrack;
   private Playlist playlist;
@@ -170,7 +172,7 @@ public class PlaylistController {
     if (items.isEmpty()) {
       tableView.setDisable(true);
       tableView.setOpacity(1);
-      tableView.getItems().add(new TrackProperty(null, null, null, null, playingtrack, null));
+      tableView.getItems().add(new TrackProperty(null, null, null, null, null, playingtrack, null));
     } else {
       tableView.setDisable(false);
       for (Track tr : items) {
@@ -217,7 +219,8 @@ public class PlaylistController {
     } else {
       playing = "";
     }
-    TrackProperty prop = new TrackProperty(title, artist, bpm, key, track, playing);
+    String energy = "" + track.getAverageEnergy();
+    TrackProperty prop = new TrackProperty(title, artist, bpm, key, energy, track, playing);
     return prop;
   }
 }

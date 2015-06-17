@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -87,7 +88,11 @@ public class TrackProcessor implements AudioProcessor {
     this.tempo = 1.0;
     this.currentTime = 0;
     this.transitionTime = 0;
-    this.secondsToSkip = (60.0 / track.getBpm()) * 64;
+    ArrayList<Double> itt = track.getInTransitionTimes();
+    this.secondsToSkip = 0;
+    if (!itt.isEmpty()) {
+      this.secondsToSkip = itt.get(0);
+    }
     this.setupDispatcherChain(startGain, startBpm, secondsToSkip);
     setState(PlayerState.FILE_LOADED);
   }
