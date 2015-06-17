@@ -189,7 +189,9 @@ public class Track implements Serializable {
     } catch (NumberFormatException e) {
       energyLevels();
     }
-    calculateTransitions();
+    if(this.getBpm() > 0.0) {
+      calculateTransitions();
+    }
   } 
   
   /**
@@ -197,7 +199,6 @@ public class Track implements Serializable {
    */
   public void calculateTransitions() {
     double min = -(averageEnergy * 0.4);
-
     outTransitionTimes = new ArrayList<Double>();
     inTransitionTimes = new ArrayList<Double>();
     
@@ -209,7 +210,7 @@ public class Track implements Serializable {
       } if (difference < min && (i+2)*secondsPerFourBars < (0.5 * this.duration)) {
         inTransitionTimes.add((i+2) * secondsPerFourBars);
       }
-    } 
+    }
   }
 
 
@@ -224,10 +225,14 @@ public class Track implements Serializable {
       OnsetProcessor op = new OnsetProcessor(attributes);
       EnergyLevelProcessor elp = new EnergyLevelProcessor(attributes);
       op.detectOnset(this);
-      elp.detect(this, op.getFirstOnset());
-      energyLevels = elp.getEnergyLevels();
-      averageEnergy = elp.getAverageEnergy();
-      if (!(averageEnergy >= 0.0)) {
+      try {
+        elp.detect(this, op.getFirstOnset());
+        energyLevels = elp.getEnergyLevels();
+        averageEnergy = elp.getAverageEnergy();
+        if (!(averageEnergy >= 0.0)) {
+          averageEnergy = 0.0;
+        }
+      } catch (OutOfMemoryError e) {
         averageEnergy = 0.0;
       }
 //      tag.deleteField("TXXX");
