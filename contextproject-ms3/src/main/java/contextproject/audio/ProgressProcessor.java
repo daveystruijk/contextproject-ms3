@@ -13,12 +13,16 @@ public class ProgressProcessor implements AudioProcessor {
   private double progress = 0;
   private double duration;
   private double skip;
-/**
- * setup for the progress bar processor.
- * @param duration time until transition.
- * @param skip amount of seconds skipped at start of track
- * @param pcc the player controls controller.
- */
+  /**
+   * setup for the progress bar processor.
+   * 
+   * @param duration
+   *          time until transition.
+   * @param skip
+   *          amount of seconds skipped at start of track
+   * @param pcc
+   *          the player controls controller.
+   */
   public void setUp(double duration, double skip, PlayerControlsController pcc) {
     this.duration = duration;
     this.skip = skip;
@@ -30,10 +34,16 @@ public class ProgressProcessor implements AudioProcessor {
     if (progress < 1) {
       double currentTime = audioEvent.getTimeStamp();
       double oldValue = progress;
-      double newValue = (currentTime - skip) / duration;
+      double offset = (skip / currentTime);
+      double newValue = (currentTime / duration) - offset;
       progress = newValue;
-      progressPcs.firePropertyChange("progress", oldValue, newValue);
-      return true;
+      if (newValue < 0) {
+        progressPcs.firePropertyChange("progress", oldValue, 0);
+        return true;
+      } else {
+        progressPcs.firePropertyChange("progress", oldValue, newValue);
+        return true;
+      }
     }
     return true;
   }

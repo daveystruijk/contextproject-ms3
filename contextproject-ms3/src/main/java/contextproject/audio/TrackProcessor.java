@@ -57,7 +57,7 @@ public class TrackProcessor implements AudioProcessor {
   private double tempo;
   private double currentTime;
   private double secondsToSkip;
-  
+
   private double transitionTime;
   private BaseTransition transition;
   private boolean hasTransitioned;
@@ -131,11 +131,14 @@ public class TrackProcessor implements AudioProcessor {
     }
     setState(PlayerState.PLAYING);
   }
-  
+
   /**
    * pauses the player.
-   * @throws LineUnavailableException line error.
-   * @throws EncoderException encode error.
+   * 
+   * @throws LineUnavailableException
+   *           line error.
+   * @throws EncoderException
+   *           encode error.
    */
   public void pause() throws EncoderException, LineUnavailableException {
     if (this.state != PlayerState.PLAYING) {
@@ -164,9 +167,8 @@ public class TrackProcessor implements AudioProcessor {
    * @throws LineUnavailableException
    *           line error
    */
-  private void setupDispatcherChain(double startGain, double startBpm,
-      double secondsToSkip) throws EncoderException,
-      LineUnavailableException {
+  private void setupDispatcherChain(double startGain, double startBpm, double secondsToSkip)
+      throws EncoderException, LineUnavailableException {
     // Initialize the correct stream objects from file
     inputStream = Streamer.stream(track.getPath(), attributes);
     tarsosStream = new JVMAudioInputStream(inputStream);

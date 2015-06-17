@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_25" class="java.beans.XMLDecoder">
+ <object class="contextproject.models.Library">
+  <void method="add">
+   <object class="contextproject.models.Playlist">
+    <void method="add">
+     <object class="contextproject.models.Track">
+      <void property="album">
+       <string>unknown</string>
+      </void>
+      <void property="artist">
+       <string>unknown</string>
+      </void>
+      <void property="bpm">
+       <double>140.0</double>
+      </void>
+      <void property="duration">
+       <double>321.14938775510205</double>
+      </void>
+      <void property="key">
+       <object class="contextproject.models.MusicalKey">
+        <void property="musicalKeyString">
+         <string>Cm</string>
+        </void>
+        <void property="normalizedKeyFlag">
+         <string>A</string>
+        </void>
+        <void property="normalizedKeyNumber">
+         <int>5</int>
+        </void>
+       </object>
+      </void>
+      <void property="path">
+       <string>/Users/Millen/Downloads/aaaaa/test/Elliot Berger - Home (feat. Notelle) 2.mp3</string>
+      </void>
+      <void property="title">
+       <string>elliot_berger_-_home_(feat._notelle)_2.mp3</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="contextproject.models.Track">
+      <void property="album">
+       <string>unknown</string>
+      </void>
+      <void property="artist">
+       <string>unknown</string>
+      </void>
+      <void property="bpm">
+       <double>140.0</double>
+      </void>
+      <void property="duration">
+       <double>321.14938775510205</double>
+      </void>
+      <void property="key">
+       <object class="contextproject.models.MusicalKey">
+        <void property="musicalKeyString">
+         <string>Cm</string>
+        </void>
+        <void property="normalizedKeyFlag">
+         <string>A</string>
+        </void>
+        <void property="normalizedKeyNumber">
+         <int>5</int>
+        </void>
+       </object>
+      </void>
+      <void property="path">
+       <string>/Users/Millen/Downloads/aaaaa/test/Elliot Berger - Home (feat. Notelle).mp3</string>
+      </void>
+      <void property="title">
+       <string>elliot_berger_-_home_(feat._notelle).mp3</string>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="contextproject.models.Track">
+      <void property="album">
+       <string>unknown</string>
+      </void>
+      <void property="artist">
+       <string>unknown</string>
+      </void>
+      <void property="bpm">
+       <double>140.0</double>
+      </void>
+      <void property="duration">
+       <double>321.14938775510205</double>
+      </void>
+      <void property="key">
+       <object class="contextproject.models.MusicalKey">
+        <void property="musicalKeyString">
+         <string>Cm</string>
+        </void>
+        <void property="normalizedKeyFlag">
+         <string>A</string>
+        </void>
+        <void property="normalizedKeyNumber">
+         <int>5</int>
+        </void>
+       </object>
+      </void>
+      <void property="path">
+       <string>/Users/Millen/Downloads/aaaaa/test/Elliot Berger - Home (feat. Notelle) 3.mp3</string>
+      </void>
+      <void property="title">
+       <string>elliot_berger_-_home_(feat._notelle)_3.mp3</string>
+      </void>
+     </object>
+    </void>
+    <void property="name">
+     <string>test</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="contextproject.models.Playlist">
+    <void property="name">
+     <string>blues_brothers</string>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

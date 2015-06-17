@@ -189,30 +189,31 @@ public class Track implements Serializable {
     } catch (NumberFormatException e) {
       energyLevels();
     }
-    if(this.getBpm() > 0.0) {
+    if (this.getBpm() > 0.0) {
       calculateTransitions();
     }
-  } 
-  
+  }
+
   /**
    * Calculate the in and out transitions times of the track.
    */
   public void calculateTransitions() {
-    double min = -(averageEnergy * 0.4);
+    double min = - (averageEnergy * 0.4);
     outTransitionTimes = new ArrayList<Double>();
     inTransitionTimes = new ArrayList<Double>();
-    
-    double secondsPerFourBars = 60.0f/this.getBpm() *  16;
-    for(int i = 0; i < energyLevels.size()-2; i++) {
-      double difference = (energyLevels.get(i+1) - energyLevels.get(i));
-      if (difference < min && ((i+2)*secondsPerFourBars) > (0.2 * this.duration) && ((i+2)*secondsPerFourBars) < (0.8 * this.duration)) {
-        outTransitionTimes.add((i+2) * secondsPerFourBars);
-      } if (difference < min && (i+2)*secondsPerFourBars < (0.5 * this.duration)) {
-        inTransitionTimes.add((i+2) * secondsPerFourBars);
+
+    double secondsPerFourBars = 60.0f / this.getBpm() * 16;
+    for (int i = 0; i < energyLevels.size() - 2; i++) {
+      double difference = (energyLevels.get(i + 1) - energyLevels.get(i));
+      if (difference < min && ((i + 2) * secondsPerFourBars) > (0.2 * this.duration)
+          && ((i + 2) * secondsPerFourBars) < (0.8 * this.duration)) {
+        outTransitionTimes.add((i + 2) * secondsPerFourBars);
+      }
+      if (difference < min && (i + 2) * secondsPerFourBars < (0.5 * this.duration)) {
+        inTransitionTimes.add((i + 2) * secondsPerFourBars);
       }
     }
   }
-
 
   /**
    * Calculate Energy Levels.
@@ -235,26 +236,26 @@ public class Track implements Serializable {
       } catch (OutOfMemoryError e) {
         averageEnergy = 0.0;
       }
-//      tag.deleteField("TXXX");
-//      FrameBodyTXXX txxxBody = new FrameBodyTXXX();
-//      txxxBody.setDescription("Average Energy level");
-//      txxxBody.setText(averageEnergy + "");
-//      AbstractID3v2Frame frame = null;
-//      if (tag instanceof ID3v23Tag) {
-//        frame = new ID3v23Frame("TXXX");
-//      } else if (tag instanceof ID3v24Tag) {
-//        frame = new ID3v24Frame("TXXX");
-//      }
-//      frame.setBody(txxxBody);
-//      tag.setField(frame);
-//      song.setTag(tag);
-//      song.commit();
-//      tag = song.getID3v2Tag();
+      // tag.deleteField("TXXX");
+      // FrameBodyTXXX txxxBody = new FrameBodyTXXX();
+      // txxxBody.setDescription("Average Energy level");
+      // txxxBody.setText(averageEnergy + "");
+      // AbstractID3v2Frame frame = null;
+      // if (tag instanceof ID3v23Tag) {
+      // frame = new ID3v23Frame("TXXX");
+      // } else if (tag instanceof ID3v24Tag) {
+      // frame = new ID3v24Frame("TXXX");
+      // }
+      // frame.setBody(txxxBody);
+      // tag.setField(frame);
+      // song.setTag(tag);
+      // song.commit();
+      // tag = song.getID3v2Tag();
 
       log.info("Energy for: " + this.title + "   is: " + averageEnergy);
-      
-    } catch (EncoderException | LineUnavailableException e){// | FieldDataInvalidException
-        //| CannotWriteException e) {
+
+    } catch (EncoderException | LineUnavailableException e) {// | FieldDataInvalidException
+      // | CannotWriteException e) {
       log.error("Error in Track while analyzing energyLevels");
       log.trace(StackTrace.stackTrace(e));
       averageEnergy = 0.0;
@@ -460,39 +461,44 @@ public class Track implements Serializable {
   public void setAverageEnergy(double avg) {
     averageEnergy = avg;
   }
-    
+
   /**
    * Get the out transition times of the track.
+   * 
    * @return ArrayList(Double) transition times.
    */
   public ArrayList<Double> getOutTransitionTimes() {
     return outTransitionTimes;
   }
-  
+
   /**
    * Set the out transition times of the track.
-   * @param ott ArrayList(Double) transition times.
+   * 
+   * @param ott
+   *          ArrayList(Double) transition times.
    */
   public void setOutTransitionTimes(ArrayList<Double> ott) {
     outTransitionTimes = ott;
   }
-  
+
   /**
    * Get the in transition times of the track.
+   * 
    * @return ArrayList(Double) transition times.
    */
   public ArrayList<Double> getInTransitionTimes() {
     return inTransitionTimes;
   }
-  
+
   /**
    * Set the in transition times of the track.
-   * @param itt ArrayList(Double) transition times.
+   * 
+   * @param itt
+   *          ArrayList(Double) transition times.
    */
   public void setInTransitionTimes(ArrayList<Double> itt) {
     inTransitionTimes = itt;
   }
-  
 
   /**
    * Equals method to check if an object is the same as the Track object.
