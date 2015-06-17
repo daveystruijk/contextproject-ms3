@@ -90,6 +90,9 @@ public class PlaylistControllerTest extends ApplicationTest {
   public void startTest() {
     WindowController window = App.getController();
     PlaylistController playController = window.getPlaylistController();
+    Playlist playlist = new Playlist();
+    playlist.add(track);
+    playController.setPlaylist(playlist);
     playController.begin(window.getPlayerControlsController(), App.getScene());
     doubleClickOn(App.getScene().getWidth() / 4, App.getScene().getHeight() / 12);
   }

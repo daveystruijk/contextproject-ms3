@@ -100,7 +100,7 @@ public class PlayerService {
   public void setupTransition(TransitionDoneCallback callback) {
     ArrayList<Double> ott = currentTrack.getOutTransitionTimes();
     double transitionTime = currentTrack.getDuration();
-    if(ott.size() > 1) {
+    if (ott.size() > 1) {
       transitionTime = ott.get(1);
     }
     currentProcessor.setupTransition(transitionTime, new FadeInOutTransition(currentProcessor,
