@@ -90,7 +90,7 @@ public class PlayerService {
    * is not prepared for transition yet, this method will throw an exception.
    */
   public void setupTransition(TransitionDoneCallback callback) {
-    ArrayList<Double> ott = currentTrack.getOutTransionTimes();
+    ArrayList<Double> ott = currentTrack.getOutTransitionTimes();
     double transitionTime = currentTrack.getDuration();
     if(ott.size() > 1) {
       transitionTime = ott.get(1);

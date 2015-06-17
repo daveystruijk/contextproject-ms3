@@ -189,6 +189,13 @@ public class Track implements Serializable {
     } catch (NumberFormatException e) {
       energyLevels();
     }
+    calculateTransitions();
+  } 
+  
+  /**
+   * Calculate the in and out transitions times of the track.
+   */
+  public void calculateTransitions() {
     double min = -(averageEnergy * 0.4);
 
     outTransitionTimes = new ArrayList<Double>();
@@ -202,12 +209,8 @@ public class Track implements Serializable {
       } if (difference < min && (i+2)*secondsPerFourBars < (0.5 * this.duration)) {
         inTransitionTimes.add((i+2) * secondsPerFourBars);
       }
-    }
-    System.out.println(outTransitionTimes);
-    System.out.println(inTransitionTimes);
-    //System.out.println(secondsperbar + " " + times);
-   
-  } 
+    } 
+  }
 
 
   /**
@@ -454,7 +457,7 @@ public class Track implements Serializable {
    * Get the out transition times of the track.
    * @return ArrayList(Double) transition times.
    */
-  public ArrayList<Double> getOutTransionTimes() {
+  public ArrayList<Double> getOutTransitionTimes() {
     return outTransitionTimes;
   }
   
@@ -470,7 +473,7 @@ public class Track implements Serializable {
    * Get the in transition times of the track.
    * @return ArrayList(Double) transition times.
    */
-  public ArrayList<Double> getInTransionTimes() {
+  public ArrayList<Double> getInTransitionTimes() {
     return inTransitionTimes;
   }
   

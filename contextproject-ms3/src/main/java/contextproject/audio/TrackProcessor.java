@@ -152,7 +152,7 @@ public class TrackProcessor implements AudioProcessor {
     // skipProcessor makes sure that the player skips until the desired point in time.
     // After that, we set our processor state to READY, so this.play can be called.
     final TrackProcessor thisProcessor = this;
-    ArrayList<Double> itt = track.getInTransionTimes();
+    ArrayList<Double> itt = track.getInTransitionTimes();
     double secondsToSkip = 0;
     if(!itt.isEmpty()) {
       secondsToSkip = itt.get(0);

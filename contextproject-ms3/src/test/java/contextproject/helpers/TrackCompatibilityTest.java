@@ -45,9 +45,9 @@ public class TrackCompatibilityTest {
       Track track = new Track(resourcePath.toString());
       track.setBpm(180);
       track.setKey(new MusicalKey("A"));
+      track.setAverageEnergy(0.5);
       assertEquals(TrackCompatibility.getScore(track, track), 1.0f, 0.0001);
     } catch (URISyntaxException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
@@ -62,8 +62,10 @@ public class TrackCompatibilityTest {
       Track track2 = new Track(resourcePath.toString());
       track.setBpm(180);
       track.setKey(new MusicalKey("A"));
+      track.setAverageEnergy(0.1);
       track2.setBpm(150);
       track2.setKey(new MusicalKey("B"));
+      track2.setAverageEnergy(0.8);
       assertEquals(TrackCompatibility.getScore(track, track2), 0.0f, 0.0001);
     } catch (URISyntaxException e) {
       // TODO Auto-generated catch block
