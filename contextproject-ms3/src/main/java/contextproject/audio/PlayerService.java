@@ -78,6 +78,7 @@ public class PlayerService {
   public void prepareNextTrack(Track newTrack) {
     this.nextTrack = newTrack;
     nextProcessor = new TrackProcessor(attributes);
+    pcc.setPcs(nextProcessor);
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {

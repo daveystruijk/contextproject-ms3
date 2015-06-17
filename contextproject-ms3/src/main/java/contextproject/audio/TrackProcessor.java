@@ -34,8 +34,7 @@ public class TrackProcessor implements AudioProcessor {
   private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
 
   private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-  private PropertyChangeSupport progressPcs;
-
+  private PlayerControlsController pcc;
   // State
   private PlayerState state;
   private Track track;
@@ -52,6 +51,7 @@ public class TrackProcessor implements AudioProcessor {
   private GainProcessor gainProcessor;
   private CustomAudioDispatcher dispatcher;
   private SkipAudioProcessor skipProcessor;
+  private ProgressProcessor progressProcessor;
 
   private double tempo;
   private double currentTime;
@@ -59,8 +59,6 @@ public class TrackProcessor implements AudioProcessor {
   private double transitionTime;
   private BaseTransition transition;
   private boolean hasTransitioned;
-  private int loops = 0;
-  private double progress = 0;
 
   /**
    * This class acts as an audio player.
@@ -156,6 +154,8 @@ public class TrackProcessor implements AudioProcessor {
     gainProcessor = new GainProcessor(startGain);
     dispatcher = new CustomAudioDispatcher(tarsosStream, wsola.getInputBufferSize(),
         wsola.getOverlap());
+    progressProcessor = new ProgressProcessor();
+    progressProcessor.setUp(track.getDuration(), pcc);
 
     // skipProcessor makes sure that the player skips until the desired point in time.
     // After that, we set our processor state to READY, so this.play can be called.
@@ -174,6 +174,7 @@ public class TrackProcessor implements AudioProcessor {
     wsola.setDispatcher(dispatcher);
     dispatcher.addAudioProcessor(wsola);
     dispatcher.addAudioProcessor(gainProcessor);
+    dispatcher.addAudioProcessor(progressProcessor);
     dispatcher.addAudioProcessor(audioPlayer);
     Thread thread = new Thread(dispatcher);
     thread.start();
@@ -231,14 +232,6 @@ public class TrackProcessor implements AudioProcessor {
       new Thread(transition).start();
       hasTransitioned = true;
     }
-    if (loops >= 10) {
-      loops = 0;
-      double oldValue = progress;
-      double newValue = currentTime / transitionTime;
-      progress = newValue;
-      progressPcs.firePropertyChange("progress", oldValue, newValue);
-    }
-    loops++;
     return true;
   }
 
@@ -249,8 +242,8 @@ public class TrackProcessor implements AudioProcessor {
   public Track getTrack() {
     return track;
   }
-  
-  public void setProgressPcs(PlayerControlsController pcc) {
-    progressPcs = pcc.getPcs();
+
+  public void setPcc(PlayerControlsController pcc) {
+    this.pcc = pcc;
   }
 }

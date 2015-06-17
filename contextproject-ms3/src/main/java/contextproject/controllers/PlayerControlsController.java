@@ -80,7 +80,7 @@ public class PlayerControlsController {
    */
   public void setPcs(TrackProcessor tp) {
     pcs = new PropertyChangeSupport(tp);
-    tp.setProgressPcs(this);
+    tp.setPcc(this);
     pcs.addPropertyChangeListener("progress", new PropertyChangeListener() {
       
       @Override
