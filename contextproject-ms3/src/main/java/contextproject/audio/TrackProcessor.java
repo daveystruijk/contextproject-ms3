@@ -110,7 +110,7 @@ public class TrackProcessor implements AudioProcessor {
       return 0;
     }
   }
-  
+
   public double getTempo() {
     return tempo;
   }
@@ -141,11 +141,11 @@ public class TrackProcessor implements AudioProcessor {
     // Dispatchers are already running, but skipProcessor is blocking
     // the thread entirely. If we resume it, the track starts playing instantly!
     synchronized (skipProcessor) {
+      System.out.println("notify skipper");
       skipProcessor.notify();
     }
     setState(PlayerState.PLAYING);
   }
-
   /**
    * pauses the player.
    * 
