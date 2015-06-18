@@ -154,7 +154,7 @@ public class TrackProcessor implements AudioProcessor {
     final TrackProcessor thisProcessor = this;
     ArrayList<Double> itt = track.getInTransitionTimes();
     double secondsToSkip = 0;
-    if(!itt.isEmpty()) {
+    if (!itt.isEmpty()) {
       secondsToSkip = itt.get(0);
     }
     skipProcessor = new SkipAudioProcessor(secondsToSkip, true, new SkipAudioProcessorCallback() {

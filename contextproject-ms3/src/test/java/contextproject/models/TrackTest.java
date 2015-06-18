@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class TrackTest {
-  
+
   private static final double DELTA = 1e-15;
 
   @Test
@@ -41,7 +41,7 @@ public class TrackTest {
     track.setEnergyLevels(testList);
     assertEquals(track.getEnergyLevels(), testList);
   }
-  
+
   @Test
   public void averageEnergyTest() {
     Track track = new Track();
@@ -63,19 +63,20 @@ public class TrackTest {
       e.printStackTrace();
     }
   }
-  
+
   @Test
   public void calculateTransitionsTest() {
-    Track track = new Track();
     ArrayList<Double> el = new ArrayList<Double>();
     el.add(0.2);
     el.add(-0.1);
     el.add(0.2);
     el.add(-0.1);
+    Track track = new Track();
     track.setAverageEnergy(0.5);
     track.setDuration(120);
     track.setBpm(60);
     track.setEnergyLevels(el);
+    track.calculateDifferences();
     track.calculateTransitions();
     assertEquals(track.getOutTransitionTimes().toString(), "[32.0]");
     assertEquals(track.getInTransitionTimes().toString(), "[32.0]");
@@ -100,18 +101,18 @@ public class TrackTest {
       e.printStackTrace();
     }
   }
-  
+
   @Test
-  public void  outTransitionTimesTest() {
+  public void outTransitionTimesTest() {
     Track track = new Track();
     ArrayList<Double> ott = new ArrayList<Double>();
     ott.add(0.5);
     track.setOutTransitionTimes(ott);
     assertEquals(track.getOutTransitionTimes().toString(), ott.toString());
   }
-  
+
   @Test
-  public void  inTransitionTimesTest() {
+  public void inTransitionTimesTest() {
     Track track = new Track();
     ArrayList<Double> itt = new ArrayList<Double>();
     itt.add(0.5);
