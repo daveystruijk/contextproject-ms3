@@ -95,7 +95,7 @@ public class TrackProcessor implements AudioProcessor {
 
   private double getTransitonTime() {
     ArrayList<Double> ott = track.getOutTransitionTimes();
-    if (ott.size() > 1) {
+    if (ott != null && ott.size() > 1) {
       return ott.get(0);
     } else {
       return track.getDuration();
@@ -104,7 +104,7 @@ public class TrackProcessor implements AudioProcessor {
 
   private double getSecondsToSkip() {
     ArrayList<Double> itt = track.getInTransitionTimes();
-    if (!itt.isEmpty()) {
+    if (itt != null && !itt.isEmpty()) {
       return itt.get(0);
     } else {
       return 0;

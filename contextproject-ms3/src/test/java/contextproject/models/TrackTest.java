@@ -77,7 +77,6 @@ public class TrackTest {
     track.setBpm(60);
     track.setEnergyLevels(el);
     track.calculateDifferences();
-    track.calculateTransitions();
     assertEquals(track.getOutTransitionTimes().toString(), "[32.0]");
     assertEquals(track.getInTransitionTimes().toString(), "[32.0]");
   }

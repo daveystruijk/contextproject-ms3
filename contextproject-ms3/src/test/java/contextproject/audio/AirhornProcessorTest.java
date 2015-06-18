@@ -30,7 +30,7 @@ public class AirhornProcessorTest {
 
   @Test
   public void test() {
-    AirhornProcessor airProcessor = new AirhornProcessor(attr, track);
+    AirhornProcessor airProcessor = new AirhornProcessor();
     assertNotEquals(airProcessor, null);
   }
 }

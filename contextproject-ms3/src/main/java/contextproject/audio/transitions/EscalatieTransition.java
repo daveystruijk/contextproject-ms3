@@ -1,5 +1,8 @@
 package contextproject.audio.transitions;
 
+import be.tarsos.transcoder.ffmpeg.EncoderException;
+
+import contextproject.audio.AirhornProcessor;
 import contextproject.audio.TrackProcessor;
 import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
@@ -9,8 +12,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-public class FadeInOutTransition extends BaseTransition {
-  private static Logger log = LogManager.getLogger(FadeInOutTransition.class.getName());
+import javax.sound.sampled.LineUnavailableException;
+
+public class EscalatieTransition extends BaseTransition {
+  private static Logger log = LogManager.getLogger(EscalatieTransition.class.getName());
 
   
   /**
@@ -23,21 +28,26 @@ public class FadeInOutTransition extends BaseTransition {
    * @param callback
    *          transition callback
    */
-  public FadeInOutTransition(TrackProcessor from, TrackProcessor to, 
+  public EscalatieTransition(TrackProcessor from, TrackProcessor to, 
       TransitionDoneCallback callback) {
     super(from, to, callback);
   }
 
   @Override
   public void begin(TrackProcessor from, TrackProcessor to) {
+    try {
+      new AirhornProcessor().play();
+    } catch (EncoderException | LineUnavailableException e1) {
+      e1.printStackTrace();
+    }
     to.setGain(0.0);
     to.play();
-    for (int i = 0; i < 16; i++) {
-      from.setGain(1.0 - (i / 16.0));
-      to.setGain((double) i / 16.0);
+    for (int i = 0; i < 8; i++) {
+      from.setGain(1.0 - (i / 8.0));
+      to.setGain((double) i / 8.0);
       try {
         double timePerBeat = 60.0 / from.getTrack().getBpm();
-        Thread.sleep(Math.round(timePerBeat * 1000));
+        Thread.sleep(Math.round(timePerBeat * 100));
       } catch (InterruptedException e) {
         log.error("Thread interrupted");
         log.trace(StackTrace.stackTrace(e));
@@ -47,15 +57,12 @@ public class FadeInOutTransition extends BaseTransition {
   
   @Override
   public void determineOutTime(Track track) {
+    this.determineInTime(track);
     ArrayList<Double> outTransitionTimes = new ArrayList<Double>();
-    double min = -(track.getAverageEnergy() * 0.35);
-    double secondsPerFourBars = 60.0f / track.getBpm() * 16;
-    for (int i = 0; i < track.getDifferences().size(); i++) {
-      if (track.getDifferences().get(i) < min
-          && ((i + 2) * secondsPerFourBars) > (0.2 * track.getDuration())
-          && ((i + 2) * secondsPerFourBars) < (0.8 * track.getDuration())) {
-        outTransitionTimes.add((i + 2) * secondsPerFourBars);
-      }
+    for (int i = 0; i < track.getInTransitionTimes().size(); i++) {
+      double time = track.getInTransitionTimes().get(i) 
+          + (60.0 / track.getBpm()) * 32;
+      outTransitionTimes.add(time);
     }
     track.setOutTransitionTimes(outTransitionTimes);
   }
@@ -63,14 +70,14 @@ public class FadeInOutTransition extends BaseTransition {
   @Override
   public void determineInTime(Track track) {
     ArrayList<Double> inTransitionTimes = new ArrayList<Double>();
-    double min = -(track.getAverageEnergy() * 0.35);
     double secondsPerFourBars = 60.0f / track.getBpm() * 16;
+    int highest = 0;
     for (int i = 0; i < track.getDifferences().size(); i++) {
-      if (track.getDifferences().get(i) < min
-          && (i + 2) * secondsPerFourBars < (0.5 * track.getDuration())) {
-        inTransitionTimes.add((i + 2) * secondsPerFourBars);
+      if (track.getDifferences().get(i) > track.getDifferences().get(highest)) {
+        highest = i;
       }
     }
+    inTransitionTimes.add((highest+2) * secondsPerFourBars);
     track.setInTransitionTimes(inTransitionTimes);
   }
 }
