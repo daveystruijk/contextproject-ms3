@@ -36,7 +36,6 @@ public class ProgressProcessor implements AudioProcessor {
       double oldValue = progress;
       double newValue = (currentTime - skip) / (duration - skip);
       progress = newValue;
-      System.out.println("skip:" + skip + "curtime: " + currentTime + "progress: " + progress);
       if (newValue < 0) {
         progressPcs.firePropertyChange("progress", oldValue, 0.0);
         return true;
