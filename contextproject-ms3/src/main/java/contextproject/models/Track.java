@@ -40,6 +40,7 @@ import javax.sound.sampled.LineUnavailableException;
 public class Track implements Serializable {
 
   private static final long serialVersionUID = -4652897251022204080L;
+  private static final String customWriteTag = "TXXX";
 
   private static Logger log = LogManager.getLogger(Track.class.getName());
 
@@ -60,6 +61,7 @@ public class Track implements Serializable {
   ArrayList<Double> inTransitionTimes;
   private boolean isWindows;
   private boolean writeNewEnergyTag = false;
+  private ArrayList<Double> differences;
 
   /**
    * Constructor without arguments.
@@ -200,31 +202,40 @@ public class Track implements Serializable {
     }
     try {
       id3EnergyParser();
+      System.out.println("geslaagd!");
     } catch (NumberFormatException | NullPointerException e) {
       energyLevels();
       if (this.getBpm() > 0.0) {
-        calculateTransitions();
+        calculateDifferences();
       }
     }
+    calculateTransitions();
+  }
 
+  /**
+   * Calculate the differences of the energy levels.
+   */
+  public void calculateDifferences() {
+    differences = new ArrayList<Double>();
+    for (int i = 0; i < energyLevels.size() - 2; i++) {
+      differences.add((energyLevels.get(i + 1) - energyLevels.get(i)));
+    }
   }
 
   /**
    * Calculate the in and out transitions times of the track.
    */
   public void calculateTransitions() {
-    double min = -(averageEnergy * 0.4);
-    outTransitionTimes = new ArrayList<Double>();
     inTransitionTimes = new ArrayList<Double>();
-
+    outTransitionTimes = new ArrayList<Double>();
+    double min = -(averageEnergy * 0.4);
     double secondsPerFourBars = 60.0f / this.getBpm() * 16;
-    for (int i = 0; i < energyLevels.size() - 2; i++) {
-      double difference = (energyLevels.get(i + 1) - energyLevels.get(i));
-      if (difference < min && ((i + 2) * secondsPerFourBars) > (0.2 * this.duration)
+    for (int i = 0; i < differences.size(); i++) {
+      if (differences.get(i) < min && ((i + 2) * secondsPerFourBars) > (0.2 * this.duration)
           && ((i + 2) * secondsPerFourBars) < (0.8 * this.duration)) {
         outTransitionTimes.add((i + 2) * secondsPerFourBars);
       }
-      if (difference < min && (i + 2) * secondsPerFourBars < (0.5 * this.duration)) {
+      if (differences.get(i) < min && (i + 2) * secondsPerFourBars < (0.5 * this.duration)) {
         inTransitionTimes.add((i + 2) * secondsPerFourBars);
       }
     }
@@ -267,18 +278,17 @@ public class Track implements Serializable {
    */
   public void id3EnergyWiriter() {
     try {
-      String res = averageEnergy + "-" + inTransitionTimes.toString() + "-"
-          + outTransitionTimes.toString();
+      String res = averageEnergy + "/" + differences.toString();
 
-      tag.deleteField("TXXX");
+      tag.deleteField(customWriteTag);
       FrameBodyTXXX txxxBody = new FrameBodyTXXX();
       txxxBody.setDescription("Average Energy and into and outro transitions");
       txxxBody.setText(res);
       AbstractID3v2Frame frame = null;
       if (tag instanceof ID3v23Tag) {
-        frame = new ID3v23Frame("TXXX");
+        frame = new ID3v23Frame(customWriteTag);
       } else if (tag instanceof ID3v24Tag) {
-        frame = new ID3v24Frame("TXXX");
+        frame = new ID3v24Frame(customWriteTag);
       }
       frame.setBody(txxxBody);
 
@@ -297,23 +307,15 @@ public class Track implements Serializable {
    * Read the average energy and in and out transitions from id3 tags.
    */
   public void id3EnergyParser() {
-    inTransitionTimes = new ArrayList<Double>();
-    outTransitionTimes = new ArrayList<Double>();
+    differences = new ArrayList<Double>();
     ArrayList<String> parse = new ArrayList<String>();
-    
-    parse.addAll(Arrays.asList(tag.getFirst("TXXX").split("-")));
+
+    parse.addAll(Arrays.asList(tag.getFirst(customWriteTag).split("/")));
     averageEnergy = Double.parseDouble(parse.get(0));
-    
     for (String add : parse.get(1).split(",")) {
       add = add.replaceAll("\\]", "").replaceAll("\\[", "");
       if (add.length() > 0) {
-        inTransitionTimes.add(Double.parseDouble(add));
-      }
-    }
-    for (String add : parse.get(2).split(",")) {
-      add = add.replaceAll("\\]", "").replaceAll("\\[", "");
-      if (add.length() > 0) {
-        outTransitionTimes.add(Double.parseDouble(add));
+        differences.add(Double.parseDouble(add));
       }
     }
   }
@@ -553,6 +555,25 @@ public class Track implements Serializable {
    */
   public void setInTransitionTimes(ArrayList<Double> itt) {
     inTransitionTimes = itt;
+  }
+
+  /**
+   * Get the energy level differences.
+   * 
+   * @return ArrayList Differences
+   */
+  public ArrayList<Double> getDifferences() {
+    return differences;
+  }
+
+  /**
+   * Set the differences of energy levels arrayList.
+   * 
+   * @param dif
+   *          ArrayList differences
+   */
+  public void setDifferences(ArrayList<Double> dif) {
+    differences = dif;
   }
 
   /**
