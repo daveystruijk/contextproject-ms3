@@ -202,7 +202,6 @@ public class Track implements Serializable {
     }
     try {
       id3EnergyParser();
-      System.out.println("geslaagd!");
     } catch (NumberFormatException | NullPointerException e) {
       energyLevels();
       if (this.getBpm() > 0.0) {
