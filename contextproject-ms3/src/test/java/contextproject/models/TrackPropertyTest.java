@@ -34,8 +34,7 @@ public class TrackPropertyTest {
       e.printStackTrace();
     }
 
-    testProperty = new TrackProperty("testName", "testArtist",
-        "120", testKey, "0.2", testTrack, "");
+    testProperty = new TrackProperty("testName", "testArtist", "120", testKey, "0.2", testTrack, "");
 
   }
 
@@ -73,5 +72,11 @@ public class TrackPropertyTest {
   public void playingTest() {
     testProperty.setPlaying("Playing");
     assertEquals(testProperty.getPlaying(), testProperty.playingProperty().get());
+  }
+
+  @Test
+  public void energyTest() {
+    testProperty.setEnergy("Energy!");
+    assertEquals(testProperty.getEnergy(), testProperty.energyProperty().get());
   }
 }
