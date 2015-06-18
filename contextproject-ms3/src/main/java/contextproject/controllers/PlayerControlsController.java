@@ -4,11 +4,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.PlayerService;
 import contextproject.audio.TrackProcessor;
-import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -27,8 +23,6 @@ import javafx.scene.text.Text;
 import javax.sound.sampled.LineUnavailableException;
 
 public class PlayerControlsController {
-
-  static Logger log = LogManager.getLogger(PlayerControlsController.class.getName());
   @FXML
   public Button playButton;
   @FXML
@@ -54,6 +48,7 @@ public class PlayerControlsController {
   private double buttonwidth;
   private double textwidth;
   private double progresswidth;
+  private TrackProcessor tp;
   private static PropertyChangeSupport pcs;
 
   /**
@@ -85,6 +80,7 @@ public class PlayerControlsController {
    *          the track processor .
    */
   public void setPcs(TrackProcessor tp) {
+    this.tp = tp;
     pcs = new PropertyChangeSupport(tp);
     tp.setPcc(this);
     pcs.addPropertyChangeListener("progress", new PropertyChangeListener() {
@@ -112,29 +108,29 @@ public class PlayerControlsController {
           try {
             PlayerService.getInstance().pause();
           } catch (EncoderException | LineUnavailableException e) {
-            log.error("couldnt pause the player");
-            log.trace(StackTrace.stackTrace(e));
+            // TODO Auto-generated catch block
+            e.printStackTrace();
           }
         } else {
           playButton.setId("pauseButton");
           try {
             PlayerService.getInstance().resume();
           } catch (EncoderException | LineUnavailableException e) {
-            log.error("couldnt play the player");
-            log.trace(StackTrace.stackTrace(e));
+            // TODO Auto-generated catch block
+            e.printStackTrace();
           }
         }
       }
     });
   }
-
+  
   /**
    * toggles the button if a track is clicked.
    */
   public void toggleButton() {
     if (playButton.getId().equals("playButton")) {
       playButton.setId("pauseButton");
-    }
+    } 
   }
 
   /**
