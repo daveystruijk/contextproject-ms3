@@ -110,7 +110,7 @@ public class TrackProcessor implements AudioProcessor {
       return 0;
     }
   }
-  
+
   public double getTempo() {
     return tempo;
   }
@@ -145,7 +145,6 @@ public class TrackProcessor implements AudioProcessor {
     }
     setState(PlayerState.PLAYING);
   }
-
   /**
    * pauses the player.
    * 
