@@ -179,6 +179,12 @@ public class TrackProcessor implements AudioProcessor {
     gainProcessor = new GainProcessor(startGain);
     dispatcher = new CustomAudioDispatcher(tarsosStream, wsola.getInputBufferSize(),
         wsola.getOverlap());
+    ArrayList<Double> ott = track.getOutTransitionTimes();
+    if (ott.size() > 1) {
+      transitionTime = ott.get(0);
+    } else {
+      transitionTime = track.getDuration();
+    }
     progressProcessor = new ProgressProcessor(transitionTime, this.secondsToSkip, pcc);
 
     // skipProcessor makes sure that the player skips until the desired point in time.
