@@ -42,7 +42,6 @@ public class SkipAudioProcessor implements AudioProcessor {
     // If the desired point is reached,
     // stop the dispatcher thread from continuing any further.
     if (audioEvent.getTimeStamp() > secondsToSkip) {
-      callback.onFinished();
       stopped = true;
       if (waitForNotify) {
         blockThread();
@@ -58,6 +57,7 @@ public class SkipAudioProcessor implements AudioProcessor {
   public void blockThread() {
     try {
       synchronized (this) {
+        callback.onFinished();
         wait();
       }
     } catch (InterruptedException e) {
