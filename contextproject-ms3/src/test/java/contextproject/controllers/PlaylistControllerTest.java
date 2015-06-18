@@ -31,7 +31,7 @@ public class PlaylistControllerTest extends ApplicationTest {
   @Before
   public void beginTest() {
     playController = new PlaylistController();
-    URL resourceUrl = getClass().getResource("/beep.mp3");
+    URL resourceUrl = getClass().getResource("/Avicii.mp3");
     Path resourcePath;
     try {
       resourcePath = Paths.get(resourceUrl.toURI());
