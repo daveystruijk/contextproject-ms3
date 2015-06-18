@@ -23,7 +23,7 @@ public class ProgressProcessor implements AudioProcessor {
    * @param pcc
    *          the player controls controller.
    */
-  public void setUp(double duration, double skip, PlayerControlsController pcc) {
+  public ProgressProcessor(double duration, double skip, PlayerControlsController pcc) {
     this.duration = duration;
     this.skip = skip;
     this.progressPcs = pcc.getPcs();

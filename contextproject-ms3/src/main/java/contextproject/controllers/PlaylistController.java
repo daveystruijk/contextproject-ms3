@@ -34,7 +34,7 @@ public class PlaylistController {
   @FXML
   private TableColumn<TrackProperty, Double> energyColumn;
 
-  private Track playingtrack;
+  private Track playingTrack;
   private Playlist playlist;
   private PlayerControlsController playerControlsController;
 
@@ -46,7 +46,7 @@ public class PlaylistController {
     Track firstTrack = playlist.get(0);
     PlayerService.getInstance().setCurrentTrack(firstTrack);
     PlayerService.getInstance().setUpCurrentTrack();
-    playingtrack = firstTrack;
+    playingTrack = firstTrack;
     Track nextTrack = getNextTrack(firstTrack);
     prepareNextTrackTransition(nextTrack);
     updateTracks(firstTrack, nextTrack);
@@ -86,7 +86,7 @@ public class PlaylistController {
     PlayerService.getInstance().setCurrentTrack(track);
     PlayerService.getInstance().playCurrentTrack();
     playerControlsController.toggleButton();
-    playingtrack = track;
+    playingTrack = track;
   }
 
   /**
@@ -172,7 +172,7 @@ public class PlaylistController {
     if (items.isEmpty()) {
       tableView.setDisable(true);
       tableView.setOpacity(1);
-      tableView.getItems().add(new TrackProperty(null, null, null, null, null, playingtrack, null));
+      tableView.getItems().add(new TrackProperty(null, null, null, null, null, playingTrack, null));
     } else {
       tableView.setDisable(false);
       for (Track tr : items) {
@@ -214,7 +214,7 @@ public class PlaylistController {
     String bpm = "" + track.getBpm();
     MusicalKey key = track.getKey();
     String playing;
-    if (track.equals(playingtrack)) {
+    if (track.equals(playingTrack)) {
       playing = ">";
     } else {
       playing = "";
