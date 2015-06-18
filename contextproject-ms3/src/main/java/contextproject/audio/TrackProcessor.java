@@ -87,16 +87,30 @@ public class TrackProcessor implements AudioProcessor {
     this.track = track;
     this.tempo = 1.0;
     this.currentTime = 0;
-    this.transitionTime = 0;
-    ArrayList<Double> itt = track.getInTransitionTimes();
-    this.secondsToSkip = 0;
-    if (!itt.isEmpty()) {
-      this.secondsToSkip = itt.get(0);
-    }
+    this.transitionTime = getTransitonTime();
+    this.secondsToSkip = getSecondsToSkip();
     this.setupDispatcherChain(startGain, startBpm, secondsToSkip);
     setState(PlayerState.FILE_LOADED);
   }
 
+  private double getTransitonTime() {
+    ArrayList<Double> ott = track.getOutTransitionTimes();
+    if (ott.size() > 1) {
+      return ott.get(0);
+    } else {
+      return track.getDuration();
+    }
+  }
+
+  private double getSecondsToSkip() {
+    ArrayList<Double> itt = track.getInTransitionTimes();
+    if (!itt.isEmpty()) {
+      return itt.get(0);
+    } else {
+      return 0;
+    }
+  }
+  
   public double getTempo() {
     return tempo;
   }
@@ -179,12 +193,6 @@ public class TrackProcessor implements AudioProcessor {
     gainProcessor = new GainProcessor(startGain);
     dispatcher = new CustomAudioDispatcher(tarsosStream, wsola.getInputBufferSize(),
         wsola.getOverlap());
-    ArrayList<Double> ott = track.getOutTransitionTimes();
-    if (ott.size() > 1) {
-      transitionTime = ott.get(0);
-    } else {
-      transitionTime = track.getDuration();
-    }
     progressProcessor = new ProgressProcessor(transitionTime, this.secondsToSkip, pcc);
 
     // skipProcessor makes sure that the player skips until the desired point in time.
