@@ -1,8 +1,7 @@
 package contextproject.controllers;
 
-import static org.junit.Assert.fail;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import contextproject.App;
 import contextproject.audio.PlayerService;
@@ -16,11 +15,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-//import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -28,9 +23,9 @@ import javafx.stage.Stage;
 
 public class PlayerControlsControllerTest extends ApplicationTest {
 
-  private Scene scene2;
   private Track track;
   private Track track2;
+  
   @Test
   public void test() {
     PlayerControlsController controller = new PlayerControlsController();
