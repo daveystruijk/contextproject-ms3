@@ -117,7 +117,6 @@ public class App extends Application {
       }
     } catch (Exception e) {
       log.fatal(e.getMessage(), e);
-      e.printStackTrace();
       System.exit(-1);
     }
   }
