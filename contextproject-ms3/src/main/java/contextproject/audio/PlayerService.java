@@ -98,11 +98,19 @@ public class PlayerService {
    * is not prepared for transition yet, this method will throw an exception.
    */
   public void setupTransition(TransitionDoneCallback callback) {
-    ArrayList<Double> ott = currentTrack.getOutTransitionTimes();
-    double transitionTime = currentTrack.getDuration();
-    if (ott.size() > 1) {
+    ArrayList<Double> ott = currentProcessor.getTrack().getOutTransitionTimes();
+    ArrayList<Double> itt = currentProcessor.getTrack().getInTransitionTimes();
+    double transitionTime = currentProcessor.getTrack().getDuration();
+    if (!ott.isEmpty() && !itt.isEmpty() && ott.get(0) > itt.get(0)) {
+      transitionTime = ott.get(0);
+    }
+    else if (itt.isEmpty() && !ott.isEmpty()) {
+      transitionTime = ott.get(0);
+    }
+    else if (ott.size() > 1) {
       transitionTime = ott.get(1);
     }
+    
     currentProcessor.setupTransition(transitionTime, new FadeInOutTransition(currentProcessor,
         nextProcessor, new TransitionDoneCallback() {
 

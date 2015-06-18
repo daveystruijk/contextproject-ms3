@@ -38,7 +38,7 @@ public class ProgressProcessor implements AudioProcessor {
       double newValue = (currentTime / duration) - offset;
       progress = newValue;
       if (newValue < 0) {
-        progressPcs.firePropertyChange("progress", oldValue, 0);
+        progressPcs.firePropertyChange("progress", oldValue, 0.0);
         return true;
       } else {
         progressPcs.firePropertyChange("progress", oldValue, newValue);
