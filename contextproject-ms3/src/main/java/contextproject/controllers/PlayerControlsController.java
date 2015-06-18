@@ -1,6 +1,14 @@
 package contextproject.controllers;
 
+import be.tarsos.transcoder.ffmpeg.EncoderException;
+
+import contextproject.audio.PlayerService;
+import contextproject.audio.TrackProcessor;
 import contextproject.models.Track;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,9 +20,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import javax.sound.sampled.LineUnavailableException;
+
 public class PlayerControlsController {
   @FXML
-  public Button pauseButton;
+  public Button playButton;
   @FXML
   public ProgressBar musicBar;
   @FXML
@@ -38,6 +48,8 @@ public class PlayerControlsController {
   private double buttonwidth;
   private double textwidth;
   private double progresswidth;
+  private TrackProcessor tp;
+  private static PropertyChangeSupport pcs;
 
   /**
    * . initialize the controller
@@ -58,25 +70,67 @@ public class PlayerControlsController {
     currentTrack.setEditable(false);
     nextTrack.setEditable(false);
     musicBar.progressProperty().set(0);
+
     togglePlayPause();
+  }
+  /**
+   * set the propertychangesupport for the progresbar so it will be updated in real time.
+   * 
+   * @param tp
+   *          the track processor .
+   */
+  public void setPcs(TrackProcessor tp) {
+    this.tp = tp;
+    pcs = new PropertyChangeSupport(tp);
+    tp.setPcc(this);
+    pcs.addPropertyChangeListener("progress", new PropertyChangeListener() {
+
+      @Override
+      public void propertyChange(PropertyChangeEvent evt) {
+        musicBar.progressProperty().set((double) evt.getNewValue());
+      }
+    });
+  }
+
+  public PropertyChangeSupport getPcs() {
+    return pcs;
   }
 
   /**
    * Toggles the button.
    */
   public void togglePlayPause() {
-    pauseButton.setOnAction(new EventHandler<ActionEvent>() {
+    playButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        if (pauseButton.getId().equals("pauseButton")) {
-          pauseButton.setId("playButton");
-          //PlayerService.getInstance().pause();
+        if (playButton.getId().equals("pauseButton")) {
+          playButton.setId("playButton");
+          try {
+            PlayerService.getInstance().pause();
+          } catch (EncoderException | LineUnavailableException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
         } else {
-          //PlayerService.getInstance().resume();
-          pauseButton.setId("pauseButton");
+          playButton.setId("pauseButton");
+          try {
+            PlayerService.getInstance().resume();
+          } catch (EncoderException | LineUnavailableException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
         }
       }
     });
+  }
+  
+  /**
+   * toggles the button if a track is clicked.
+   */
+  public void toggleButton() {
+    if (playButton.getId().equals("playButton")) {
+      playButton.setId("pauseButton");
+    } 
   }
 
   /**

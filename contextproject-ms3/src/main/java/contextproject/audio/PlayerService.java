@@ -4,11 +4,12 @@ import be.tarsos.transcoder.Attributes;
 import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
+import contextproject.App;
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.audio.transitions.FadeInOutTransition;
+import contextproject.controllers.PlayerControlsController;
 import contextproject.helpers.StackTrace;
-import contextproject.loaders.LibraryLoader;
 import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,17 +21,16 @@ import javax.sound.sampled.LineUnavailableException;
 
 public class PlayerService {
   private static PlayerService instance = null;
-  private static Logger log = LogManager.getLogger(LibraryLoader.class.getName());
+  private static Logger log = LogManager.getLogger(PlayerService.class.getName());
 
   private TrackProcessor currentProcessor;
   private TrackProcessor nextProcessor;
-  // private Thread currentAudioProgress;
-  // private Thread nextAudioProgress;
-
+  private PlayerControlsController pcc;
   private Attributes attributes;
 
   private Track currentTrack;
   private Track nextTrack;
+  private boolean nextRunning = false;
 
   private static final int SAMPLE_RATE = 44100;
 
@@ -45,10 +45,19 @@ public class PlayerService {
    * currently, and we want to start the mix with an initial track.
    */
   public void playCurrentTrack() {
+    setUpCurrentTrack();
+    currentProcessor.play();
+  }
+  /**
+   * sets up the current track.
+   */
+  public void setUpCurrentTrack() {
     if (currentProcessor != null) {
       currentProcessor.unload();
     }
     currentProcessor = new TrackProcessor(attributes);
+    pcc = App.getController().getPlayerControlsController();
+    pcc.setPcs(currentProcessor);
 
     try {
       currentProcessor.load(currentTrack, 1.0, 1.0);
@@ -66,8 +75,6 @@ public class PlayerService {
         log.trace(StackTrace.stackTrace(e));
       }
     }
-
-    currentProcessor.play();
   }
 
   /**
@@ -77,6 +84,7 @@ public class PlayerService {
   public void prepareNextTrack(Track newTrack) {
     this.nextTrack = newTrack;
     nextProcessor = new TrackProcessor(attributes);
+    pcc.setPcs(nextProcessor);
     try {
       nextProcessor.load(nextTrack, 1.0, 1.0);
     } catch (EncoderException | LineUnavailableException e) {
@@ -138,5 +146,37 @@ public class PlayerService {
       }
     }
     return instance;
+  }
+  
+  /**
+   * pauses the track processors.
+   * @throws EncoderException encode error.
+   * @throws LineUnavailableException line error.
+   */
+  public void pause() throws EncoderException, LineUnavailableException {
+    if (currentProcessor.getState() == PlayerState.PLAYING) {
+      currentProcessor.pause();
+    }
+    if (nextProcessor.getState() == PlayerState.PLAYING) {
+      nextProcessor.pause();
+      nextRunning = true;
+    } else {
+      nextRunning = false;
+    }
+  }
+  
+  /**
+   * resumes the track processors.
+   * @throws EncoderException encode error.
+   * @throws LineUnavailableException line error.
+   */
+  public void resume() throws EncoderException, LineUnavailableException {
+    if (currentProcessor.getState() == PlayerState.READY) {
+      currentProcessor.play();
+    }
+    if (nextProcessor.getState() == PlayerState.READY && nextRunning == true) {
+      nextProcessor.play();
+    }
+      
   }
 }

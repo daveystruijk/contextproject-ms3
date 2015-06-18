@@ -14,6 +14,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.SkipAudioProcessor.SkipAudioProcessorCallback;
 import contextproject.audio.transitions.BaseTransition;
+import contextproject.controllers.PlayerControlsController;
 import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
 
@@ -33,7 +34,7 @@ public class TrackProcessor implements AudioProcessor {
   private static Logger log = LogManager.getLogger(TrackProcessor.class.getName());
 
   private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
+  private PlayerControlsController pcc;
   // State
   private PlayerState state;
   private Track track;
@@ -50,9 +51,12 @@ public class TrackProcessor implements AudioProcessor {
   private GainProcessor gainProcessor;
   private CustomAudioDispatcher dispatcher;
   private SkipAudioProcessor skipProcessor;
+  private ProgressProcessor progressProcessor;
+  private Thread thread;
 
   private double tempo;
   private double currentTime;
+  private double secondsToSkip;
 
   private double transitionTime;
   private BaseTransition transition;
@@ -84,7 +88,12 @@ public class TrackProcessor implements AudioProcessor {
     this.tempo = 1.0;
     this.currentTime = 0;
     this.transitionTime = 0;
-    this.setupDispatcherChain(startGain, startBpm);
+    ArrayList<Double> itt = track.getInTransitionTimes();
+    this.secondsToSkip = 0;
+    if (!itt.isEmpty()) {
+      this.secondsToSkip = itt.get(0);
+    }
+    this.setupDispatcherChain(startGain, startBpm, secondsToSkip);
     setState(PlayerState.FILE_LOADED);
   }
 
@@ -123,6 +132,24 @@ public class TrackProcessor implements AudioProcessor {
     setState(PlayerState.PLAYING);
   }
 
+  /**
+   * pauses the player.
+   * 
+   * @throws LineUnavailableException
+   *           line error.
+   * @throws EncoderException
+   *           encode error.
+   */
+  public void pause() throws EncoderException, LineUnavailableException {
+    if (this.state != PlayerState.PLAYING) {
+      throw new IllegalStateException("Track processor is not even playing");
+    }
+    thread.stop();
+    dispatcher.stop();
+    this.setupDispatcherChain(1.0, 1.0, currentTime);
+    setState(PlayerState.PAUSED);
+  }
+
   public void setGain(double gain) {
     gainProcessor.setGain(gain);
   }
@@ -131,13 +158,17 @@ public class TrackProcessor implements AudioProcessor {
    * Initializes and starts the dispatcher chain so the player can play. This method is called when
    * a track is first loaded (this.load()).
    * 
-   * @param startGain start gain
-   * @param startBpm start BPM
-   * @throws EncoderException encode error
-   * @throws LineUnavailableException line error
+   * @param startGain
+   *          start gain
+   * @param startBpm
+   *          start BPM
+   * @throws EncoderException
+   *           encode error
+   * @throws LineUnavailableException
+   *           line error
    */
-  private void setupDispatcherChain(double startGain, double startBpm) throws EncoderException,
-      LineUnavailableException {
+  private void setupDispatcherChain(double startGain, double startBpm, double secondsToSkip)
+      throws EncoderException, LineUnavailableException {
     // Initialize the correct stream objects from file
     inputStream = Streamer.stream(track.getPath(), attributes);
     tarsosStream = new JVMAudioInputStream(inputStream);
@@ -148,15 +179,11 @@ public class TrackProcessor implements AudioProcessor {
     gainProcessor = new GainProcessor(startGain);
     dispatcher = new CustomAudioDispatcher(tarsosStream, wsola.getInputBufferSize(),
         wsola.getOverlap());
+    progressProcessor = new ProgressProcessor(transitionTime, this.secondsToSkip, pcc);
 
     // skipProcessor makes sure that the player skips until the desired point in time.
     // After that, we set our processor state to READY, so this.play can be called.
     final TrackProcessor thisProcessor = this;
-    ArrayList<Double> itt = track.getInTransitionTimes();
-    double secondsToSkip = 0;
-    if (!itt.isEmpty()) {
-      secondsToSkip = itt.get(0);
-    }
     skipProcessor = new SkipAudioProcessor(secondsToSkip, true, new SkipAudioProcessorCallback() {
       @Override
       public void onFinished() {
@@ -170,8 +197,9 @@ public class TrackProcessor implements AudioProcessor {
     wsola.setDispatcher(dispatcher);
     dispatcher.addAudioProcessor(wsola);
     dispatcher.addAudioProcessor(gainProcessor);
+    dispatcher.addAudioProcessor(progressProcessor);
     dispatcher.addAudioProcessor(audioPlayer);
-    Thread thread = new Thread(dispatcher);
+    thread = new Thread(dispatcher);
     thread.start();
   }
 
@@ -204,8 +232,11 @@ public class TrackProcessor implements AudioProcessor {
 
   /**
    * Set up a transition.
-   * @param transitionTime time to transit
-   * @param transition the transition
+   * 
+   * @param transitionTime
+   *          time to transit
+   * @param transition
+   *          the transition
    */
   public void setupTransition(double transitionTime, BaseTransition transition) {
     this.transitionTime = transitionTime;
@@ -224,7 +255,6 @@ public class TrackProcessor implements AudioProcessor {
       new Thread(transition).start();
       hasTransitioned = true;
     }
-
     return true;
   }
 
@@ -234,5 +264,9 @@ public class TrackProcessor implements AudioProcessor {
 
   public Track getTrack() {
     return track;
+  }
+
+  public void setPcc(PlayerControlsController pcc) {
+    this.pcc = pcc;
   }
 }

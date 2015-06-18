@@ -41,6 +41,7 @@ public class PlaylistControllerTest extends ApplicationTest {
       e.printStackTrace();
     }
   }
+  
   @Override
   public void start(Stage stage) throws Exception {
     // TODO Auto-generated method stub
@@ -56,24 +57,25 @@ public class PlaylistControllerTest extends ApplicationTest {
   @Test
   public void propTest() {
     assertNotEquals(playController.setProp(track),
-        new TrackProperty(track.getTitle(), track.getArtist(), track.getBpm(), track.getKey(),
-            track.getAverageEnergy(), track));
+        new TrackProperty(track.getTitle(), track.getArtist(),"" + track.getBpm(), track.getKey(),
+           "" + track.getAverageEnergy(), track, ""));
   }
 
   @Test
   public void propTestNullTitle() {
     track.setTitle(null);
     assertNotEquals(playController.setProp(track),
-        new TrackProperty(track.getTitle(), track.getArtist(), track.getBpm(), track.getKey(),
-            track.getAverageEnergy(), track));
+        new TrackProperty(track.getTitle(), track.getArtist(),"" + track.getBpm(), track.getKey(),
+            "" + track.getAverageEnergy(), track, ""));
   }
 
   @Test
   public void propTestNullAlbum() {
     track.setArtist(null);
     assertNotEquals(playController.setProp(track),
-        new TrackProperty(track.getTitle(), track.getArtist(), track.getBpm(), track.getKey(),
-            track.getAverageEnergy(), track));
+        new TrackProperty(track.getTitle(), track.getArtist(),"" + track.getBpm(), track.getKey(),
+            "" + track.getAverageEnergy(), track, ""));
+
   }
 
   @Test
@@ -89,7 +91,10 @@ public class PlaylistControllerTest extends ApplicationTest {
   public void startTest() {
     WindowController window = App.getController();
     PlaylistController playController = window.getPlaylistController();
-    playController.begin(window.getPlayerControlsController(), App.getScene());
-    doubleClickOn(App.getScene().getWidth() / 4, App.getScene().getHeight() / 12);
+    Playlist playlist = new Playlist();
+    playlist.add(track);
+    playController.setPlaylist(playlist);
+//    playController.begin(window.getPlayerControlsController(), App.getScene());
+//    doubleClickOn(App.getScene().getWidth() / 4, App.getScene().getHeight() / 12);
   }
 }

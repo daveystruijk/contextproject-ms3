@@ -2,8 +2,8 @@
   -fx-min-width: 50.0px;
   -fx-min-height: 50.0px;
   -fx-background-color: transparent;
-	-fx-background-image: url('../images/controls_play.png');
-	-fx-padding: 10.0 10.0;
+  -fx-background-image: url('../images/controls_play.png');
+  -fx-padding: 10.0 10.0;
 }
 
 #playButton:hover {
@@ -11,12 +11,12 @@
 }
 
 #pauseButton {
-	-fx-min-width: 50.0px;
-    -fx-min-height: 50.0px;
-     -fx-background-color: transparent;
-     -fx-background-image: url('../images/controls_pause.png'); 
-     -fx-padding: 10.0 10.0;   
-     -fx-visibility:hidden;
+  -fx-min-width: 50.0px;
+  -fx-min-height: 50.0px;
+  -fx-background-color: transparent;
+  -fx-background-image: url('../images/controls_pause.png'); 
+  -fx-padding: 10.0 10.0;   
+  -fx-visibility:hidden;
 }
 #pauseButton:hover {
 	-fx-background-image: url('../images/controls_pause_hover.png'); 
@@ -29,4 +29,5 @@
 }
 .text-field {
     -fx-text-box-border: transparent; 
+    -fx-background-color:transparent;
 }

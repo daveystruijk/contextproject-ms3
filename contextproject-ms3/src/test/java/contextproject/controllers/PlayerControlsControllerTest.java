@@ -1,16 +1,20 @@
 package contextproject.controllers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import contextproject.App;
+import contextproject.audio.PlayerService;
 import contextproject.models.Track;
 
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -19,8 +23,9 @@ import javafx.stage.Stage;
 
 public class PlayerControlsControllerTest extends ApplicationTest {
 
-  private Scene scene2;
-
+  private Track track;
+  private Track track2;
+  
   @Test
   public void test() {
     PlayerControlsController controller = new PlayerControlsController();
@@ -36,9 +41,20 @@ public class PlayerControlsControllerTest extends ApplicationTest {
 
   @Test
   public void updateTest() {
+    URL resourceUrl = getClass().getResource("/beep.mp3");
+    Path resourcePath;
+    try {
+      resourcePath = Paths.get(resourceUrl.toURI());
+      track = new Track(resourcePath.toString());
+      track2 = new Track(resourcePath.toString());
+    } catch (URISyntaxException e) {
+      fail("file wans't read correctly");
+      e.printStackTrace();
+    }
+//    PlayerService.getInstance().setCurrentTrack(track);
+//    PlayerService.getInstance().setUpCurrentTrack();
+//    PlayerService.getInstance().prepareNextTrack(track2);
     PlayerControlsController controller = new PlayerControlsController();
-    Track track = new Track();
-    track.setTitle("Just to be sure");
     controller.currentTrack = new TextField();
     controller.nextTrack = new TextField();
     controller.update(track, track);
@@ -47,13 +63,13 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     controller.curbox = new HBox();
     controller.nextbox = new HBox();
     controller.musicBar = new ProgressBar();
-    controller.pauseButton = new Button();
+    controller.playButton = new Button();
     controller.initialize(App.getScene().getWidth());
     controller.setProgress(0.45);
-    controller.pauseButton.setId("pauseButton");
-    controller.pauseButton.fire();
-    controller.pauseButton.fire();
-    assertEquals(controller.pauseButton.getId(), "pauseButton");
+    controller.playButton.setId("playButton");
+//    controller.playButton.fire();
+//    controller.playButton.fire();
+    assertEquals(controller.playButton.getId(), "playButton");
   }
 
 }

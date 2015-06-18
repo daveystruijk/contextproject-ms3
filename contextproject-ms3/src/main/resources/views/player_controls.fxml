@@ -22,7 +22,7 @@
   <VBox>
    <HBox>
   <HBox fx:id = "buttonbox1" ></HBox>
-  <Button fx:id="pauseButton" >
+  <Button fx:id="playButton" >
   </Button>
   <HBox fx:id = "buttonbox2" ></HBox>
   </HBox>
