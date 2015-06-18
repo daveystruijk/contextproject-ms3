@@ -227,7 +227,7 @@ public class Track implements Serializable {
   public void calculateTransitions() {
     inTransitionTimes = new ArrayList<Double>();
     outTransitionTimes = new ArrayList<Double>();
-    double min = -(averageEnergy * 0.4);
+    double min = -(averageEnergy * 0.35);
     double secondsPerFourBars = 60.0f / this.getBpm() * 16;
     for (int i = 0; i < differences.size(); i++) {
       if (differences.get(i) < min && ((i + 2) * secondsPerFourBars) > (0.2 * this.duration)
