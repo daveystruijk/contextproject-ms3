@@ -88,7 +88,7 @@ public class Track implements Serializable {
     getMetadata();
 
     if (writeNewEnergyTag) {
-      id3EnergyWiriter();
+      id3EnergyWriter();
     }
   }
 
@@ -275,7 +275,7 @@ public class Track implements Serializable {
   /**
    * Write average energy, intro and outro transitions to id3 tag.
    */
-  public void id3EnergyWiriter() {
+  public void id3EnergyWriter() {
     try {
       String res = averageEnergy + "/" + differences.toString();
 
