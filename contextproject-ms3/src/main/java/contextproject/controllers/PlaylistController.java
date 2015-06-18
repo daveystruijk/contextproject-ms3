@@ -69,8 +69,8 @@ public class PlaylistController {
     Track selectedTrack = getSelectedTrack();
     Track nextTrack = getNextTrack(selectedTrack);
 
-    prepareNextTrackTransition(nextTrack);
     playTrack(selectedTrack);
+    prepareNextTrackTransition(nextTrack);
     updateTracks(selectedTrack, nextTrack);
   }
 
