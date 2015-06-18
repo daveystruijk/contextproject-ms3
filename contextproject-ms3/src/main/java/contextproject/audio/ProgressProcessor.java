@@ -31,12 +31,12 @@ public class ProgressProcessor implements AudioProcessor {
 
   @Override
   public boolean process(AudioEvent audioEvent) {
-    if (progress < 1) {
+    if (progress < 0.99) {
       double currentTime = audioEvent.getTimeStamp();
       double oldValue = progress;
-      double offset = (skip / currentTime);
-      double newValue = (currentTime / duration) - offset;
+      double newValue = (currentTime - skip) / (duration - skip);
       progress = newValue;
+      System.out.println("skip:" + skip + "curtime: " + currentTime + "progress: " + progress);
       if (newValue < 0) {
         progressPcs.firePropertyChange("progress", oldValue, 0.0);
         return true;
