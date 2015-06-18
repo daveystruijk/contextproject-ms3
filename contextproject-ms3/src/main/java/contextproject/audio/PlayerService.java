@@ -5,6 +5,7 @@ import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.TrackProcessor.PlayerState;
+import contextproject.audio.transitions.BaseTransition;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.audio.transitions.FadeInOutTransition;
 import contextproject.helpers.StackTrace;
@@ -92,11 +93,12 @@ public class PlayerService {
   public void setupTransition(TransitionDoneCallback callback) {
     ArrayList<Double> ott = currentTrack.getOutTransitionTimes();
     double transitionTime = currentTrack.getDuration();
-    if(ott.size() > 1) {
+    if (ott.size() > 1) {
       transitionTime = ott.get(1);
     }
-    currentProcessor.setupTransition(transitionTime, new FadeInOutTransition(currentProcessor,
-        nextProcessor, new TransitionDoneCallback() {
+    
+    BaseTransition transition = new FadeInOutTransition(currentProcessor, nextProcessor,
+        new TransitionDoneCallback() {
 
           @Override
           public void onFinished() {
@@ -104,7 +106,9 @@ public class PlayerService {
             currentProcessor = nextProcessor;
             callback.onFinished();
           }
-        }));
+        });
+    BaseTransition.syncTempo(currentProcessor, nextProcessor);
+    currentProcessor.setupTransition(transitionTime, transition);
   }
 
   public Track getCurrentTrack() {

@@ -39,4 +39,11 @@ public abstract class BaseTransition implements Runnable {
   }
   
   public abstract void begin(TrackProcessor from, TrackProcessor to);
+  
+  public static void syncTempo(TrackProcessor master, TrackProcessor slave) {
+    double percentage = master.getTrack().getBpm() / slave.getTrack().getBpm();
+    slave.setTempo(percentage);
+    log.info("Set tempo from " + slave.getTrack().getBpm() + " to "
+        + master.getTrack().getBpm() + " (" + percentage * 100 + "%)");
+  }
 }
