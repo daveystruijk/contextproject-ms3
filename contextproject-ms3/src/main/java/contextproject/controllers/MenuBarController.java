@@ -1,6 +1,7 @@
 package contextproject.controllers;
 
 import contextproject.App;
+import contextproject.AppConfig;
 import contextproject.helpers.FileName;
 import contextproject.helpers.TextFileReader;
 import contextproject.loaders.FolderLoader;
@@ -65,7 +66,7 @@ public class MenuBarController {
     String playlistname = FileName.getName(directory);
     Playlist playlist = folderLoader.load();
     PlaylistSorter sorter;
-    if (App.getMaxFlowSorter()) {
+    if (AppConfig.maxFlowSorter) {
       sorter = new MaximumFlowPlaylistSorter();
     } else {
       sorter = new GreedyPlaylistSorter();
@@ -90,6 +91,7 @@ public class MenuBarController {
     dialog.setScene(dialogScene);
     dialog.show();
   }
+  
   @FXML
   protected void aboutUsButtonAction(ActionEvent event) {
     final Stage dialog = new Stage();
@@ -102,7 +104,7 @@ public class MenuBarController {
       text = text + line + "\n";
     }
     dialogVbox.getChildren().add(new Text(text));
-    Scene dialogScene = new Scene(dialogVbox, 550, 500);
+    Scene dialogScene = new Scene(dialogVbox, 550, 80);
     dialog.setScene(dialogScene);
     dialog.show();
   }

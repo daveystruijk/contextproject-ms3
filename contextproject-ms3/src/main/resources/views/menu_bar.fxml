@@ -18,7 +18,7 @@
     </MenuItem>
   </Menu>
   <Menu fx:id="about" text="About">
-  <MenuItem fx:id="us" text="About us" onAction="#aboutUsbuttonAction"></MenuItem>
+  <MenuItem fx:id="us" text="About us" onAction="#aboutUsButtonAction"></MenuItem>
   <MenuItem fx:id="help" text="Help" onAction="#helpButtonAction"></MenuItem>
   </Menu>
   

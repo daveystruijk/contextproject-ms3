@@ -43,7 +43,6 @@ public class App extends Application {
   private int screenWidth;
   private int screenHeight;
   private static Scene scene;
-  private static boolean maxFlowSorter = true;
   private static Stage stage;
 
   @FXML
@@ -103,7 +102,7 @@ public class App extends Application {
         String playlistname = FileName.getName(directory);
         Playlist playlist = folderLoader.load();
         PlaylistSorter sorter;
-        if (maxFlowSorter) {
+        if (AppConfig.maxFlowSorter) {
           sorter = new MaximumFlowPlaylistSorter();
         } else {
           sorter = new GreedyPlaylistSorter();
@@ -170,9 +169,6 @@ public class App extends Application {
 
   }
   
-  public static boolean getMaxFlowSorter() {
-    return maxFlowSorter;
-  }
   public static Stage getStage() {
     return App.stage;
   }
