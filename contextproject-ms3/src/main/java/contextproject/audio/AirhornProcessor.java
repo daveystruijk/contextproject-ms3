@@ -1,10 +1,12 @@
 package contextproject.audio;
 
 import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.GainProcessor;
 import be.tarsos.dsp.io.TarsosDSPAudioInputStream;
 import be.tarsos.dsp.io.jvm.AudioPlayer;
 import be.tarsos.dsp.io.jvm.JVMAudioInputStream;
 import be.tarsos.transcoder.Attributes;
+import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
@@ -33,6 +35,15 @@ public class AirhornProcessor {
   private AudioPlayer audioPlayer;
   private AudioDispatcher dispatcher;
 
+  private static Track airhornTrack = null;
+  public static Track getAirhornTrack() {
+    if (airhornTrack == null) {
+      airhornTrack = new Track(AirhornProcessor.class.getClass()
+          .getResource("/samples/airhorn.mp3").getPath());
+    }
+    return airhornTrack;
+  }
+  
   /**
    * This class plays an airhorn sample.
    * 
@@ -41,11 +52,11 @@ public class AirhornProcessor {
    * @throws LineUnavailableException
    *           line error.
    */
-  public AirhornProcessor(Attributes attributes, Track track) {
-    this.track = track;
-
+  public AirhornProcessor() {
+    attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
+    attributes.setSamplingRate(44100);
+    this.track = getAirhornTrack();
     try {
-      this.attributes = attributes;
       this.format = Streamer.streamAudioFormat(attributes);
     } catch (EncoderException e) {
       log.error("Airhorn processor encoder exception");
@@ -68,8 +79,10 @@ public class AirhornProcessor {
 
     // Initialize audio processors
     audioPlayer = new AudioPlayer(format);
+    GainProcessor gainProcessor = new GainProcessor(0.8f);
     dispatcher = new AudioDispatcher(tarsosStream, 2048, 0);
     dispatcher.addAudioProcessor(audioPlayer);
+    dispatcher.addAudioProcessor(gainProcessor);
     Thread thread = new Thread(dispatcher);
     thread.start();
   }

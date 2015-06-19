@@ -50,8 +50,7 @@ public class App extends Application {
    * This will start our app with a graphical user interface.
    */
   public static void main(String[] args) {
-    boolean gui = true;
-    if (gui == true) {
+    if (AppConfig.gui == true) {
       launch(args);
     } else {
       CliController control = new CliController();
