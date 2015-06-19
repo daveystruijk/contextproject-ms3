@@ -142,9 +142,12 @@ public class PlaylistController {
    * Updates the GUI to show what track is playing and what will be next.
    */
   private void updateTracks(Track track, Track nextTrack) {
-    playerControlsController.update(track, nextTrack);
+    playerControlsController.update(track.getTitle(), nextTrack.getTitle());
     setPlayingIndicator(track, ">");
-
+  }
+  
+  private void updateTracks() {
+    playerControlsController.update("","");
   }
 
   /**
@@ -173,6 +176,7 @@ public class PlaylistController {
       tableView.setDisable(true);
       tableView.setOpacity(1);
       tableView.getItems().add(new TrackProperty(null, null, null, null, null, playingTrack, null));
+      updateTracks();
     } else {
       tableView.setDisable(false);
       for (Track tr : items) {
