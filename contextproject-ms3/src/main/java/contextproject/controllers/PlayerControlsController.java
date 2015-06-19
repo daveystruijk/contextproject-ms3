@@ -5,7 +5,6 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 import contextproject.audio.PlayerService;
 import contextproject.audio.TrackProcessor;
 import contextproject.helpers.StackTrace;
-import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
