@@ -57,9 +57,11 @@ public class FadeInOutTransition extends BaseTransition {
         outTransitionTimes.add((index + 2) * secondsPerFourBars);
       }
     }
-    if (outTransitionTimes.isEmpty() && index > 5) {
+    // If outTransitionTimes is empty the song won't go to the next song, so it has to have at least 1 element,
+    // however, if it has an element but it is the same as the inTransitionTimes, then it won't go to the next either.
+    if (index > 5) {
       outTransitionTimes.add((index - 5) * secondsPerFourBars);
-    } else if (outTransitionTimes.isEmpty()) {
+    } else {
       outTransitionTimes.add(index * secondsPerFourBars);
     }
     track.setOutTransitionTimes(outTransitionTimes);
