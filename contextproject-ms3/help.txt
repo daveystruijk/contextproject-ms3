@@ -1,0 +1,4 @@
+On the left there are your playlists.
+To add one click on file then import Folder.
+On the right there are all the songs in your playlist.
+You can start a track by either dubbelclicking a track, or clicking the playbutton.
