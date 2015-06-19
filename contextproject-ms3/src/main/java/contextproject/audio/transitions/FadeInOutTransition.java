@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class FadeInOutTransition extends BaseTransition {
   private static Logger log = LogManager.getLogger(FadeInOutTransition.class.getName());
 
-  
   /**
    * In out fader transition.
    * 
@@ -23,7 +22,7 @@ public class FadeInOutTransition extends BaseTransition {
    * @param callback
    *          transition callback
    */
-  public FadeInOutTransition(TrackProcessor from, TrackProcessor to, 
+  public FadeInOutTransition(TrackProcessor from, TrackProcessor to,
       TransitionDoneCallback callback) {
     super(from, to, callback);
   }
@@ -44,7 +43,7 @@ public class FadeInOutTransition extends BaseTransition {
       }
     }
   }
-  
+
   @Override
   public void determineOutTime(Track track) {
     ArrayList<Double> outTransitionTimes = new ArrayList<Double>();
@@ -58,12 +57,14 @@ public class FadeInOutTransition extends BaseTransition {
         outTransitionTimes.add((index + 2) * secondsPerFourBars);
       }
     }
-    if (outTransitionTimes.size() == 0) {
+    if (outTransitionTimes.isEmpty() && index > 5) {
       outTransitionTimes.add((index - 5) * secondsPerFourBars);
+    } else if (outTransitionTimes.isEmpty()) {
+      outTransitionTimes.add(index * secondsPerFourBars);
     }
     track.setOutTransitionTimes(outTransitionTimes);
   }
-  
+
   @Override
   public void determineInTime(Track track) {
     ArrayList<Double> inTransitionTimes = new ArrayList<Double>();
