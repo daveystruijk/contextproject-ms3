@@ -1,6 +1,5 @@
 package contextproject.audio;
 
-import contextproject.models.Track;
 
 import be.tarsos.transcoder.Attributes;
 import static org.junit.Assert.assertEquals;
