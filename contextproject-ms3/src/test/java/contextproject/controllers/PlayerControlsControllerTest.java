@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import contextproject.App;
-import contextproject.audio.PlayerService;
 import contextproject.audio.TrackProcessor;
 import contextproject.models.Track;
 

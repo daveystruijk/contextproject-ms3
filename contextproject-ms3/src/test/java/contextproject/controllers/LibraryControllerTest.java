@@ -7,7 +7,6 @@ import contextproject.models.Playlist;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
-import org.testfx.api.FxRobot;
 import org.testfx.framework.junit.ApplicationTest;
 
 import javafx.stage.Stage;

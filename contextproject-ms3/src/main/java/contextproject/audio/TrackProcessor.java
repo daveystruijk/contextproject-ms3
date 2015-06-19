@@ -153,6 +153,7 @@ public class TrackProcessor implements AudioProcessor {
    * @throws EncoderException
    *           encode error.
    */
+  @SuppressWarnings("deprecation")
   public void pause() throws EncoderException, LineUnavailableException {
     if (this.state != PlayerState.PLAYING) {
       throw new IllegalStateException("Track processor is not even playing");
