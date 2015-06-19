@@ -79,4 +79,11 @@ public class TrackPropertyTest {
     testProperty.setEnergy("Energy!");
     assertEquals(testProperty.getEnergy(), testProperty.energyProperty().get());
   }
+
+  @Test
+  public void testNullEnergy() {
+    TrackProperty nullString = new TrackProperty("title", "artist", "bpm", new MusicalKey("11A"),
+        null, new Track(), "playing");
+    assertEquals(nullString.getEnergy(),null);
+  }
 }
