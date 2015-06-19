@@ -2,6 +2,7 @@ package contextproject.controllers;
 
 import contextproject.App;
 
+import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import javafx.stage.Stage;
@@ -12,5 +13,6 @@ public class MenuBarControllerTest extends ApplicationTest {
   public void start(Stage stage) throws Exception {
     App ap = new App();
     ap.setUp(stage);
+    MenuBarController menu = new MenuBarController();
   }
 }

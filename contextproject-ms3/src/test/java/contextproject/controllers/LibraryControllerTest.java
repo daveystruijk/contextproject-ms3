@@ -70,6 +70,7 @@ public class LibraryControllerTest extends ApplicationTest {
     play.setName("TestName");
     lib.add(play);
     libController.setLibrary(lib);
+    libController.deletePlaylist();
   }
 
 }
