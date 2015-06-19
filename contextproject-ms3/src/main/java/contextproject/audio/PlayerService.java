@@ -5,10 +5,12 @@ import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.App;
+import contextproject.AppConfig;
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
 import contextproject.audio.transitions.EscalatieTransition;
+import contextproject.audio.transitions.TransitionFactory;
 import contextproject.controllers.PlayerControlsController;
 import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
@@ -46,7 +48,8 @@ public class PlayerService {
    * currently, and we want to start the mix with an initial track.
    */
   public void playCurrentTrack() {
-    new EscalatieTransition(null, null, null).determineInTime(currentProcessor.getTrack());
+    new TransitionFactory().createTransition(null, null, null).determineInTime(
+        currentProcessor.getTrack());
     setUpCurrentTrack();
     currentProcessor.play();
   }
@@ -100,8 +103,8 @@ public class PlayerService {
    * is not prepared for transition yet, this method will throw an exception.
    */
   public void setupTransition(TransitionDoneCallback callback) {
-    BaseTransition transition = new EscalatieTransition(currentProcessor, nextProcessor,
-        new TransitionDoneCallback() {
+    BaseTransition transition = new TransitionFactory().createTransition(currentProcessor,
+        nextProcessor, new TransitionDoneCallback() {
           @Override
           public void onFinished() {
             currentProcessor.unload();
