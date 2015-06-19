@@ -27,7 +27,8 @@ public class TextFileReader {
       }
       br.close();
     } catch (IOException ex) {
-      log.error("couldn't read file");;
+      log.error("couldn't read file");
+      log.trace(StackTrace.stackTrace(ex));
     }
 
     return lines;
