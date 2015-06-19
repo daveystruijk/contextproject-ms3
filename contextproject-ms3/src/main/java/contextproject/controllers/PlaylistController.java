@@ -169,7 +169,7 @@ public class PlaylistController {
   public void update() {
     tableView.getItems().clear();
     ObservableList<Track> items = FXCollections.observableArrayList(playlist);
-    if (items.isEmpty()) {
+    if (playlist.isEmpty()) {
       tableView.setDisable(true);
       tableView.setOpacity(1);
       tableView.getItems().add(new TrackProperty(null, null, null, null, null, playingTrack, null));
