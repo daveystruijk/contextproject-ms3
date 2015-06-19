@@ -57,7 +57,6 @@ public class AirhornProcessor {
     attributes.setSamplingRate(44100);
     this.track = getAirhornTrack();
     try {
-      this.attributes = attributes;
       this.format = Streamer.streamAudioFormat(attributes);
     } catch (EncoderException e) {
       log.error("Airhorn processor encoder exception");
