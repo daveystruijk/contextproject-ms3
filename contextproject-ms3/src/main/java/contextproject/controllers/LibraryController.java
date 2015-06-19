@@ -32,6 +32,9 @@ public class LibraryController {
    */
   public void begin(PlaylistController playlistcontroller, Scene scene) {
     this.playlistController = playlistcontroller;
+    if (lib.size() > 0) {
+      playlist = lib.get(0);
+    }
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
@@ -122,7 +125,7 @@ public class LibraryController {
    * delete the currently selected playlist.
    */
   public void deletePlaylist() {
-    if (lib.size() > 0) {
+    if (lib.size() > 0 && playlist != null) {
       String name = playlist.getName();
       this.names.remove(name);
       this.lib.remove(playlist);
