@@ -113,8 +113,6 @@ public class PlayerService {
     
     ArrayList<Double> ott = currentProcessor.getTrack().getOutTransitionTimes();
     ArrayList<Double> itt = currentProcessor.getTrack().getInTransitionTimes();
-    System.out.println(ott);
-    System.out.println(itt);
     double transitionTime = currentProcessor.getTrack().getDuration();
     if (!ott.isEmpty() && !itt.isEmpty() && ott.get(0) > itt.get(0)) {
       transitionTime = ott.get(0);
