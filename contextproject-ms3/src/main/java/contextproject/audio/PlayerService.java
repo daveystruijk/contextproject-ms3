@@ -46,8 +46,6 @@ public class PlayerService {
    * currently, and we want to start the mix with an initial track.
    */
   public void playCurrentTrack() {
-    new TransitionFactory().createTransition(null, null, null).determineInTime(
-        currentProcessor.getTrack());
     setUpCurrentTrack();
     currentProcessor.play();
   }
@@ -111,11 +109,10 @@ public class PlayerService {
           }
         });
     
-    transition.determineInTime(nextProcessor.getTrack());
-    transition.determineOutTime(currentProcessor.getTrack());
-
     ArrayList<Double> ott = currentProcessor.getTrack().getOutTransitionTimes();
     ArrayList<Double> itt = currentProcessor.getTrack().getInTransitionTimes();
+    System.out.println(ott);
+    System.out.println(itt);
     double transitionTime = currentProcessor.getTrack().getDuration();
     if (!ott.isEmpty() && !itt.isEmpty() && ott.get(0) > itt.get(0)) {
       transitionTime = ott.get(0);

@@ -6,6 +6,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.EnergyLevelProcessor;
 import contextproject.audio.OnsetProcessor;
+import contextproject.audio.transitions.TransitionFactory;
 import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
 
@@ -90,8 +91,6 @@ public class Track implements Serializable {
     if (writeNewEnergyTag) {
       id3EnergyWriter();
     }
-    outTransitionTimes = new ArrayList<Double>();
-    inTransitionTimes = new ArrayList<Double>();
   }
 
   private void createSong() {
@@ -210,6 +209,15 @@ public class Track implements Serializable {
         calculateDifferences();
       }
     }
+    outTransitionTimes = new ArrayList<Double>();
+    inTransitionTimes = new ArrayList<Double>();
+    new TransitionFactory().createTransition(null, null, null).determineInTime(this);
+    new TransitionFactory().createTransition(null, null, null).determineOutTime(this);
+    System.out.println(this.getTitle());
+    System.out.println(averageEnergy);
+    System.out.println(differences);
+    System.out.println(outTransitionTimes + " OTT");
+    System.out.println(inTransitionTimes + " ITT\n");
   }
 
   /**
