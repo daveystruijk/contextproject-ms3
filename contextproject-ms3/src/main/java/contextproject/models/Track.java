@@ -208,7 +208,6 @@ public class Track implements Serializable {
         calculateDifferences();
       }
     }
-    calculateTransitions();
   }
 
   /**
@@ -216,27 +215,8 @@ public class Track implements Serializable {
    */
   public void calculateDifferences() {
     differences = new ArrayList<Double>();
-    for (int i = 0; i < energyLevels.size() - 2; i++) {
+    for (int i = 0; i < energyLevels.size() - 1; i++) {
       differences.add((energyLevels.get(i + 1) - energyLevels.get(i)));
-    }
-  }
-
-  /**
-   * Calculate the in and out transitions times of the track.
-   */
-  public void calculateTransitions() {
-    inTransitionTimes = new ArrayList<Double>();
-    outTransitionTimes = new ArrayList<Double>();
-    double min = -(averageEnergy * 0.35);
-    double secondsPerFourBars = 60.0f / this.getBpm() * 16;
-    for (int i = 0; i < differences.size(); i++) {
-      if (differences.get(i) < min && ((i + 2) * secondsPerFourBars) > (0.2 * this.duration)
-          && ((i + 2) * secondsPerFourBars) < (0.8 * this.duration)) {
-        outTransitionTimes.add((i + 2) * secondsPerFourBars);
-      }
-      if (differences.get(i) < min && (i + 2) * secondsPerFourBars < (0.5 * this.duration)) {
-        inTransitionTimes.add((i + 2) * secondsPerFourBars);
-      }
     }
   }
 

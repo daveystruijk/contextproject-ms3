@@ -65,21 +65,24 @@ public class TrackTest {
   }
 
   @Test
-  public void calculateTransitionsTest() {
+  public void differencesTest() {
     ArrayList<Double> el = new ArrayList<Double>();
+    ArrayList<Double> check = new ArrayList<Double>();
     el.add(0.2);
     el.add(-0.1);
     el.add(0.2);
     el.add(-0.1);
+    check.add(-0.1-0.2);
+    check.add(0.2+0.1);
+    check.add(-0.1-0.2);
     Track track = new Track();
     track.setAverageEnergy(0.5);
     track.setDuration(120);
     track.setBpm(60);
     track.setEnergyLevels(el);
     track.calculateDifferences();
-    track.calculateTransitions();
-    assertEquals(track.getOutTransitionTimes().toString(), "[32.0]");
-    assertEquals(track.getInTransitionTimes().toString(), "[32.0]");
+    
+    assertEquals(track.getDifferences(), check);
   }
 
   @Test

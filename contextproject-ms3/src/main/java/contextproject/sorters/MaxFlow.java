@@ -1,6 +1,7 @@
 
 package contextproject.sorters;
 
+import contextproject.AppConfig;
 import contextproject.models.Playlist;
 import contextproject.models.Track;
 
@@ -183,7 +184,7 @@ public class MaxFlow {
       }
       Collections.sort(newChildren);
       Collections.reverse(newChildren);
-      if (newChildren.size() > 10) {
+      if (newChildren.size() > AppConfig.maxFlowDepth) {
         parents = new ArrayList<TrackNode>();
         parents.addAll(newChildren.subList(0, 9));
       } else {
