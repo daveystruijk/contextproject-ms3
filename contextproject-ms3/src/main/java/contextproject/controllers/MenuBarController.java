@@ -2,7 +2,9 @@ package contextproject.controllers;
 
 import contextproject.App;
 import contextproject.AppConfig;
+import contextproject.formats.M3UBuilder;
 import contextproject.helpers.FileName;
+import contextproject.helpers.StackTrace;
 import contextproject.helpers.TextFileReader;
 import contextproject.loaders.FolderLoader;
 import contextproject.models.Playlist;
@@ -14,6 +16,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
@@ -42,9 +46,11 @@ public class MenuBarController {
   @FXML
   private MenuItem menuItemExport;
   @FXML
-  private MenuItem help;
+  private MenuItem menuItemDelete;
   @FXML
-  private MenuItem us;
+  private MenuItem menuItemHelp;
+  @FXML
+  private MenuItem menuItemAbout;
   @FXML
   private WindowController wincontroller;
   private Scene scene;
@@ -73,6 +79,36 @@ public class MenuBarController {
     }
     Playlist mixablePlaylist = sorter.sort(playlist);
     wincontroller.setEverything(mixablePlaylist, playlistname, scene);
+  }
+  
+  @FXML
+  protected void deletePlaylistButtonAction(ActionEvent event) {
+    this.wincontroller = App.getController();
+    wincontroller.getLibraryController().deletePlaylist();
+  }
+  
+  @FXML
+  protected void exportLibraryButtonAction(ActionEvent event) {
+    this.wincontroller = App.getController();
+    DirectoryChooser directoryChooser = new DirectoryChooser();
+    File selectedDirectory = directoryChooser.showDialog(null);
+    String directory = "";
+    if (selectedDirectory == null) {
+      log.warn("No directory selected.");
+    } else {
+      directory = selectedDirectory.getAbsolutePath();
+    }
+    Playlist playlist = wincontroller.getLibraryController().getPlaylist();
+    M3UBuilder builder = new M3UBuilder(playlist);
+    String fullPath = directory + File.separator + playlist.getName() + ".M3U";
+    try {
+      FileWriter writer = new FileWriter(fullPath);
+      writer.write(builder.build());
+      writer.close();
+    } catch (IOException e) {
+      log.error("Error occured while writing the M3U");
+      log.trace(StackTrace.stackTrace(e));
+    }
   }
 
   @FXML

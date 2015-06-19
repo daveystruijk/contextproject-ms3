@@ -11,10 +11,11 @@ import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.helpers.StackTrace;
-import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -36,10 +37,15 @@ public class AirhornProcessor {
   private AudioDispatcher dispatcher;
 
   private static String airhornPath = null;
+  /**
+   * get the path of the airhorn mp3.
+   * @return the path.
+   */
   public static String getAirhornPath() {
     if (airhornPath == null) {
-      airhornPath = AirhornProcessor.class.getClass()
-          .getResource("/samples/airhorn.mp3").getPath();
+      String sep = File.separator;
+      airhornPath = System.getProperty("user.dir").toString() + sep + "src" + sep
+          + "main" + sep + "resources" + sep + "samples" +  sep + "airhorn.mp3";
     }
     return airhornPath;
   }

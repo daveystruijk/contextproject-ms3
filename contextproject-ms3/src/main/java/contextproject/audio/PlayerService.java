@@ -5,11 +5,9 @@ import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.App;
-import contextproject.AppConfig;
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
-import contextproject.audio.transitions.EscalatieTransition;
 import contextproject.audio.transitions.TransitionFactory;
 import contextproject.controllers.PlayerControlsController;
 import contextproject.helpers.StackTrace;
@@ -113,8 +111,6 @@ public class PlayerService {
     
     ArrayList<Double> ott = currentProcessor.getTrack().getOutTransitionTimes();
     ArrayList<Double> itt = currentProcessor.getTrack().getInTransitionTimes();
-    System.out.println(ott);
-    System.out.println(itt);
     double transitionTime = currentProcessor.getTrack().getDuration();
     if (!ott.isEmpty() && !itt.isEmpty() && ott.get(0) > itt.get(0)) {
       transitionTime = ott.get(0);

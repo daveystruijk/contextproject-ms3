@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class FadeInOutTransition extends BaseTransition {
   private static Logger log = LogManager.getLogger(FadeInOutTransition.class.getName());
 
-  
   /**
    * In out fader transition.
    * 
@@ -23,7 +22,7 @@ public class FadeInOutTransition extends BaseTransition {
    * @param callback
    *          transition callback
    */
-  public FadeInOutTransition(TrackProcessor from, TrackProcessor to, 
+  public FadeInOutTransition(TrackProcessor from, TrackProcessor to,
       TransitionDoneCallback callback) {
     super(from, to, callback);
   }
@@ -44,22 +43,28 @@ public class FadeInOutTransition extends BaseTransition {
       }
     }
   }
-  
+
   @Override
   public void determineOutTime(Track track) {
     ArrayList<Double> outTransitionTimes = new ArrayList<Double>();
     double min = -(track.getAverageEnergy() * 0.35);
     double secondsPerFourBars = 60.0f / track.getBpm() * 16;
-    for (int i = 0; i < track.getDifferences().size(); i++) {
-      if (track.getDifferences().get(i) < min
-          && ((i + 2) * secondsPerFourBars) > (0.2 * track.getDuration())
-          && ((i + 2) * secondsPerFourBars) < (0.8 * track.getDuration())) {
-        outTransitionTimes.add((i + 2) * secondsPerFourBars);
+    int index = 0;
+    for (index = 0; index < track.getDifferences().size(); index++) {
+      if (track.getDifferences().get(index) < min
+          && ((index + 2) * secondsPerFourBars) > (0.2 * track.getDuration())
+          && ((index + 2) * secondsPerFourBars) < (0.8 * track.getDuration())) {
+        outTransitionTimes.add((index + 2) * secondsPerFourBars);
       }
+    }
+    if (outTransitionTimes.isEmpty() && index > 5) {
+      outTransitionTimes.add((index - 5) * secondsPerFourBars);
+    } else if (outTransitionTimes.isEmpty()) {
+      outTransitionTimes.add(index * secondsPerFourBars);
     }
     track.setOutTransitionTimes(outTransitionTimes);
   }
-  
+
   @Override
   public void determineInTime(Track track) {
     ArrayList<Double> inTransitionTimes = new ArrayList<Double>();

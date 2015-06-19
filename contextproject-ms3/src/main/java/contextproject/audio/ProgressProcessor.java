@@ -3,6 +3,7 @@ package contextproject.audio;
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.AudioProcessor;
 
+import contextproject.AppConfig;
 import contextproject.controllers.PlayerControlsController;
 
 import java.beans.PropertyChangeSupport;
@@ -25,7 +26,11 @@ public class ProgressProcessor implements AudioProcessor {
    */
   public ProgressProcessor(double duration, double skip, PlayerControlsController pcc) {
     this.duration = duration;
-    this.skip = skip;
+    if (AppConfig.useAirhornTransition) {
+      this.skip = 0;
+    } else {
+      this.skip = skip;
+    }
     this.progressPcs = pcc.getPcs();
   }
 

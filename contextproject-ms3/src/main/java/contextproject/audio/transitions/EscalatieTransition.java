@@ -77,7 +77,7 @@ public class EscalatieTransition extends BaseTransition {
         highest = i;
       }
     }
-    inTransitionTimes.add((highest+2) * secondsPerFourBars);
+    inTransitionTimes.add((highest + 2) * secondsPerFourBars);
     track.setInTransitionTimes(inTransitionTimes);
   }
 }

@@ -14,12 +14,16 @@
     <MenuItem fx:id="menuItemImport" text="Import Folder"
       onAction="#importPlaylistButtonAction">
     </MenuItem>
-    <MenuItem fx:id="menuItemExport" text="Export Library">
+    <MenuItem fx:id="menuItemExport" text="Export Library" 
+    onAction="#exportLibraryButtonAction">
+    </MenuItem>
+    <MenuItem fx:id="menuItemDelete" text="Delete selected playlist"
+    onAction="#deletePlaylistButtonAction">
     </MenuItem>
   </Menu>
   <Menu fx:id="about" text="About">
-  <MenuItem fx:id="us" text="About us" onAction="#aboutUsButtonAction"></MenuItem>
-  <MenuItem fx:id="help" text="Help" onAction="#helpButtonAction"></MenuItem>
+  <MenuItem fx:id="menuItemAbout" text="About us" onAction="#aboutUsButtonAction"></MenuItem>
+  <MenuItem fx:id="menuItemHelp" text="Help" onAction="#helpButtonAction"></MenuItem>
   </Menu>
   
 

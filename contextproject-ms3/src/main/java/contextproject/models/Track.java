@@ -213,11 +213,6 @@ public class Track implements Serializable {
     inTransitionTimes = new ArrayList<Double>();
     new TransitionFactory().createTransition(null, null, null).determineInTime(this);
     new TransitionFactory().createTransition(null, null, null).determineOutTime(this);
-    System.out.println(this.getTitle());
-    System.out.println(averageEnergy);
-    System.out.println(differences);
-    System.out.println(outTransitionTimes + " OTT");
-    System.out.println(inTransitionTimes + " ITT\n");
   }
 
   /**
