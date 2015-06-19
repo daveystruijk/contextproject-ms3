@@ -50,12 +50,16 @@ public class FadeInOutTransition extends BaseTransition {
     ArrayList<Double> outTransitionTimes = new ArrayList<Double>();
     double min = -(track.getAverageEnergy() * 0.35);
     double secondsPerFourBars = 60.0f / track.getBpm() * 16;
-    for (int i = 0; i < track.getDifferences().size(); i++) {
+    int i = 0;
+    for (i = 0; i < track.getDifferences().size(); i++) {
       if (track.getDifferences().get(i) < min
           && ((i + 2) * secondsPerFourBars) > (0.2 * track.getDuration())
           && ((i + 2) * secondsPerFourBars) < (0.8 * track.getDuration())) {
         outTransitionTimes.add((i + 2) * secondsPerFourBars);
       }
+    }
+    if (outTransitionTimes.size() == 0) {
+      outTransitionTimes.add((i - 5) * secondsPerFourBars);
     }
     track.setOutTransitionTimes(outTransitionTimes);
   }
