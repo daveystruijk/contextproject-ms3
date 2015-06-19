@@ -5,11 +5,9 @@ import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.App;
-import contextproject.AppConfig;
 import contextproject.audio.TrackProcessor.PlayerState;
 import contextproject.audio.transitions.BaseTransition;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
-import contextproject.audio.transitions.EscalatieTransition;
 import contextproject.audio.transitions.TransitionFactory;
 import contextproject.controllers.PlayerControlsController;
 import contextproject.helpers.StackTrace;

@@ -11,8 +11,6 @@ import be.tarsos.transcoder.Streamer;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.helpers.StackTrace;
-import contextproject.models.Track;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,8 +21,8 @@ import javax.sound.sampled.LineUnavailableException;
 public class AirhornProcessor {
   static Logger log = LogManager.getLogger(AirhornProcessor.class.getName());
 
-  private Track track;
-
+  private String path;
+  
   // Data
   private Attributes attributes;
   private AudioFormat format;
@@ -35,18 +33,17 @@ public class AirhornProcessor {
   private AudioPlayer audioPlayer;
   private AudioDispatcher dispatcher;
 
-  private static Track airhornTrack = null;
-  
+  private static String airhornPath = null;
   /**
-   * get the airhorn for transitions.
-   * @return the airhorn as track.
+   * get the path of the airhorn mp3.
+   * @return the path.
    */
-  public static Track getAirhornTrack() {
-    if (airhornTrack == null) {
-      airhornTrack = new Track(AirhornProcessor.class.getClass()
-          .getResource("/samples/airhorn.mp3").getPath());
+  public static String getAirhornPath() {
+    if (airhornPath == null) {
+      airhornPath = AirhornProcessor.class.getClass()
+          .getResource("/samples/airhorn.mp3").getPath();
     }
-    return airhornTrack;
+    return airhornPath;
   }
   
   /**
@@ -60,7 +57,7 @@ public class AirhornProcessor {
   public AirhornProcessor() {
     attributes = DefaultAttributes.WAV_PCM_S16LE_MONO_44KHZ.getAttributes();
     attributes.setSamplingRate(44100);
-    this.track = getAirhornTrack();
+    this.path = getAirhornPath();
     try {
       this.format = Streamer.streamAudioFormat(attributes);
     } catch (EncoderException e) {
@@ -79,7 +76,7 @@ public class AirhornProcessor {
    */
   public void play() throws EncoderException, LineUnavailableException {
     // Initialize the correct stream objects from file
-    inputStream = Streamer.stream(track.getPath(), attributes);
+    inputStream = Streamer.stream(path, attributes);
     tarsosStream = new JVMAudioInputStream(inputStream);
 
     // Initialize audio processors

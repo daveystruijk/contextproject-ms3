@@ -90,6 +90,8 @@ public class Track implements Serializable {
     if (writeNewEnergyTag) {
       id3EnergyWriter();
     }
+    outTransitionTimes = new ArrayList<Double>();
+    inTransitionTimes = new ArrayList<Double>();
   }
 
   private void createSong() {
