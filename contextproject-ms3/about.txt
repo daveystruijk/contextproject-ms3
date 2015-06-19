@@ -1,0 +1,4 @@
+Hello, this is the about page of our product.
+We, Davey Struijk, Emiel Rietdijk, Felix van Doorn, Millen van Osch and Roy Graafmans,
+have spent the last few months developping this software.
+You are right now experiencing our hard work and hopefully enjoying it.

@@ -1,6 +1,7 @@
 package contextproject.audio.transitions;
 
 import contextproject.audio.TrackProcessor;
+import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,4 +40,8 @@ public abstract class BaseTransition implements Runnable {
   }
   
   public abstract void begin(TrackProcessor from, TrackProcessor to);
+
+  public abstract void determineOutTime(Track currentTrack);
+  
+  public abstract void determineInTime(Track nextTrack);
 }

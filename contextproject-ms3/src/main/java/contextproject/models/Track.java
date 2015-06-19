@@ -6,6 +6,7 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.audio.EnergyLevelProcessor;
 import contextproject.audio.OnsetProcessor;
+import contextproject.audio.transitions.TransitionFactory;
 import contextproject.helpers.KeyBpmFinder;
 import contextproject.helpers.StackTrace;
 
@@ -57,8 +58,8 @@ public class Track implements Serializable {
   private AbstractID3v2Tag tag;
   private double averageEnergy;
   private ArrayList<Double> energyLevels;
-  ArrayList<Double> outTransitionTimes;
-  ArrayList<Double> inTransitionTimes;
+  private ArrayList<Double> outTransitionTimes;
+  private ArrayList<Double> inTransitionTimes;
   private boolean isWindows;
   private boolean writeNewEnergyTag = false;
   private ArrayList<Double> differences;
@@ -208,7 +209,15 @@ public class Track implements Serializable {
         calculateDifferences();
       }
     }
-    calculateTransitions();
+    outTransitionTimes = new ArrayList<Double>();
+    inTransitionTimes = new ArrayList<Double>();
+    new TransitionFactory().createTransition(null, null, null).determineInTime(this);
+    new TransitionFactory().createTransition(null, null, null).determineOutTime(this);
+    System.out.println(this.getTitle());
+    System.out.println(averageEnergy);
+    System.out.println(differences);
+    System.out.println(outTransitionTimes + " OTT");
+    System.out.println(inTransitionTimes + " ITT\n");
   }
 
   /**
@@ -216,27 +225,8 @@ public class Track implements Serializable {
    */
   public void calculateDifferences() {
     differences = new ArrayList<Double>();
-    for (int i = 0; i < energyLevels.size() - 2; i++) {
+    for (int i = 0; i < energyLevels.size() - 1; i++) {
       differences.add((energyLevels.get(i + 1) - energyLevels.get(i)));
-    }
-  }
-
-  /**
-   * Calculate the in and out transitions times of the track.
-   */
-  public void calculateTransitions() {
-    inTransitionTimes = new ArrayList<Double>();
-    outTransitionTimes = new ArrayList<Double>();
-    double min = -(averageEnergy * 0.35);
-    double secondsPerFourBars = 60.0f / this.getBpm() * 16;
-    for (int i = 0; i < differences.size(); i++) {
-      if (differences.get(i) < min && ((i + 2) * secondsPerFourBars) > (0.2 * this.duration)
-          && ((i + 2) * secondsPerFourBars) < (0.8 * this.duration)) {
-        outTransitionTimes.add((i + 2) * secondsPerFourBars);
-      }
-      if (differences.get(i) < min && (i + 2) * secondsPerFourBars < (0.5 * this.duration)) {
-        inTransitionTimes.add((i + 2) * secondsPerFourBars);
-      }
     }
   }
 

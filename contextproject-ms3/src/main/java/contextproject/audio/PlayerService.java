@@ -5,9 +5,12 @@ import be.tarsos.transcoder.DefaultAttributes;
 import be.tarsos.transcoder.ffmpeg.EncoderException;
 
 import contextproject.App;
+import contextproject.AppConfig;
 import contextproject.audio.TrackProcessor.PlayerState;
+import contextproject.audio.transitions.BaseTransition;
 import contextproject.audio.transitions.BaseTransition.TransitionDoneCallback;
-import contextproject.audio.transitions.FadeInOutTransition;
+import contextproject.audio.transitions.EscalatieTransition;
+import contextproject.audio.transitions.TransitionFactory;
 import contextproject.controllers.PlayerControlsController;
 import contextproject.helpers.StackTrace;
 import contextproject.models.Track;
@@ -98,29 +101,30 @@ public class PlayerService {
    * is not prepared for transition yet, this method will throw an exception.
    */
   public void setupTransition(TransitionDoneCallback callback) {
-    ArrayList<Double> ott = currentProcessor.getTrack().getOutTransitionTimes();
-    ArrayList<Double> itt = currentProcessor.getTrack().getInTransitionTimes();
-    double transitionTime = currentProcessor.getTrack().getDuration();
-    if (!ott.isEmpty() && !itt.isEmpty() && ott.get(0) > itt.get(0)) {
-      transitionTime = ott.get(0);
-    }
-    else if (itt.isEmpty() && !ott.isEmpty()) {
-      transitionTime = ott.get(0);
-    }
-    else if (ott.size() > 1) {
-      transitionTime = ott.get(1);
-    }
-    
-    currentProcessor.setupTransition(transitionTime, new FadeInOutTransition(currentProcessor,
+    BaseTransition transition = new TransitionFactory().createTransition(currentProcessor,
         nextProcessor, new TransitionDoneCallback() {
-
           @Override
           public void onFinished() {
             currentProcessor.unload();
             currentProcessor = nextProcessor;
             callback.onFinished();
           }
-        }));
+        });
+    
+    ArrayList<Double> ott = currentProcessor.getTrack().getOutTransitionTimes();
+    ArrayList<Double> itt = currentProcessor.getTrack().getInTransitionTimes();
+    System.out.println(ott);
+    System.out.println(itt);
+    double transitionTime = currentProcessor.getTrack().getDuration();
+    if (!ott.isEmpty() && !itt.isEmpty() && ott.get(0) > itt.get(0)) {
+      transitionTime = ott.get(0);
+    } else if (itt.isEmpty() && !ott.isEmpty()) {
+      transitionTime = ott.get(0);
+    } else if (ott.size() > 1) {
+      transitionTime = ott.get(1);
+    }
+    
+    currentProcessor.setupTransition(transitionTime, transition);
   }
 
   public Track getCurrentTrack() {
