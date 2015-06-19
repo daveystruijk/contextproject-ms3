@@ -5,7 +5,6 @@ import be.tarsos.transcoder.ffmpeg.EncoderException;
 import contextproject.audio.PlayerService;
 import contextproject.audio.TrackProcessor;
 import contextproject.helpers.StackTrace;
-import contextproject.models.Track;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -145,9 +144,9 @@ public class PlayerControlsController {
    * @param nxtitle
    *          next title.
    */
-  public void update(Track curtitle, Track nxtitle) {
-    currentTrack.setText(curtitle.getTitle());
-    nextTrack.setText(nxtitle.getTitle());
+  public void update(String curtitle, String nxtitle) {
+    currentTrack.setText(curtitle);
+    nextTrack.setText(nxtitle);
   }
 
   public void setProgress(double prog) {

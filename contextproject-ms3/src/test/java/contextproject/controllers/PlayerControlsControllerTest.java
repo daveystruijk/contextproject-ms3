@@ -57,7 +57,7 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     PlayerControlsController controller = new PlayerControlsController();
     controller.currentTrack = new TextField();
     controller.nextTrack = new TextField();
-    controller.update(track, track);
+    controller.update(track.getTitle(), track.getTitle());
     controller.buttonbox1 = new HBox();
     controller.buttonbox2 = new HBox();
     controller.curbox = new HBox();
