@@ -1,13 +1,15 @@
 package contextproject.controllers;
 
+import be.tarsos.transcoder.Attributes;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import contextproject.App;
-import contextproject.audio.PlayerService;
+import contextproject.audio.TrackProcessor;
 import contextproject.models.Track;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.net.URISyntaxException;
@@ -24,8 +26,7 @@ import javafx.stage.Stage;
 public class PlayerControlsControllerTest extends ApplicationTest {
 
   private Track track;
-  private Track track2;
-  
+
   @Test
   public void test() {
     PlayerControlsController controller = new PlayerControlsController();
@@ -46,14 +47,11 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     try {
       resourcePath = Paths.get(resourceUrl.toURI());
       track = new Track(resourcePath.toString());
-      track2 = new Track(resourcePath.toString());
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");
       e.printStackTrace();
     }
-//    PlayerService.getInstance().setCurrentTrack(track);
-//    PlayerService.getInstance().setUpCurrentTrack();
-//    PlayerService.getInstance().prepareNextTrack(track2);
+
     PlayerControlsController controller = new PlayerControlsController();
     controller.currentTrack = new TextField();
     controller.nextTrack = new TextField();
@@ -67,9 +65,21 @@ public class PlayerControlsControllerTest extends ApplicationTest {
     controller.initialize(App.getScene().getWidth());
     controller.setProgress(0.45);
     controller.playButton.setId("playButton");
-//    controller.playButton.fire();
-//    controller.playButton.fire();
-    assertEquals(controller.playButton.getId(), "playButton");
+    controller.toggleButton();
+    controller.toggleButton();
+    assertEquals(controller.playButton.getId(), "pauseButton");
+    controller.playButton.setId("playButton");
+    controller.togglePlayPause();
+  }
+
+  @Test
+  public void tpTest() {
+    PlayerControlsController controller = new PlayerControlsController();
+    Attributes attr = Mockito.mock(Attributes.class);
+    TrackProcessor track = new TrackProcessor(attr);
+    controller.setPcs(track);
+    controller.getPcs();
+    
   }
 
 }

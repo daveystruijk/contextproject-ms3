@@ -211,6 +211,8 @@ public class TrackTest {
       track.setBeatGrid(bg);
       track.setKey(newKey);
       track.createBeatGrid(10, 1, 11, 2, 1);
+      track.id3EnergyParser();
+      track.id3EnergyWriter();
 
     } catch (URISyntaxException e) {
       fail("file wans't read correctly");

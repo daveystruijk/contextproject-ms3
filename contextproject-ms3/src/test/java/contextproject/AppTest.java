@@ -1,5 +1,7 @@
 package contextproject;
 
+import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
@@ -21,8 +23,16 @@ public class AppTest extends ApplicationTest {
   @Test
   public void appTest() {
     App ap = new App();
+    AppConfig apConfig = new AppConfig();
     assertNotEquals(ap, null);
     assertNotEquals(App.getController(), null);
     assertNotEquals(App.getScene(), null);
+    assertNotEquals(apConfig, null);
+  }
+
+  @Test
+  public void stageTest() {
+    Stage stage = App.getStage();
+    assertEquals(stage, null);
   }
 }

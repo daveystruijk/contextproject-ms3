@@ -36,4 +36,10 @@ public class WindowControllerTest extends ApplicationTest {
     WindowController window = App.getController();
     assertNotEquals(window.getPlaylistController(), null);
   }
+  
+  @Test
+  public void playerControlControllerTest() {
+    WindowController window = App.getController();
+    assertNotEquals(window.getPlayerControlsController(),null);
+  }
 }
