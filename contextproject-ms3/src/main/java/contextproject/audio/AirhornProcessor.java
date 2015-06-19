@@ -36,6 +36,11 @@ public class AirhornProcessor {
   private AudioDispatcher dispatcher;
 
   private static Track airhornTrack = null;
+  
+  /**
+   * get the airhorn for transitions.
+   * @return the airhorn as track.
+   */
   public static Track getAirhornTrack() {
     if (airhornTrack == null) {
       airhornTrack = new Track(AirhornProcessor.class.getClass()
