@@ -215,7 +215,7 @@ public class Track implements Serializable {
    */
   public void calculateDifferences() {
     differences = new ArrayList<Double>();
-    for (int i = 0; i < energyLevels.size() - 2; i++) {
+    for (int i = 0; i < energyLevels.size() - 1; i++) {
       differences.add((energyLevels.get(i + 1) - energyLevels.get(i)));
     }
   }
