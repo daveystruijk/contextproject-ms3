@@ -40,8 +40,8 @@ public class AirhornProcessor {
   public static String getAirhornPath() {
     if (airhornPath == null) {
       String sep = File.separator;
-      airhornPath = AirhornProcessor.class.getClass()
-          .getResource(sep + "samples" + sep + "airhorn.mp3").getPath();
+      airhornPath = System.getProperty("user.dir").toString() + sep + "src" + sep
+          + "main" + sep + "resources" + sep + "samples" +  sep + "airhorn.mp3";
     }
     return airhornPath;
   }
