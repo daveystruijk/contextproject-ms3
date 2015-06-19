@@ -32,7 +32,6 @@ public class LibraryController {
    */
   public void begin(PlaylistController playlistcontroller, Scene scene) {
     this.playlistController = playlistcontroller;
-    playlist = lib.get(0);
     tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
