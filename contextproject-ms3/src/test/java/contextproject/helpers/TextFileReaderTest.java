@@ -13,5 +13,4 @@ public class TextFileReaderTest {
     TextFileReader.read("library.xml");
     TextFileReader.read("about.txt");
   }
-
 }
