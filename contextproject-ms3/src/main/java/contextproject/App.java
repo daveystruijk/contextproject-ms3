@@ -9,6 +9,7 @@ import contextproject.loaders.FolderLoader;
 import contextproject.loaders.LibraryLoader;
 import contextproject.models.Library;
 import contextproject.models.Playlist;
+import contextproject.sorters.GreedyPlaylistSorter;
 import contextproject.sorters.MaximumFlowPlaylistSorter;
 import contextproject.sorters.PlaylistSorter;
 
@@ -42,6 +43,7 @@ public class App extends Application {
   private int screenWidth;
   private int screenHeight;
   private static Scene scene;
+  private static Stage stage;
 
   @FXML
   private static WindowController controller;
@@ -61,6 +63,7 @@ public class App extends Application {
   @Override
   public void start(Stage stage) {
     try {
+      App.stage = stage;
       setUp(stage);
 
       try {
@@ -98,7 +101,12 @@ public class App extends Application {
         FolderLoader folderLoader = new FolderLoader(directory);
         String playlistname = FileName.getName(directory);
         Playlist playlist = folderLoader.load();
-        PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
+        PlaylistSorter sorter;
+        if (AppConfig.maxFlowSorter) {
+          sorter = new MaximumFlowPlaylistSorter();
+        } else {
+          sorter = new GreedyPlaylistSorter();
+        }
         Playlist mixablePlaylist = sorter.sort(playlist);
         controller.setEverything(mixablePlaylist, playlistname, scene);
       } else {
@@ -159,5 +167,9 @@ public class App extends Application {
       log.trace(StackTrace.stackTrace(e));
     }
 
+  }
+  
+  public static Stage getStage() {
+    return App.stage;
   }
 }
