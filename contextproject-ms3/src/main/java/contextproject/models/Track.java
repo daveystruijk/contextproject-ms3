@@ -57,8 +57,8 @@ public class Track implements Serializable {
   private AbstractID3v2Tag tag;
   private double averageEnergy;
   private ArrayList<Double> energyLevels;
-  ArrayList<Double> outTransitionTimes;
-  ArrayList<Double> inTransitionTimes;
+  private ArrayList<Double> outTransitionTimes;
+  private ArrayList<Double> inTransitionTimes;
   private boolean isWindows;
   private boolean writeNewEnergyTag = false;
   private ArrayList<Double> differences;
@@ -88,7 +88,7 @@ public class Track implements Serializable {
     getMetadata();
 
     if (writeNewEnergyTag) {
-      id3EnergyWiriter();
+      id3EnergyWriter();
     }
   }
 
@@ -275,7 +275,7 @@ public class Track implements Serializable {
   /**
    * Write average energy, intro and outro transitions to id3 tag.
    */
-  public void id3EnergyWiriter() {
+  public void id3EnergyWriter() {
     try {
       String res = averageEnergy + "/" + differences.toString();
 

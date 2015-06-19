@@ -1,6 +1,5 @@
 package contextproject;
 
-import contextproject.audio.MixerProcessorTest;
 import contextproject.audio.PlayerServiceTest;
 import contextproject.controllers.LibraryControllerTest;
 import contextproject.controllers.PlayerControlsControllerTest;
@@ -35,7 +34,6 @@ import org.junit.runners.Suite.SuiteClasses;
     //main package.
     AppTest.class,
     //audio package.
-    MixerProcessorTest.class,
     PlayerServiceTest.class,
     //controllers package.
     LibraryControllerTest.class,

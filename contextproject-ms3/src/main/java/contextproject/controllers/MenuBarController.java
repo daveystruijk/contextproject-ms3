@@ -2,9 +2,10 @@ package contextproject.controllers;
 
 import contextproject.App;
 import contextproject.helpers.FileName;
+import contextproject.helpers.TextFileReader;
 import contextproject.loaders.FolderLoader;
-import contextproject.models.LibraryProperty;
 import contextproject.models.Playlist;
+import contextproject.sorters.GreedyPlaylistSorter;
 import contextproject.sorters.MaximumFlowPlaylistSorter;
 import contextproject.sorters.PlaylistSorter;
 
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,14 +21,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableView;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class MenuBarController {
   static Logger log = LogManager.getLogger(MenuBarController.class.getName());
-  
+
   @FXML
-  private Menu menu;
+  private Menu file;
+  @FXML
+  private Menu about;
   @FXML
   private MenuBar menuBar;
   @FXML
@@ -34,15 +41,11 @@ public class MenuBarController {
   @FXML
   private MenuItem menuItemExport;
   @FXML
-  private MenuItem menuItemDelete;
+  private MenuItem help;
+  @FXML
+  private MenuItem us;
   @FXML
   private WindowController wincontroller;
-  @FXML
-  private LibraryController libcontroller;
-  @FXML
-  private PlaylistController playcontroller;
-  @FXML
-  private TableView<LibraryProperty> tableView;
   private Scene scene;
 
   @FXML
@@ -61,8 +64,46 @@ public class MenuBarController {
     FolderLoader folderLoader = new FolderLoader(directory);
     String playlistname = FileName.getName(directory);
     Playlist playlist = folderLoader.load();
-    PlaylistSorter sorter = new MaximumFlowPlaylistSorter();
+    PlaylistSorter sorter;
+    if (App.getMaxFlowSorter()) {
+      sorter = new MaximumFlowPlaylistSorter();
+    } else {
+      sorter = new GreedyPlaylistSorter();
+    }
     Playlist mixablePlaylist = sorter.sort(playlist);
     wincontroller.setEverything(mixablePlaylist, playlistname, scene);
+  }
+
+  @FXML
+  protected void helpButtonAction(ActionEvent event) {
+    final Stage dialog = new Stage();
+    dialog.initModality(Modality.APPLICATION_MODAL);
+    dialog.initOwner(App.getStage());
+    VBox dialogVbox = new VBox(20);
+    ArrayList<String> lines = TextFileReader.read("help.txt");
+    String text = "";
+    for (String line : lines) {
+      text = text + line + "\n";
+    }
+    dialogVbox.getChildren().add(new Text(text));
+    Scene dialogScene = new Scene(dialogVbox, 502, 70);
+    dialog.setScene(dialogScene);
+    dialog.show();
+  }
+  @FXML
+  protected void aboutUsButtonAction(ActionEvent event) {
+    final Stage dialog = new Stage();
+    dialog.initModality(Modality.APPLICATION_MODAL);
+    dialog.initOwner(App.getStage());
+    VBox dialogVbox = new VBox(20);
+    ArrayList<String> lines = TextFileReader.read("about.txt");
+    String text = "";
+    for (String line : lines) {
+      text = text + line + "\n";
+    }
+    dialogVbox.getChildren().add(new Text(text));
+    Scene dialogScene = new Scene(dialogVbox, 550, 500);
+    dialog.setScene(dialogScene);
+    dialog.show();
   }
 }

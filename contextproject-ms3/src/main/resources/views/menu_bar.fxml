@@ -5,17 +5,23 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.MenuItem?>
 
 
 <MenuBar fx:controller="contextproject.controllers.MenuBarController"
   xmlns:fx="http://javafx.com/fxml" fx:id="menuBar"  minWidth = "1200">
-  <Menu fx:id="menu" text="File">
+  <Menu fx:id="file" text="File">
     <MenuItem fx:id="menuItemImport" text="Import Folder"
       onAction="#importPlaylistButtonAction">
     </MenuItem>
     <MenuItem fx:id="menuItemExport" text="Export Library">
     </MenuItem>
   </Menu>
+  <Menu fx:id="about" text="About">
+  <MenuItem fx:id="us" text="About us" onAction="#aboutUsbuttonAction"></MenuItem>
+  <MenuItem fx:id="help" text="Help" onAction="#helpButtonAction"></MenuItem>
+  </Menu>
+  
 
   <stylesheets>
     <URL value="@../stylesheets/menu_bar.css" />
