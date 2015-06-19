@@ -38,7 +38,8 @@ public class AirhornProcessor {
   private static Track airhornTrack = null;
   public static Track getAirhornTrack() {
     if (airhornTrack == null) {
-      airhornTrack = new Track("/Users/daveystruijk/Documents/FEESJE/Samples/Random - airhorn1.mp3");
+      airhornTrack = new Track(AirhornProcessor.class.getClass()
+          .getResource("/samples/airhorn.mp3").getPath());
     }
     return airhornTrack;
   }
