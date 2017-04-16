@@ -125,4 +125,11 @@ public class App extends Application {
       library.add(pl);
     }
   }
+  
+  public void codeStyleWarnings() {
+    int y = 5; 
+    y = 4; // this is not how code should look like
+    
+  int x = 12345;
+  }
 }
