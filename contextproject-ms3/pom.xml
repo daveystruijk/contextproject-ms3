@@ -116,6 +116,17 @@
 
 	<build>
 		<plugins>
+            <plugin>
+     <groupId>org.pitest</groupId>
+     <artifactId>pitest-maven</artifactId>
+     <version>1.4.7</version>
+     <configuration>
+         <skip>false</skip>̨
+         <outputFormats>
+            <outputFormat>CSV</outputFormat>
+         </outputFormats>
+     </configuration>
+ </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -150,23 +161,23 @@
 				<version>2.7</version>
 			</plugin>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>verify-findbugs</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<failOnError>false</failOnError>
-				</configuration>
-			</plugin>
+			<!-- <plugin> -->
+			<!-- 	<groupId>org.codehaus.mojo</groupId> -->
+			<!-- 	<artifactId>findbugs-maven-plugin</artifactId> -->
+			<!-- 	<version>3.0.1</version> -->
+			<!-- 	<executions> -->
+			<!-- 		<execution> -->
+			<!-- 			<id>verify-findbugs</id> -->
+			<!-- 			<phase>process-classes</phase> -->
+			<!-- 			<goals> -->
+			<!-- 				<goal>check</goal> -->
+			<!-- 			</goals> -->
+			<!-- 		</execution> -->
+			<!-- 	</executions> -->
+			<!-- 	<configuration> -->
+			<!-- 		<failOnError>false</failOnError> -->
+			<!-- 	</configuration> -->
+			<!-- </plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -263,25 +274,25 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											findbugs-maven-plugin
-										</artifactId>
-										<versionRange>
-											[3.0.1,)
-										</versionRange>
-										<goals>
-											<goal>check</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
+								<!-- <pluginExecution> -->
+								<!-- 	<pluginExecutionFilter> -->
+								<!-- 		<groupId> -->
+								<!-- 			org.codehaus.mojo -->
+								<!-- 		</groupId> -->
+								<!-- 		<artifactId> -->
+								<!-- 			findbugs-maven-plugin -->
+								<!-- 		</artifactId> -->
+								<!-- 		<versionRange> -->
+								<!-- 			[3.0.1,) -->
+								<!-- 		</versionRange> -->
+								<!-- 		<goals> -->
+								<!-- 			<goal>check</goal> -->
+								<!-- 		</goals> -->
+								<!-- 	</pluginExecutionFilter> -->
+								<!-- 	<action> -->
+								<!-- 		<ignore></ignore> -->
+								<!-- 	</action> -->
+								<!-- </pluginExecution> -->
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -308,14 +319,14 @@
 				<version>2.7</version>
 			</plugin>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>3.0.1</version>
-				<configuration>
-					<failOnError>false</failOnError>
-				</configuration>
-			</plugin>
+			<!-- <plugin> -->
+			<!-- 	<groupId>org.codehaus.mojo</groupId> -->
+			<!-- 	<artifactId>findbugs-maven-plugin</artifactId> -->
+			<!-- 	<version>3.0.1</version> -->
+			<!-- 	<configuration> -->
+			<!-- 		<failOnError>false</failOnError> -->
+			<!-- 	</configuration> -->
+			<!-- </plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
