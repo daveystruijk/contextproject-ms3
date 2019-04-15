@@ -86,4 +86,13 @@ public class TrackPropertyTest {
         null, new Track(), "playing");
     assertEquals(nullString.getEnergy(),null);
   }
+
+  @Test
+  public void testSetTrack() throws URISyntaxException {
+    resourcePath = Paths.get(getClass().getResource("/buz.mp3").toURI());
+    Track buz = new Track(resourcePath.toString());
+    assertEquals(testProperty.getTrack(), testTrack);
+    testProperty.setTrack(buz);
+    assertEquals(testProperty.getTrack(), buz);
+  }
 }
